@@ -1,0 +1,36 @@
+server:
+  context-path: /${spring.application.name}
+  port: 8080
+
+spring:
+  application:
+    name: generic-search-listener
+
+service:
+  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
+  collectionDestination : products
+  zkTimeoutDestination : 20000
+  solrQueryTimeout : 10000
+  queryTimeAllowed : 10000
+
+
+  kafkaBootstrapServers: localhost:9092
+  kafkaGroupId: indexers
+  kafkaTopics: product
+  kafkaConcurrency : 3
+
+  metrics:
+    dropwizard:
+      enabled: true
+    prometheus:
+      enabled: true
+  git:
+    enabled: true
+  vip:
+    enabled: true
+  swagger:
+    enabled: true
+  logging:
+    enabled: true
+
+

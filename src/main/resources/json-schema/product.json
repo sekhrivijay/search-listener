@@ -1,0 +1,198 @@
+{
+  "Product": {
+    "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/PF_17_B239_MINIMUM_VA0061_W1_SQ?$PFCProductImage$&$burst1=PF_16_Burst_Value_Pack_ProGifter_Left_SQ",
+    "Name": "100 Blooms of Peruvian Lilies",
+    "ProductCode": null,
+    "SalePrice": 29.99,
+    "SkuId": "100151",
+    "SkuTypeId": "13",
+    "StrikePrice": 0,
+    "SmallImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/PF_17_B239_MINIMUM_VA0061_W1_SQ?$PFCProductImage$&$burst1=PF_16_Burst_Value_Pack_ProGifter_Left_SQ",
+    "Accessories": [
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_17_VA0061_W1_SQ?$PFCProductImage$",
+        "Name": "New Pink Metallic",
+        "ProductCode": "XsVA0061",
+        "SalePrice": 14.99,
+        "SkuId": "264316",
+        "SkuTypeId": "1",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30241014",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_11_VA0606_W1_SQ?$PFCProductImage$",
+        "Name": "Square Glass Vase",
+        "ProductCode": "CSQ",
+        "SalePrice": 9.99,
+        "SkuId": "128",
+        "SkuTypeId": "1",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "40137",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_11_VA0741_W1_SQ?$PFCProductImage$",
+        "Name": "Large Ginger Vase",
+        "ProductCode": "LGR",
+        "SalePrice": 9.99,
+        "SkuId": "100034",
+        "SkuTypeId": "1",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "40237",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_16_VA0007_W1_SQ?$PFCProductImage$",
+        "Name": "Jade Burlap",
+        "ProductCode": "XsVA0007",
+        "SalePrice": 12.99,
+        "SkuId": "250117",
+        "SkuTypeId": "1",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30213786",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_16_BE0005_W1_SQ?$PFCProductImage$",
+        "Name": "Teddy Bear",
+        "ProductCode": "XsBE0005",
+        "SalePrice": 9.99,
+        "SkuId": "253997",
+        "SkuTypeId": "2",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30226815",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_17_MS2151_BDAY_CARD_W1_SQ?$PFCProductImage$",
+        "Name": "Birthday Greeting Card",
+        "ProductCode": "XsMS2151",
+        "SalePrice": 1.99,
+        "SkuId": "256595",
+        "SkuTypeId": "24",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30234045",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_17_CH0002_W1_SQ?$PFCProductImage$",
+        "Name": "New! Gourmet Chocolates",
+        "ProductCode": "XsEVDCHOC",
+        "SalePrice": 14.99,
+        "SkuId": "256596",
+        "SkuTypeId": "3",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30229163",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_15_MS1350_W1_SQ?$PFCProductImage$",
+        "Name": "Relax & Indulge Spa Set",
+        "ProductCode": "XsMS1350",
+        "SalePrice": 14.99,
+        "SkuId": "237604",
+        "SkuTypeId": "5",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30197419",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_15_MS0067_CARD_W1_SQ?$PFCProductImage$",
+        "Name": "Personalized E-card",
+        "ProductCode": "MR32813_001",
+        "SalePrice": 1.29,
+        "SkuId": "245974",
+        "SkuTypeId": "25",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30197786",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_16_MS2150_JustForYou_CARD_W1_SQ?$PFCProductImage$",
+        "Name": "New Just For You Greeting Card",
+        "ProductCode": "XsMS2150",
+        "SalePrice": 1.99,
+        "SkuId": "255551",
+        "SkuTypeId": "24",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30215946",
+        "Personalization": []
+      },
+      {
+        "ImageUrl": "https://cimages.prvd.com/is/image/ProvideCommerce/ACC_16_MS0336_W1_SQ?$PFCProductImage$",
+        "Name": "New Happy Birthday Pick",
+        "ProductCode": "XsMS0336",
+        "SalePrice": 4.99,
+        "SkuId": "239320",
+        "SkuTypeId": "5",
+        "StrikePrice": 0,
+        "SmallImageUrl": null,
+        "AccessoryId": "30204236",
+        "Personalization": []
+      }
+    ],
+    "BulletedDescription": "",
+    "BundledAccessories": [],
+    "Description": "This abundant bouquet of alstroemeria, known as Peruvian lilies, will add vibrant color to any room. This colorful bouquet contains 100 blooms of Peruvian Lilies, approximately 4 blooms per stem. To allow these beautiful flowers to last much longer, they are shipped fresh, budding, and ready to bloom.",
+    "DisplayInSearchResults": true,
+    "IsNew": false,
+    "Keywords": "100 blossoms,100 buds,100blooms,alstromeria,alstromeria,birthday,flower delivery,flower delivery,flowers,flowers,just,lily bouquet,lily bouquet,mixed,one hundred blooms,peruvian,peruvian lilies,peruvian lilies,peruvian lillies,spring",
+    "ListedDescription": "<ul><li>Includes 100 blooms per bouquet, 25 stems of Peruvian lilies</li><li>Approximately 4 blooms per stem</li><li>Measures approximately 20\" tall</li><li>Ships in custom ProFlowers packaging and gift box. <u><a href=\"http://www.proflowers.com/customerservice#FaqWrapper\" target=\"_blank\">Details</a></u></li></ul>",
+    "LongDescription": "",
+    "MaxTimeInTransit": 1,
+    "MetaDescription": "Send flowers and gifts including 100 Blooms of Peruvian Lilies from ProFlowers.com.  Flowers and gifts are available for any holiday or occasion.",
+    "ProductAvailabilityDescription": "<ul><li>Includes 100 blooms per bouquet, at least 17 stems of Peruvian lilies</li><li>4-6 blooms per stem</li><li>Ships in custom ProFlowers packaging and gift box. <u><a href=\"http://www.proflowers.com/customerservice#FaqWrapper\" target=\"_blank\">Details</a></u></li><li>Measures approximately 20\" tall</li><li>Ships in custom ProFlowers packaging and gift box. <u><a href=\"http://www.proflowers.com/customerservice#FaqWrapper\" target=\"_blank\">Details</a></u></li></ul>",
+    "ProductId": "960",
+    "ProductMetadata": [
+      {
+        "Key": "Color",
+        "Value": [
+          "Assorted"
+        ]
+      },
+      {
+        "Key": "FlowerType",
+        "Value": [
+          "Alstroemeria",
+          "Peruvian lilies"
+        ]
+      },
+      {
+        "Key": "Occasion",
+        "Value": [
+          "Anniversary",
+          "Get Well",
+          "Love",
+          "Mother's Day",
+          "Romance",
+          "Valentine's Day"
+        ]
+      },
+      {
+        "Key": "ColorAndFlowerType",
+        "Value": [
+          "Assorted Alstroemeria",
+          "Assorted Peruvian lilies"
+        ]
+      }
+    ],
+    "RequiredAccessories": [],
+    "SEODescription": " ",
+    "ShortDescription": "This abundant bouquet of alstroemeria, known as Peruvian lilies, will add vibrant color to any room. This colorful bouquet contains 25 stems of Peruvian Lilies, each stem with multiple blooms. To allow these beautiful flowers to last much longer, they are shipped fresh, budding, and ready to bloom.",
+    "PersonalizationAccessories": [],
+    "IsActive": true,
+    "SkuOwner": "PFC",
+    "ProductAttributes": []
+  }
+}
