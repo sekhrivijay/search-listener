@@ -1,8 +1,6 @@
 package com.micro.services.search.listener.index.config;
 
-import com.micro.services.search.listener.index.bl.KafkaListenerImpl;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +12,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 import org.springframework.kafka.listener.ErrorHandler;
-import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
@@ -45,7 +42,7 @@ public class KafkaConsumerConfig {
     private int retryInterval;
 
     @Bean
-    public RetryPolicy getRetryPolicy(){
+    public RetryPolicy getRetryPolicy() {
         SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
         simpleRetryPolicy.setMaxAttempts(maxRetryAttempts);
         return simpleRetryPolicy;
@@ -59,7 +56,7 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public RetryTemplate getRetryTemplate(){
+    public RetryTemplate getRetryTemplate() {
         RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setRetryPolicy(getRetryPolicy());
         retryTemplate.setBackOffPolicy(getBackOffPolicy());

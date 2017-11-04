@@ -25,7 +25,7 @@ public class SolrService {
     private int solrMaxRetryAttempts;
 
     @Value("${service.solrRetryInterval}")
-    private int solrRetryInterval = 500;
+    private int solrRetryInterval;
 
     private static final Logger LOGGER = Logger.getLogger(SolrService.class);
 
@@ -48,7 +48,7 @@ public class SolrService {
         updateDocs(() -> getUpdateResponse(jsonData));
     }
 
-    private UpdateResponse getUpdateResponse(String jsonData) throws org.apache.solr.client.solrj.SolrServerException, java.io.IOException {
+    private UpdateResponse getUpdateResponse(String jsonData) throws Exception {
         ContentStreamUpdateRequest request = getContentStreamUpdateRequest();
         request.addContentStream(new ContentStreamBase.StringStream(jsonData));
         return request.process(solrClient);
@@ -98,7 +98,8 @@ public class SolrService {
                 LOGGER.info("Exception occurred in waiting to retry to push to solr");
             }
         } else {
-            LOGGER.error("GIVING UP . Cannot add this list of documents after trying " + solrMaxRetryAttempts + " times");
+            LOGGER.error("GIVING UP . Cannot add this list of documents after trying " +
+                    solrMaxRetryAttempts + " times");
         }
     }
 

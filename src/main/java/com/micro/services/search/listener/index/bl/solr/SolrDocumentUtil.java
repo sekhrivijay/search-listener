@@ -23,7 +23,7 @@ public class SolrDocumentUtil {
 
     public String getFieldValue(SolrDocument solrDocument, String field) {
         Object object = solrDocument.getFieldValue(field);
-        if(object == null) {
+        if (object == null) {
             return null;
         }
         return String.valueOf(object);
@@ -31,37 +31,37 @@ public class SolrDocumentUtil {
 
     public String getFieldValue(SolrInputDocument solrInputDocument, String field) {
         Object object = solrInputDocument.getFieldValue(field);
-        if(object == null) {
+        if (object == null) {
             return null;
         }
         return String.valueOf(object);
     }
 
     public List<String> getFieldValues(SolrDocument solrDocument, String field) {
-        if(solrDocument == null) {
+        if (solrDocument == null) {
             return null;
         }
         Object o = solrDocument.getFieldValues(field);
-        if(o == null) {
+        if (o == null) {
             return null;
         }
         List<String> toReturn = new ArrayList<>();
-        for(Object object: solrDocument.getFieldValues(field)) {
-            if(object != null) {
+        for (Object object: solrDocument.getFieldValues(field)) {
+            if (object != null) {
                 toReturn.add(String.valueOf(object));
             }
         }
         return toReturn;
     }
     public void setField(SolrInputDocument solrInputDocument, String key, Object value) {
-        if(value == null || StringUtils.isEmpty(key)) {
+        if (value == null || StringUtils.isEmpty(key)) {
             return;
         }
         solrInputDocument.setField(key, value);
     }
 
     public void addField(SolrInputDocument solrInputDocument, String key, Object value) {
-        if(value == null || StringUtils.isEmpty(key)) {
+        if (value == null || StringUtils.isEmpty(key)) {
             return;
         }
         solrInputDocument.addField(key, value);

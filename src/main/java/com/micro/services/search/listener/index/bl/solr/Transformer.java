@@ -40,13 +40,15 @@ public class Transformer {
         solrDocumentUtil.addField(solrInputDocument, "LongDescription", product.getLongDescription());
         solrDocumentUtil.addField(solrInputDocument, "MaxTimeInTransit", product.getMaxTimeInTransit());
         solrDocumentUtil.addField(solrInputDocument, "MetaDescription", product.getMetaDescription());
-        solrDocumentUtil.addField(solrInputDocument, "ProductAvailabilityDescription", product.getProductAvailabilityDescription());
+        solrDocumentUtil.addField(solrInputDocument, "ProductAvailabilityDescription",
+                product.getProductAvailabilityDescription());
         solrDocumentUtil.addField(solrInputDocument, "ProductId", product.getProductId());
         solrDocumentUtil.addField(solrInputDocument, "ProductMetadata", product.getProductMetadata());
 //        solrDocumentUtil.addField(solrInputDocument, "RequiredAccessories", product.getRequiredAccessories());
         solrDocumentUtil.addField(solrInputDocument, "SEODescription", product.getSEODescription());
         solrDocumentUtil.addField(solrInputDocument, "ShortDescription", product.getShortDescription());
-//        solrDocumentUtil.addField(solrInputDocument, "PersonalizationAccessories", product.getPersonalizationAccessories());
+//        solrDocumentUtil.addField(solrInputDocument, "PersonalizationAccessories",
+// product.getPersonalizationAccessories());
         solrDocumentUtil.addField(solrInputDocument, "IsActive", product.getIsActive());
         solrDocumentUtil.addField(solrInputDocument, "SkuOwner", product.getSkuOwner());
 //        solrDocumentUtil.addField(solrInputDocument, "ProductAttributes", product.getProductAttributes());

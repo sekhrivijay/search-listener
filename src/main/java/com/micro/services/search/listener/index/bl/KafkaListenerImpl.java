@@ -54,7 +54,7 @@ public class KafkaListenerImpl {
         priceOrchestrator.process(record.value());
     }
 
-    @KafkaListener(topics =  {"${service.kafkaInventoryTopics}"} , group = "${service.kafkaInventoryGroup}")
+    @KafkaListener(topics = {"${service.kafkaInventoryTopics}"}, group = "${service.kafkaInventoryGroup}")
     public void listenInventory(ConsumerRecord<String, String> record) throws Exception {
         if (!valid(record)) {
             return;

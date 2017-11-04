@@ -37,7 +37,7 @@ public class PimServiceImpl implements PimService {
                 .queryParam("applicationToken", pimServiceAccessToken);
         LOGGER.info("Calling PIM  service ");
         ResponseEntity<ProductWrapper> response = restTemplate.exchange(
-                builder.build().encode().toUri() ,
+                builder.build().encode().toUri(),
                 HttpMethod.GET,
                 request,
                 ProductWrapper.class);
