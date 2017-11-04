@@ -1,7 +1,10 @@
 package com.micro.services.search.listener.index.config;
 
+import com.micro.services.search.listener.index.bl.KafkaListenerImpl;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +13,12 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
+import org.springframework.kafka.listener.ErrorHandler;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.retry.RetryPolicy;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +26,8 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
+
+    private static final Logger LOGGER = Logger.getLogger(KafkaConsumerConfig.class);
 
     @Value("${service.kafkaBootstrapServers}")
     private String kafkaBootStrapServers;
@@ -27,6 +38,33 @@ public class KafkaConsumerConfig {
     @Value("${service.kafkaConcurrency}")
     private int kafkaConcurrency;
 
+    @Value("${service.kafkaMaxRetryAttempts}")
+    private int maxRetryAttempts;
+
+    @Value("${service.kafkaRetryInterval}")
+    private int retryInterval;
+
+    @Bean
+    public RetryPolicy getRetryPolicy(){
+        SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
+        simpleRetryPolicy.setMaxAttempts(maxRetryAttempts);
+        return simpleRetryPolicy;
+    }
+
+    @Bean
+    public FixedBackOffPolicy getBackOffPolicy() {
+        FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
+        backOffPolicy.setBackOffPeriod(retryInterval);
+        return backOffPolicy;
+    }
+
+    @Bean
+    public RetryTemplate getRetryTemplate(){
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(getRetryPolicy());
+        retryTemplate.setBackOffPolicy(getBackOffPolicy());
+        return retryTemplate;
+    }
 
 
     @Bean
@@ -41,13 +79,20 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
+    public ErrorHandler errorHandler() {
+        //TODO alert and put in retry queue on inability to process message
+        return (e, consumerRecord) -> LOGGER.error(e);
+    }
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConcurrency(kafkaConcurrency);
         factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.RECORD);
+        factory.getContainerProperties().setErrorHandler(errorHandler());
         factory.setConsumerFactory(consumerFactory());
+        factory.setRetryTemplate(getRetryTemplate());
+
         return factory;
     }
 }

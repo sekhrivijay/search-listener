@@ -37,34 +37,38 @@ public class KafkaListenerImpl {
         this.inventoryOrchestrator = inventoryOrchestrator;
     }
 
-    @KafkaListener(topics = "product", group = "productGroup")
+    @KafkaListener(topics = {"${service.kafkaProductTopics}"}, group = "${service.kafkaProductGroup}")
     public void listenProduct(ConsumerRecord<String, String> record) throws Exception {
-        String key = record.key();
-        LOGGER.info(key);
-        if (StringUtils.isEmpty(key) || !key.equals(GlobalConstants.PID)) {
+        if (!valid(record)) {
             return;
         }
         productOrchestrator.process(record.value());
     }
 
-    @KafkaListener(topics = "price", group = "priceGroup")
+
+    @KafkaListener(topics =  {"${service.kafkaPriceTopics}"}, group = "${service.kafkaPriceGroup}")
     public void listenPrice(ConsumerRecord<String, String> record) throws Exception {
-        String key = record.key();
-        LOGGER.info(key);
-        if (StringUtils.isEmpty(key) || !key.equals(GlobalConstants.PID)) {
+        if (!valid(record)) {
             return;
         }
         priceOrchestrator.process(record.value());
     }
 
-    @KafkaListener(topics = "inventory", group = "inventoryGroup")
+    @KafkaListener(topics =  {"${service.kafkaInventoryTopics}"} , group = "${service.kafkaInventoryGroup}")
     public void listenInventory(ConsumerRecord<String, String> record) throws Exception {
-        String key = record.key();
-        LOGGER.info(key);
-        if (StringUtils.isEmpty(key) || !key.equals(GlobalConstants.PID)) {
+        if (!valid(record)) {
             return;
         }
         inventoryOrchestrator.process(record.value());
+    }
+
+    private boolean valid(ConsumerRecord<String, String> record) {
+        String key = record.key();
+        LOGGER.info("key from message is " + key);
+        if (StringUtils.isEmpty(key) || !key.equals(GlobalConstants.PID)) {
+            return false;
+        }
+        return true;
     }
 
 

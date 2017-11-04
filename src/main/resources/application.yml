@@ -14,11 +14,20 @@ service:
   queryTimeAllowed : 10000
 
 
-  kafkaBootstrapServers: localhost:9092
+  kafkaBootstrapServers: freshdapp01v1.ftdi.com:9092
   kafkaGroupId: indexers
-  kafkaTopics: product
+  kafkaProductTopics: product
+  kafkaInventoryTopics: inventory
+  kafkaPriceTopics: price
+  kafkaProductGroup: productGroup
+  kafkaInventoryGroup: inventoryGroup
+  kafkaPriceGroup: priceGroup
 
   kafkaConcurrency : 3
+  kafkaMaxRetryAttempts : 3
+  kafkaRetryInterval : 1000
+  solrMaxRetryAttempts : 5
+  solrRetryInterval : 500
   pimService:
     baseUrl: "https://apiservice.providecommerce.com/API/Product/v1/JSON/GetProductDetail"
     accessToken: abcd

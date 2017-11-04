@@ -10,23 +10,27 @@ import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.util.ContentStreamBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
-import java.util.function.Supplier;
 
 @Named
 public class SolrService {
     public static final String SPLIT = "split";
     public static final String CHILD_DOCUMENTS = "_childDocuments_";
     public static final String UPDATE_JSON_DOCS = "/update/json/docs";
-    private static final int MAX_RETRY_TIMES = 10;
-    private static final int WAIT_TIME = 500;
+
+    @Value("${service.solrMaxRetryAttempts}")
+    private int solrMaxRetryAttempts;
+
+    @Value("${service.solrRetryInterval}")
+    private int solrRetryInterval = 500;
 
     private static final Logger LOGGER = Logger.getLogger(SolrService.class);
 
     private SolrClient solrClient;
+
 
     @Autowired
     public void setSolrClient(SolrClient solrClient) {
@@ -53,7 +57,8 @@ public class SolrService {
     @Timed
     @LogExecutionTime
     public void updateDocs(SupplierWithException<UpdateResponse> solrProcess) {
-        for (short retryCount = 0; retryCount != MAX_RETRY_TIMES; ++retryCount) {
+
+        for (short retryCount = 0; retryCount != solrMaxRetryAttempts; ++retryCount) {
             try {
                 UpdateResponse response = solrProcess.get();
                 if (validate(retryCount, response)) {
@@ -85,20 +90,20 @@ public class SolrService {
 
 
     private void waitForRetry(int retryCount) {
-        if (retryCount < MAX_RETRY_TIMES) {
+        if (retryCount < solrMaxRetryAttempts) {
             try {
-                LOGGER.info("Going to retry after " + WAIT_TIME * (retryCount + 1) + " milli seconds");
-                Thread.sleep(WAIT_TIME * (retryCount + 1));
+                LOGGER.info("Going to retry after " + solrRetryInterval * (retryCount + 1) + " milli seconds");
+                Thread.sleep(solrRetryInterval * (retryCount + 1));
             } catch (InterruptedException e) {
                 LOGGER.info("Exception occurred in waiting to retry to push to solr");
             }
         } else {
-            LOGGER.error("GIVING UP . Cannot add this list of documents after trying " + MAX_RETRY_TIMES + " times");
+            LOGGER.error("GIVING UP . Cannot add this list of documents after trying " + solrMaxRetryAttempts + " times");
         }
     }
 
 
     interface SupplierWithException<T> {
-        T get() throws Exception ;
+        T get() throws Exception;
     }
 }
