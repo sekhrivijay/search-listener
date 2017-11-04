@@ -17,7 +17,11 @@ service:
   kafkaBootstrapServers: localhost:9092
   kafkaGroupId: indexers
   kafkaTopics: product
+
   kafkaConcurrency : 3
+  pimService:
+    baseUrl: "https://apiservice.providecommerce.com/API/Product/v1/JSON/GetProductDetail"
+    accessToken: abcd
 
   metrics:
     dropwizard:

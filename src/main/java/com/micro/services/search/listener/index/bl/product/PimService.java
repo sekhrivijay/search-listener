@@ -1,5 +1,7 @@
 package com.micro.services.search.listener.index.bl.product;
 
-public interface PimService {
+import com.micro.services.product.generated.ProductWrapper;
 
+public interface PimService {
+    ProductWrapper getProduct(String pid);
 }

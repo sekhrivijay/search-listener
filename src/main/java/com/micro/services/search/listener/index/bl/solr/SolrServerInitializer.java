@@ -1,4 +1,4 @@
-package com.micro.services.search.listener.index.solr;
+package com.micro.services.search.listener.index.bl.solr;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
