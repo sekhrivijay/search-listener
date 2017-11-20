@@ -5,6 +5,30 @@ server:
 spring:
   application:
     name: generic-search-listener
+  profiles:
+    active: local
+  output:
+    ansi:
+      enabled: ALWAYS
+  jackson:
+    default-property-inclusion: non_null
+  cloud:
+    config:
+      allow-override: true
+      override-none: false
+      fail-fast: true
+      override-system-properties: false
+      enabled: false
+  sleuth:
+    web:
+      enabled: true
+    sampler:
+      percentage: 100
+  zipkin:
+    base-url: http://localhost:8680/
+    flush-interval: 15
+    enabled: false
+
 
 service:
   zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
@@ -47,3 +71,6 @@ service:
     enabled: true
 
 
+management:
+  security:
+    enabled: false

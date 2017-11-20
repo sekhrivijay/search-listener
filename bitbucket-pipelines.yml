@@ -1,0 +1,17 @@
+image: maven:3.3.9
+
+options:
+  docker: true
+
+pipelines:
+  default:
+    - step:
+        name: mvn and docker build
+        script:
+          - mvn -version
+          - mvn -B clean install
+          - export IMAGE_NAME=$DOCKER_HUB_USERNAME/search-listener:$BITBUCKET_COMMIT
+          - echo "Image name is ${IMAGE_NAME}"
+          - docker build -t ${IMAGE_NAME} .
+          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+          - docker push $IMAGE_NAME

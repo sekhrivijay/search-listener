@@ -20,11 +20,31 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+
+    <repositories>
+        <repository>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepoReadUrl}</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepoWriteUrl}</url>
+        </repository>
+        <snapshotRepository>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepoWriteUrl}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Dalston.SR3</spring-cloud.version>
+        <myMavenRepoReadUrl>https://mymavenrepo.com/repo/Ko7hlTF72DbglwWKg7h2/</myMavenRepoReadUrl>
+        <myMavenRepoWriteUrl>https://mymavenrepo.com/repo/Eyq6Bd6COULiONw5AvFa/</myMavenRepoWriteUrl>
     </properties>
 
     <dependencies>
@@ -97,7 +117,7 @@
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>7.0.0</version>
+            <version>7.1.0</version>
         </dependency>
 
         <dependency>
