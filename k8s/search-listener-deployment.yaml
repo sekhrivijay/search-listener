@@ -1,28 +1,4 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: search-listener-service
-  labels:
-    app: search
-spec:
-  ports:
-  - port: 8080
-    name: server
-  selector:
-    app: search
-  type: NodePort
----
-apiVersion: policy/v1beta1
-kind: PodDisruptionBudget
-metadata:
-  name: search-listener-pdb
-spec:
-  selector:
-    matchLabels:
-      app: search-listener
-  maxUnavailable: 3
----
 apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
@@ -50,12 +26,18 @@ spec:
         ports:
         - containerPort: 8080
           name: server
-        command:
-        - java
-        - "-Dservice.zkEnsembleDestination=zk-0.zk-hs.default.svc.cluster.local:2181,zk-1.zk-hs.default.svc.cluster.local:2181,zk-2.zk-hs.default.svc.cluster.local:2181"
-        - "-Dservice.kafkaBootstrapServers=freshdapp01v1.ftdi.com:9092"
-        - -jar
-        - search-listener-1.0-SNAPSHOT.jar
+        env:
+        - name: SERVICE_ZKENSEMBLEDESTINATION
+          value: "zk-0.zk-hs.default.svc.cluster.local:2181,zk-1.zk-hs.default.svc.cluster.local:2181,zk-2.zk-hs.default.svc.cluster.local:2181"
+        - name: SERVICE_KAFKABOOTSTRAPSERVERS
+          value: "freshdapp01v1.ftdi.com:9092"
+
+#        command:
+#        - java
+#        - "-Dservice.zkEnsembleDestination=zk-0.zk-hs.default.svc.cluster.local:2181,zk-1.zk-hs.default.svc.cluster.local:2181,zk-2.zk-hs.default.svc.cluster.local:2181"
+#        - "-Dservice.kafkaBootstrapServers=freshdapp01v1.ftdi.com:9092"
+#        - -jar
+#        - search-listener-1.0-SNAPSHOT.jar
         livenessProbe:
           httpGet:
             path: /health
@@ -68,4 +50,3 @@ spec:
             port: 8080
           initialDelaySeconds: 55
           periodSeconds: 10
-

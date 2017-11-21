@@ -1,0 +1,10 @@
+# $ gcloud container builds submit . --config=cloudbuild.yaml
+
+steps:
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['clean', 'install']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag=gcr.io/deep-thought-185318/search-listener', '.']
+
+images: ['gcr.io/deep-thought-185318/search-listener']

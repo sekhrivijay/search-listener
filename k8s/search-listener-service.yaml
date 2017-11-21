@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-listener-service
+  labels:
+    app: search
+spec:
+  ports:
+  - port: 8080
+    name: server
+  selector:
+    app: search
+  type: NodePort
