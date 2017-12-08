@@ -1,0 +1,210 @@
+{
+  "result": {
+    "product_addons": {
+      "record": [
+        {
+          "price": 19.99,
+          "addon_type": 5,
+          "vendor_addon_flag": "N",
+          "description": "Delicious Box of Chocolates",
+          "row": 1,
+          "max_qty": 9,
+          "florist_addon_flag": "Y",
+          "addon_id": "C"
+        },
+        {
+          "price": 6,
+          "addon_type": 1,
+          "vendor_addon_flag": "N",
+          "description": "Festive Mylar Balloon",
+          "row": 2,
+          "max_qty": 9,
+          "florist_addon_flag": "Y",
+          "addon_id": "A"
+        },
+        {
+          "price": 14.99,
+          "addon_type": 2,
+          "vendor_addon_flag": "N",
+          "description": "Adorable Plush Bear",
+          "row": 3,
+          "max_qty": 9,
+          "florist_addon_flag": "Y",
+          "addon_id": "B"
+        }
+      ]
+    },
+
+    "product_subcodes": "",
+    "product_discounts": {
+      "record": {
+        "iotw-flag": {
+          "flag": "N"
+        },
+        "discount": {
+          "discount-type": "",
+          "premium-price": 69.99,
+          "standard-price": 49.99,
+          "deluxe-price": 59.99
+        },
+        "row": 1
+      }
+    },
+    "message": "",
+    "product_details": {
+      "record": {
+        "add_on_free_id": "",
+        "deluxe_price": 59.99,
+        "short_description": "",
+        "allow_free_shipping_flag": "Y",
+        "novator_name": "The Florist Designed Bouquet by FTD&reg;",
+        "exception_start_date": "",
+        "no_tax_flag": "N",
+        "shipping_key": 1,
+        "premium_price": 69.99,
+        "color_size_flag": "S",
+        "exception_message": "",
+        "ship_method_carrier": "N",
+        "variable_price_max": 300,
+        "delivery_type": "D",
+        "product_id": 6022,
+        "exception_code": "",
+        "exception_end_date": "",
+        "add_on_cards_flag": "Y",
+        "row": 1,
+        "standard_price": 49.99,
+        "largeimage": "https://consumer-dev4.ftdi.com/product_images/XX-6022_c.jpg",
+        "second_choice": "",
+        "novator_id": "XX-6022",
+        "long_description": "Can't decide on which of our super-duper bouquets to send? Let the florist design something special.  Using the season's best flowers, this bouquet will arrive beautifully arranged in a glass vase and reflect the amount you have spent.",
+        "personal_greeting_flag": "N",
+        "product_name": "Florist Design Vase Bqt",
+        "smallimage": "https://consumer-dev4.ftdi.com/product_images/XX-6022_a.jpg",
+        "discount_allowed_flag": "Y",
+        "product_type": "FLORAL",
+        "popularity_order_cnt": 2,
+        "shipping_system": "NONE",
+        "ship_method_florist": "Y",
+        "weboe_blocked": "N",
+        "custom_flag": "N",
+        "add_on_funeral_flag": "N",
+        "premier_collection_flag": "N",
+        "over_21": "N",
+        "status": "A"
+      }
+    },
+    "product_upsells": {
+      "record": [
+        {
+          "iotw-flag": {
+            "flag": "N"
+          },
+          "upsell_detail_sequence": 1,
+          "upsell_detail_name": "<b>GOOD<\/b><br/>Simple and Sweet",
+          "upsell_master_id": "HG1",
+          "upsell_detail_id": "HG1S",
+          "discount": {
+            "discount-type": "Discount",
+            "discount-price": "42.50"
+          },
+          "row": 1,
+          "upsell_price": 49.99
+        },
+        {
+          "iotw-flag": {
+            "flag": "N"
+          },
+          "upsell_detail_sequence": 2,
+          "upsell_detail_name": "<b>BETTER<\/b><br/>Full and Lush",
+          "upsell_master_id": "HG1",
+          "upsell_detail_id": "HG1D",
+          "discount": {
+            "discount-type": "Discount",
+            "discount-price": "51.00"
+          },
+          "row": 2,
+          "upsell_price": 59.99
+        },
+        {
+          "iotw-flag": {
+            "flag": "N"
+          },
+          "upsell_detail_sequence": 3,
+          "upsell_detail_name": "<b>BEST<\/b><br/>Bountiful Blooms",
+          "upsell_master_id": "HG1",
+          "upsell_detail_id": "HG1P",
+          "discount": {
+            "discount-type": "Discount",
+            "discount-price": "59.50"
+          },
+          "row": 3,
+          "upsell_price": 69.99
+        },
+        {
+          "iotw-flag": {
+            "flag": "N"
+          },
+          "upsell_detail_sequence": 4,
+          "upsell_detail_name": "<b>EXQUISITE<\/b><br/>Lavish and Grand",
+          "upsell_master_id": "HG1",
+          "upsell_detail_id": "HG1E",
+          "discount": {
+            "discount-type": "Discount",
+            "discount-price": "68.00"
+          },
+          "row": 4,
+          "upsell_price": 79.99
+        }
+      ]
+    },
+    "product_vases": {
+      "record": [{
+        "price": 0,
+        "vendor_addon_flag": "Y",
+        "description": "Clear Gathering Vase",
+        "row": 1,
+        "max_qty": 1,
+        "florist_addon_flag": "N",
+        "addon_id": "VA0016T"
+      }, {
+        "price": 9.99,
+        "vendor_addon_flag": "Y",
+        "description": "Gold Touch Vase",
+        "row": 2,
+        "max_qty": 1,
+        "florist_addon_flag": "N",
+        "addon_id": "AV9"
+      }, {
+        "price": 9.99,
+        "vendor_addon_flag": "Y",
+        "description": "Radiant Silver Vase",
+        "row": 3,
+        "max_qty": 1,
+        "florist_addon_flag": "N",
+        "addon_id": "AV6"
+      }, {
+        "price": 11.99,
+        "vendor_addon_flag": "Y",
+        "description": "Regal Crystal Vase",
+        "row": 4,
+        "max_qty": 1,
+        "florist_addon_flag": "N",
+        "addon_id": "AV19"
+      }]
+    },
+    "product_colors": "",
+    "source_codes": {
+      "source_code": [
+        {
+          "code": 7714,
+          "discountedprice": "40.00"
+        },
+        {
+          "code": 10577,
+          "discountedprice": "40.00"
+        }
+      ]
+    },
+    "status": "Y"
+  }
+}

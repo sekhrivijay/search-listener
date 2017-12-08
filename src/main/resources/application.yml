@@ -1,5 +1,5 @@
 server:
-  context-path: /${spring.application.name}
+#  context-path: /${spring.application.name}
   port: 8080
 
 spring:
@@ -55,6 +55,7 @@ service:
   pimService:
     baseUrl: "https://apiservice.providecommerce.com/API/Product/v1/JSON/GetProductDetail"
     accessToken: abcd
+    apolloBaseUrl: "http://amsdapp01v1.ftdi.com:8700/prodinfo/products"
 
   metrics:
     dropwizard:

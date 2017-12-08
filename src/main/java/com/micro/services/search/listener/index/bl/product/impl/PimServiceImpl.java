@@ -1,6 +1,7 @@
 package com.micro.services.search.listener.index.bl.product.impl;
 
 import com.micro.services.product.generated.ProductWrapper;
+import com.micro.services.product.generated.Test.ProductDocument;
 import com.micro.services.search.listener.index.bl.product.PimService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class PimServiceImpl implements PimService {
     @Value("${service.pimService.baseUrl}")
     private String pimServiceBaseUrl;
 
+    @Value("${service.pimService.apolloBaseUrl}")
+    private String pimServiceApolloBaseUrl;
+
     @Value("${service.pimService.accessToken}")
     private String pimServiceAccessToken;
 
@@ -44,5 +48,21 @@ public class PimServiceImpl implements PimService {
         ProductWrapper productWrapper = response.getBody();
         LOGGER.info(productWrapper.toString());
         return productWrapper;
+    }
+
+    @Override
+    public ProductDocument getProductDetail(String pid) {
+        HttpEntity<?> request = new HttpEntity<>(new HttpHeaders());
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(pimServiceApolloBaseUrl)
+                .queryParam("prodid", pid);
+        LOGGER.info("Calling PIM  service ");
+        ResponseEntity<ProductDocument> response = restTemplate.exchange(
+                builder.build().encode().toUri(),
+                HttpMethod.GET,
+                request,
+                ProductDocument.class);
+        ProductDocument productDocument = response.getBody();
+        LOGGER.info(productDocument.toString());
+        return productDocument;
     }
 }

@@ -1,6 +1,7 @@
 package com.micro.services.search.listener.index.bl.orchestraction;
 
 import com.micro.services.product.generated.ProductWrapper;
+import com.micro.services.product.generated.Test.ProductDocument;
 import com.micro.services.search.listener.index.bl.product.PimService;
 import com.micro.services.search.listener.index.bl.solr.SolrService;
 import com.micro.services.search.listener.index.bl.solr.Transformer;
@@ -34,8 +35,9 @@ public class ProductOrchestrator implements Orchestrator {
 
     @Override
     public void process(String pid) {
-        ProductWrapper productWrapper = pimService.getProduct(pid);
-        SolrInputDocument solrInputDocument = transformer.transform(productWrapper);
+//        ProductWrapper productWrapper = pimService.getProduct(pid);
+        ProductDocument productDetail = pimService.getProductDetail(pid);
+        SolrInputDocument solrInputDocument = transformer.transform(productDetail);
         List<SolrInputDocument> solrInputDocumentList = Arrays.asList(solrInputDocument);
         solrService.updateDocs(solrInputDocumentList);
     }
