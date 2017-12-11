@@ -80,6 +80,7 @@ public class KafkaConsumerConfig {
         //TODO alert and put in retry queue on inability to process message
         return (e, consumerRecord) -> LOGGER.error(e);
     }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory

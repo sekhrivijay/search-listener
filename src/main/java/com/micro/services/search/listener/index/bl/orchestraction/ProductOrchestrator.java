@@ -1,9 +1,8 @@
 package com.micro.services.search.listener.index.bl.orchestraction;
 
-import com.micro.services.product.generated.ProductWrapper;
 import com.micro.services.product.generated.Test.ProductDocument;
 import com.micro.services.search.listener.index.bl.product.PimService;
-import com.micro.services.search.listener.index.bl.solr.SolrService;
+import com.micro.services.search.listener.index.bl.solr.impl.SolrServiceImpl;
 import com.micro.services.search.listener.index.bl.solr.Transformer;
 import org.apache.solr.common.SolrInputDocument;
 
@@ -16,10 +15,10 @@ import java.util.List;
 public class ProductOrchestrator implements Orchestrator {
     private PimService pimService;
     private Transformer transformer;
-    private SolrService solrService;
+    private SolrServiceImpl solrService;
 
     @Inject
-    public void setSolrService(SolrService solrService) {
+    public void setSolrService(SolrServiceImpl solrService) {
         this.solrService = solrService;
     }
 

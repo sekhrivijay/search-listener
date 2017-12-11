@@ -116,7 +116,7 @@ public class Transformer {
             solrDocumentUtil.addField(solrInputDocument, "product_upsells", gson.toJson(productUpsells));
         }
         ProductVases productVases =  result.getProductVases();
-        if(productVases != null
+        if (productVases != null
                 && productVases.getRecord() != null) {
             solrDocumentUtil.addField(solrInputDocument, "product_vases", gson.toJson(productVases));
         }

@@ -1,6 +1,6 @@
 package com.micro.services.search.listener.index.resource;
 
-import com.micro.services.product.generated.ProductWrapper;
+import com.micro.services.product.generated.Test.ProductDocument;
 import com.micro.services.search.listener.index.bl.orchestraction.Orchestrator;
 import com.micro.services.search.listener.index.bl.product.PimService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +26,16 @@ public class ListenerResource {
         this.pimService = pimService;
     }
 
+//    @RequestMapping("/query")
+//    public ProductWrapper search(String pid) {
+//        productOrchestrator.process(pid);
+//        return pimService.getProduct(pid);
+//    }
+
+
     @RequestMapping("/query")
-    public ProductWrapper search(String pid) {
+    public ProductDocument search(String pid) {
         productOrchestrator.process(pid);
-        return pimService.getProduct(pid);
+        return pimService.getProductDetail(pid);
     }
 }
