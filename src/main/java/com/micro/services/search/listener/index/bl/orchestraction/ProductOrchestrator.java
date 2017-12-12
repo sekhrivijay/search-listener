@@ -1,6 +1,6 @@
 package com.micro.services.search.listener.index.bl.orchestraction;
 
-import com.micro.services.product.generated.Test.ProductDocument;
+import com.micro.services.product.generated.ProductDocument;
 import com.micro.services.search.listener.index.bl.product.PimService;
 import com.micro.services.search.listener.index.bl.solr.impl.SolrServiceImpl;
 import com.micro.services.search.listener.index.bl.solr.Transformer;

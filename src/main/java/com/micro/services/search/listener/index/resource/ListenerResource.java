@@ -1,6 +1,6 @@
 package com.micro.services.search.listener.index.resource;
 
-import com.micro.services.product.generated.Test.ProductDocument;
+import com.micro.services.product.generated.ProductDocument;
 import com.micro.services.search.listener.index.bl.orchestraction.Orchestrator;
 import com.micro.services.search.listener.index.bl.product.PimService;
 import org.springframework.web.bind.annotation.RequestMapping;

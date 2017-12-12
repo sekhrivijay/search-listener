@@ -2,15 +2,18 @@ package com.micro.services.search.listener.index.bl.solr;
 
 import com.google.gson.Gson;
 import com.micro.services.product.generated.Product;
+import com.micro.services.product.generated.ProductColors;
 import com.micro.services.product.generated.ProductWrapper;
-import com.micro.services.product.generated.Test.ProductAddons;
-import com.micro.services.product.generated.Test.ProductDetails;
-import com.micro.services.product.generated.Test.ProductDiscounts;
-import com.micro.services.product.generated.Test.ProductDocument;
-import com.micro.services.product.generated.Test.ProductUpsells;
-import com.micro.services.product.generated.Test.ProductVases;
-import com.micro.services.product.generated.Test.Record__;
-import com.micro.services.product.generated.Test.Result;
+import com.micro.services.product.generated.ProductAddons;
+import com.micro.services.product.generated.ProductDetails;
+import com.micro.services.product.generated.ProductDiscounts;
+import com.micro.services.product.generated.ProductDocument;
+import com.micro.services.product.generated.ProductUpsells;
+import com.micro.services.product.generated.ProductVases;
+import com.micro.services.product.generated.Record__;
+import com.micro.services.product.generated.Result;
+import com.micro.services.product.generated.SourceCode;
+import com.micro.services.product.generated.SourceCodes;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,6 +123,18 @@ public class Transformer {
                 && productVases.getRecord() != null) {
             solrDocumentUtil.addField(solrInputDocument, "product_vases", gson.toJson(productVases));
         }
+        ProductColors productColors = result.getProductColors();
+        if (productColors != null
+                && productColors.getRecord() != null) {
+            solrDocumentUtil.addField(solrInputDocument, "product_colors", gson.toJson(productVases));
+        }
+
+        SourceCodes sourceCodes = result.getSourceCodes();
+        if (sourceCodes != null
+                && sourceCodes.getSourceCode() != null) {
+            solrDocumentUtil.addField(solrInputDocument, "source_codes", gson.toJson(sourceCodes));
+        }
+
         return solrInputDocument;
     }
 

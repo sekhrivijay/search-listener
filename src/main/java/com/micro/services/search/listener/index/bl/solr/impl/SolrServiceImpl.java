@@ -5,9 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.micro.services.search.listener.index.bl.solr.SolrService;
 import com.micro.services.search.listener.index.bl.solr.SolrUtil;
 import com.micro.services.search.listener.index.bl.solr.SupplierWithException;
-import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import com.services.micro.commons.logging.annotation.LogExecutionTime;
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
@@ -17,10 +15,11 @@ import org.apache.solr.client.solrj.response.SolrPingResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.util.ContentStreamBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -42,18 +41,18 @@ public class SolrServiceImpl implements SolrService {
     @Value("${service.collectionDestination}")
     private String collectionDestination;
 
-    private static final Logger LOGGER = Logger.getLogger(SolrServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolrServiceImpl.class);
 
     private SolrClient solrClient;
 
-    private SolrUtil solrUtil;
+//    private SolrUtil solrUtil;
 
     private SolrPing ping = new SolrPing();
 
-    @Inject
-    public void setSolrUtil(SolrUtil solrUtil) {
-        this.solrUtil = solrUtil;
-    }
+//    @Inject
+//    public void setSolrUtil(SolrUtil solrUtil) {
+//        this.solrUtil = solrUtil;
+//    }
 
     public SolrServiceImpl() {
         ping.getParams().add("distrib", "true");
@@ -135,14 +134,14 @@ public class SolrServiceImpl implements SolrService {
 
     @Timed(absolute = true, name = SOLR_REQUEST)
     public Future<QueryResponse> run(SolrQuery solrQuery) throws Exception {
-        return
-                new AsyncResult<QueryResponse>() {
-                    @Override
-                    public QueryResponse invoke() {
-                        LOGGER.info("Solr Query is " + solrQuery.toQueryString());
-                        return solrUtil.runSolrCommand(solrClient, solrQuery);
-                    }
-                };
+//        return
+//                new AsyncResult<QueryResponse>(SolrQuery solrQuery) {
+//                    public QueryResponse invoke() {
+//                        LOGGER.info("Solr Query is " + solrQuery.toQueryString());
+//                        return solrUtil.runSolrCommand(solrClient, solrQuery);
+//                    }
+//                };
+        return null;
 
 
     }

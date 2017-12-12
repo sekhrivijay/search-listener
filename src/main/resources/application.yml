@@ -43,6 +43,7 @@ service:
   kafkaProductTopics: product
   kafkaInventoryTopics: inventory
   kafkaPriceTopics: price
+  kafkaFailureTopic: failure
   kafkaProductGroup: productGroup
   kafkaInventoryGroup: inventoryGroup
   kafkaPriceGroup: priceGroup

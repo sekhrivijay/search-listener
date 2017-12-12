@@ -1,7 +1,7 @@
 package com.micro.services.search.listener.index.bl.product.impl;
 
 import com.micro.services.product.generated.ProductWrapper;
-import com.micro.services.product.generated.Test.ProductDocument;
+import com.micro.services.product.generated.ProductDocument;
 import com.micro.services.search.listener.index.bl.product.PimService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
