@@ -36,6 +36,9 @@ public class KafkaConsumerConfig {
     @Value("${service.kafkaProductGroup}")
     private String kafkaProductGroup;
 
+    @Value("${service.kafkaProductDeleteGroup}")
+    private String kafkaProductDeleteGroup;
+
     @Value("${service.kafkaInventoryGroup}")
     private String kafkaInventoryGroup;
 
@@ -116,6 +119,11 @@ public class KafkaConsumerConfig {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> inventoryKafkaListenerContainerFactory() {
         return buildNewFactory(kafkaInventoryGroup);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> productDeleteKafkaListenerContainerFactory() {
+        return buildNewFactory(kafkaProductDeleteGroup);
     }
 
 

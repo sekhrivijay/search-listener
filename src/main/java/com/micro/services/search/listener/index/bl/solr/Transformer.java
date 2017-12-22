@@ -3,14 +3,12 @@ package com.micro.services.search.listener.index.bl.solr;
 import com.google.gson.Gson;
 import com.micro.services.product.generated.Product;
 import com.micro.services.product.generated.ProductColors;
-import com.micro.services.product.generated.ProductWrapper;
-import com.micro.services.product.generated.ProductAddons;
 import com.micro.services.product.generated.ProductDetails;
 import com.micro.services.product.generated.ProductDiscounts;
 import com.micro.services.product.generated.ProductDocument;
 import com.micro.services.product.generated.ProductUpsells;
-import com.micro.services.product.generated.ProductVases;
-import com.micro.services.product.generated.Record__;
+import com.micro.services.product.generated.ProductWrapper;
+import com.micro.services.product.generated.Record_;
 import com.micro.services.product.generated.Result;
 import com.micro.services.product.generated.SourceCode;
 import com.micro.services.product.generated.SourceCodes;
@@ -19,6 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+//import com.micro.services.product.generated.Record__;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Component
 public class Transformer {
@@ -50,7 +53,7 @@ public class Transformer {
         }
 
         ProductDetails productDetails = result.getProductDetails();
-        Record__ productDetailsRecord = productDetails.getRecord();
+        Record_ productDetailsRecord = productDetails.getRecord();
         solrDocumentUtil.addField(solrInputDocument, "add_on_free_id", productDetailsRecord.getAddOnFreeId());
         solrDocumentUtil.addField(solrInputDocument, "deluxe_price", productDetailsRecord.getDeluxePrice());
         solrDocumentUtil.addField(solrInputDocument, "short_description", productDetailsRecord.getShortDescription());
@@ -101,12 +104,12 @@ public class Transformer {
         solrDocumentUtil.addField(solrInputDocument, "status", productDetailsRecord.getStatus());
 
 
-        ProductAddons productAddons = result.getProductAddons();
-        if (productAddons != null
-                && productAddons.getRecord() != null) {
-            solrDocumentUtil.addField(solrInputDocument, "product_addons", gson.toJson(productAddons));
-
-        }
+//        ProductAddons productAddons = result.getProductAddons();
+//        if (productAddons != null
+//                && productAddons.getRecord() != null) {
+//            solrDocumentUtil.addField(solrInputDocument, "product_addons", gson.toJson(productAddons));
+//
+//        }
         ProductDiscounts productDiscounts = result.getProductDiscounts();
         if (productDiscounts != null
                 && productDiscounts.getRecord() != null) {
@@ -118,25 +121,35 @@ public class Transformer {
                 && productUpsells.getRecord() != null) {
             solrDocumentUtil.addField(solrInputDocument, "product_upsells", gson.toJson(productUpsells));
         }
-        ProductVases productVases =  result.getProductVases();
-        if (productVases != null
-                && productVases.getRecord() != null) {
-            solrDocumentUtil.addField(solrInputDocument, "product_vases", gson.toJson(productVases));
-        }
+//        ProductVases productVases = result.getProductVases();
+//        if (productVases != null
+//                && productVases.getRecord() != null) {
+//            solrDocumentUtil.addField(solrInputDocument, "product_vases", gson.toJson(productVases));
+//        }
         ProductColors productColors = result.getProductColors();
         if (productColors != null
                 && productColors.getRecord() != null) {
-            solrDocumentUtil.addField(solrInputDocument, "product_colors", gson.toJson(productVases));
+            solrDocumentUtil.addField(solrInputDocument, "product_colors", gson.toJson(productColors));
         }
 
         SourceCodes sourceCodes = result.getSourceCodes();
         if (sourceCodes != null
                 && sourceCodes.getSourceCode() != null) {
-            solrDocumentUtil.addField(solrInputDocument, "source_codes", gson.toJson(sourceCodes));
-        }
+//            solrDocumentUtil.addField(solrInputDocument, "source_codes", gson.toJson(sourceCodes));
+            List<Integer> sourceCodeIntList = sourceCodes.getSourceCode()
+                    .stream()
+                    .map(SourceCode::getCode)
+                    .collect(Collectors.toList());
+            solrDocumentUtil.addField(solrInputDocument, "source_codes", sourceCodeIntList);
+            sourceCodes.getSourceCode()
+                    .stream()
+//                    .map(SourceCode::getDiscountedprice)
+                    .forEach(e -> solrDocumentUtil.addField(solrInputDocument, "source_code_price_" + e.getCode() + "_f", e.getDiscountedprice()));
 
+        }
         return solrInputDocument;
     }
+
 
     public SolrInputDocument transform(ProductWrapper productWrapper) {
         SolrInputDocument solrInputDocument = new SolrInputDocument();

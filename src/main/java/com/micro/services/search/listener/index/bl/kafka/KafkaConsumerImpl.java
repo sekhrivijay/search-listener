@@ -1,6 +1,7 @@
 package com.micro.services.search.listener.index.bl.kafka;
 
 import com.micro.services.search.listener.index.bl.orchestraction.Orchestrator;
+import com.micro.services.search.listener.index.bl.solr.SolrService;
 import com.micro.services.search.listener.index.config.GlobalConstants;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -23,6 +24,13 @@ public class KafkaConsumerImpl implements KafkaConsumer {
     private Orchestrator priceOrchestrator;
     private Orchestrator inventoryOrchestrator;
     private KafkaProducer kafkaProducer;
+    private SolrService solrService;
+
+    @Inject
+    @Named("solrService")
+    public void setSolrService(SolrService solrService) {
+        this.solrService = solrService;
+    }
 
     @Value("${service.kafkaFailureTopic}")
     private String kafkaFailureTopic;
@@ -55,7 +63,8 @@ public class KafkaConsumerImpl implements KafkaConsumer {
     public KafkaListenerErrorHandler errorHandler() {
         return (message, e) -> {
             LOGGER.error("Sending data to failure queue", e);
-            kafkaProducer.sendMessage(kafkaFailureTopic, GlobalConstants.PID, message.getPayload().toString());
+            kafkaProducer.sendMessage(kafkaFailureTopic, GlobalConstants.PID,
+                    message.getPayload().toString() + ":" + e.getMessage());
             return null;
         };
     }
@@ -70,6 +79,18 @@ public class KafkaConsumerImpl implements KafkaConsumer {
             return;
         }
         productOrchestrator.process(record.value());
+    }
+
+    @Override
+    @KafkaListener(topics = "${service.kafkaProductDeleteTopics}",
+            groupId = "${service.kafkaProductDeleteGroup}",
+            containerFactory = "productDeleteKafkaListenerContainerFactory",
+            errorHandler = "errorHandler")
+    public void listenProductDelete(ConsumerRecord<String, String> record) throws Exception {
+        if (!valid(record)) {
+            return;
+        }
+        solrService.deleteById(record.value());
     }
 
 

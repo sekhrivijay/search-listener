@@ -1,5 +1,39 @@
 {
   "result": {
+    "product_addons": {
+      "record": [
+        {
+          "price": 19.99,
+          "addon_type": 5,
+          "vendor_addon_flag": "N",
+          "description": "Delicious Box of Chocolates",
+          "row": 1,
+          "max_qty": 9,
+          "florist_addon_flag": "Y",
+          "addon_id": "C"
+        },
+        {
+          "price": 6,
+          "addon_type": 1,
+          "vendor_addon_flag": "N",
+          "description": "Festive Mylar Balloon",
+          "row": 2,
+          "max_qty": 9,
+          "florist_addon_flag": "Y",
+          "addon_id": "A"
+        },
+        {
+          "price": 14.99,
+          "addon_type": 2,
+          "vendor_addon_flag": "N",
+          "description": "Adorable Plush Bear",
+          "row": 3,
+          "max_qty": 9,
+          "florist_addon_flag": "Y",
+          "addon_id": "B"
+        }
+      ]
+    },
     "product_subcodes": "",
     "product_discounts": {
       "record": {
@@ -119,6 +153,46 @@
           },
           "row": 4,
           "upsell_price": 79.99
+        }
+      ]
+    },
+    "product_vases": {
+      "record": [
+        {
+          "price": 0,
+          "vendor_addon_flag": "Y",
+          "description": "Clear Gathering Vase",
+          "row": 1,
+          "max_qty": 1,
+          "florist_addon_flag": "N",
+          "addon_id": "VA0016T"
+        },
+        {
+          "price": 9.99,
+          "vendor_addon_flag": "Y",
+          "description": "Gold Touch Vase",
+          "row": 2,
+          "max_qty": 1,
+          "florist_addon_flag": "N",
+          "addon_id": "AV9"
+        },
+        {
+          "price": 9.99,
+          "vendor_addon_flag": "Y",
+          "description": "Radiant Silver Vase",
+          "row": 3,
+          "max_qty": 1,
+          "florist_addon_flag": "N",
+          "addon_id": "AV6"
+        },
+        {
+          "price": 11.99,
+          "vendor_addon_flag": "Y",
+          "description": "Regal Crystal Vase",
+          "row": 4,
+          "max_qty": 1,
+          "florist_addon_flag": "N",
+          "addon_id": "AV19"
         }
       ]
     },

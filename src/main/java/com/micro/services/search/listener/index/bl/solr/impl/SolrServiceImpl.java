@@ -64,10 +64,16 @@ public class SolrServiceImpl implements SolrService {
         this.solrClient = solrClient;
     }
 
+    public UpdateResponse deleteById(String id) throws Exception {
+        LOGGER.info("Deleting ID " + id);
+        return solrClient.deleteById(id);
+    }
+
     public void updateDocs(List<SolrInputDocument> solrInputDocumentList) {
         if (solrInputDocumentList == null || solrInputDocumentList.size() == 0) {
             return;
         }
+
         updateDocs(() -> solrClient.add(solrInputDocumentList));
     }
 

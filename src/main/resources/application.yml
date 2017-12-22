@@ -1,6 +1,6 @@
 server:
 #  context-path: /${spring.application.name}
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -41,10 +41,12 @@ service:
   kafkaBootstrapServers: freshdapp01v1.ftdi.com:9092
   kafkaGroupId: indexers
   kafkaProductTopics: product
+  kafkaProductDeleteTopics: productDelete
   kafkaInventoryTopics: inventory
   kafkaPriceTopics: price
   kafkaFailureTopic: failure
   kafkaProductGroup: productGroup
+  kafkaProductDeleteGroup: productDeleteGroup
   kafkaInventoryGroup: inventoryGroup
   kafkaPriceGroup: priceGroup
 
