@@ -31,13 +31,16 @@ spring:
 
 
 service:
+  # Solr configuration
   zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
   collectionDestination : products
   zkTimeoutDestination : 20000
   solrQueryTimeout : 10000
   queryTimeAllowed : 10000
+  solrMaxRetryAttempts : 5
+  solrRetryInterval : 500
 
-
+  # kafka configuration
   kafkaBootstrapServers: freshdapp01v1.ftdi.com:9092
   kafkaGroupId: indexers
   kafkaProductTopics: product
@@ -53,12 +56,18 @@ service:
   kafkaConcurrency : 3
   kafkaMaxRetryAttempts : 3
   kafkaRetryInterval : 1000
-  solrMaxRetryAttempts : 5
-  solrRetryInterval : 500
+
+  # PIM service configuration
   pimService:
     baseUrl: "https://apiservice.providecommerce.com/API/Product/v1/JSON/GetProductDetail"
     accessToken: abcd
     apolloBaseUrl: "http://amsdapp01v1.ftdi.com:8700/prodinfo/products"
+
+  # BSO Configuration
+  bsoFileReloadRate: 86400000
+  sitesBsoMap:
+    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.pr
+    ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.pr
 
   metrics:
     dropwizard:
@@ -75,6 +84,8 @@ service:
     enabled: true
 
 
-management:
-  security:
-    enabled: false
+
+
+#management:
+#  security:
+#    enabled: false
