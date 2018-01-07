@@ -69,6 +69,13 @@ service:
     proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.pr
     ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.pr
 
+  # Autofill Configuration
+  autofillKeywordReloadRate: 86400000
+  sitesAutofillKeywordMap:
+    proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+    ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+
+
   metrics:
     dropwizard:
       enabled: true

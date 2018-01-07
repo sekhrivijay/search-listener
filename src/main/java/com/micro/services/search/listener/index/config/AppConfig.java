@@ -15,9 +15,11 @@ import java.util.Map;
 public class AppConfig {
 
     private Map<String, String> sitesBsoMap;
+    private Map<String, String> sitesAutofillKeywordMap;
 
     public AppConfig() {
         sitesBsoMap = new HashMap<>();
+        sitesAutofillKeywordMap = new HashMap<>();
     }
 
     public Map<String, String> getSitesBsoMap() {
@@ -26,6 +28,14 @@ public class AppConfig {
 
     public void setSitesBsoMap(Map<String, String> sitesBsoMap) {
         this.sitesBsoMap = sitesBsoMap;
+    }
+
+    public Map<String, String> getSitesAutofillKeywordMap() {
+        return sitesAutofillKeywordMap;
+    }
+
+    public void setSitesAutofillKeywordMap(Map<String, String> sitesAutofillKeywordMap) {
+        this.sitesAutofillKeywordMap = sitesAutofillKeywordMap;
     }
 
     @Bean

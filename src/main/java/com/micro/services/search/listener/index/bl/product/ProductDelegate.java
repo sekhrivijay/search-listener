@@ -1,4 +1,4 @@
-package com.micro.services.search.listener.index.bl.processor;
+package com.micro.services.search.listener.index.bl.product;
 
 import com.google.gson.Gson;
 import com.micro.services.product.generated.ProductColors;
@@ -10,6 +10,7 @@ import com.micro.services.product.generated.Result;
 import com.micro.services.product.generated.SourceCode;
 import com.micro.services.product.generated.SourceCodes;
 import com.micro.services.search.listener.index.bl.dm.Context;
+import com.micro.services.search.listener.index.bl.processor.Delegate;
 import com.micro.services.search.listener.index.bl.solr.SolrDocumentUtil;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;

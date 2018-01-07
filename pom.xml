@@ -13,6 +13,12 @@
     <name>search-listener</name>
     <description>Generic search listener for SOLR with Spring  Boot</description>
 
+    <!--<parent>-->
+        <!--<artifactId>spring-cloud-gcp</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<version>1.0.0.BUILD-SNAPSHOT</version>-->
+    <!--</parent>-->
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -113,26 +119,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-stream-binder-kafka</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.kafka</groupId>-->
-            <!--<artifactId>spring-kafka</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-web</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.services.micro.commons</groupId>
             <artifactId>commons-metric</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.services.micro.commons</groupId>
-            <artifactId>commons-vip</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
@@ -160,13 +149,23 @@
             <artifactId>solr-solrj</artifactId>
             <version>7.1.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.6</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gcp-integration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

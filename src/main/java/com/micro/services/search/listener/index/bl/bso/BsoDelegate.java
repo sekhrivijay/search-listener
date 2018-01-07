@@ -1,8 +1,7 @@
-package com.micro.services.search.listener.index.bl.processor;
+package com.micro.services.search.listener.index.bl.bso;
 
-import com.micro.services.search.listener.index.bl.bso.BsoEntity;
-import com.micro.services.search.listener.index.bl.bso.BsoFileLoader;
 import com.micro.services.search.listener.index.bl.dm.Context;
+import com.micro.services.search.listener.index.bl.processor.Delegate;
 import com.micro.services.search.listener.index.bl.solr.SolrDocumentUtil;
 import com.micro.services.search.listener.index.config.AppConfig;
 import org.apache.commons.lang3.StringUtils;
