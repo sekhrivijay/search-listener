@@ -38,10 +38,10 @@
             <url>http://repo.spring.io/snapshot</url>
         </repository>
 
-        <!--<repository>-->
-            <!--<id>myMavenRepo</id>-->
-            <!--<url>${myMavenRepoReadUrl}</url>-->
-        <!--</repository>-->
+        <repository>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepoReadUrl}</url>
+        </repository>
     </repositories>
 
 
