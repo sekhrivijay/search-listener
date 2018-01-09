@@ -1,4 +1,4 @@
-package com.micro.services.search.listener.index.bl.kafka;
+package com.micro.services.search.listener.index.bl.broker.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

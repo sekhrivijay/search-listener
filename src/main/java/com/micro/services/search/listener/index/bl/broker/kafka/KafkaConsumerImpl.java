@@ -1,4 +1,4 @@
-package com.micro.services.search.listener.index.bl.kafka;
+package com.micro.services.search.listener.index.bl.broker.kafka;
 
 import com.micro.services.search.listener.index.bl.orchestraction.Orchestrator;
 import com.micro.services.search.listener.index.bl.solr.SolrService;
@@ -94,11 +94,11 @@ public class KafkaConsumerImpl implements KafkaConsumer {
     }
 
 
-    @Override
-    @KafkaListener(topics = "${service.kafkaPriceTopics}",
-            groupId = "${service.kafkaPriceGroup}",
-            containerFactory = "priceKafkaListenerContainerFactory",
-            errorHandler = "errorHandler")
+    //    @Override
+//    @KafkaListener(topics = "${service.kafkaPriceTopics}",
+//            groupId = "${service.kafkaPriceGroup}",
+//            containerFactory = "priceKafkaListenerContainerFactory",
+//            errorHandler = "errorHandler")
     public void listenPrice(ConsumerRecord<String, String> record) throws Exception {
         if (!valid(record)) {
             return;
@@ -106,11 +106,12 @@ public class KafkaConsumerImpl implements KafkaConsumer {
         priceOrchestrator.process(record.value());
     }
 
-    @Override
-    @KafkaListener(topics = "${service.kafkaInventoryTopics}",
-            groupId = "${service.kafkaInventoryGroup}",
-            containerFactory = "inventoryKafkaListenerContainerFactory",
-            errorHandler = "errorHandler")
+    //
+//    @Override
+//    @KafkaListener(topics = "${service.kafkaInventoryTopics}",
+//            groupId = "${service.kafkaInventoryGroup}",
+//            containerFactory = "inventoryKafkaListenerContainerFactory",
+//            errorHandler = "errorHandler")
     public void listenInventory(ConsumerRecord<String, String> record) throws Exception {
         if (!valid(record)) {
             return;
@@ -121,10 +122,7 @@ public class KafkaConsumerImpl implements KafkaConsumer {
     private boolean valid(ConsumerRecord<String, String> record) {
         String key = record.key();
         LOGGER.info("key from message is " + key);
-        if (StringUtils.isEmpty(key) || !key.equals(GlobalConstants.PID)) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isEmpty(key) && key.equals(GlobalConstants.PID);
     }
 
 

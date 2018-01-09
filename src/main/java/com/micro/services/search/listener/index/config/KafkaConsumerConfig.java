@@ -39,11 +39,11 @@ public class KafkaConsumerConfig {
     @Value("${service.kafkaProductDeleteGroup}")
     private String kafkaProductDeleteGroup;
 
-    @Value("${service.kafkaInventoryGroup}")
-    private String kafkaInventoryGroup;
-
-    @Value("${service.kafkaPriceGroup}")
-    private String kafkaPriceGroup;
+//    @Value("${service.kafkaInventoryGroup}")
+//    private String kafkaInventoryGroup;
+//
+//    @Value("${service.kafkaPriceGroup}")
+//    private String kafkaPriceGroup;
 
 //    @Value("${service.kafkaFailureTopic}")
 //    private String kafkaFailureTopic;
@@ -111,15 +111,15 @@ public class KafkaConsumerConfig {
         return buildNewFactory(kafkaProductGroup);
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> priceKafkaListenerContainerFactory() {
-        return buildNewFactory(kafkaPriceGroup);
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> inventoryKafkaListenerContainerFactory() {
-        return buildNewFactory(kafkaInventoryGroup);
-    }
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, String> priceKafkaListenerContainerFactory() {
+//        return buildNewFactory(kafkaPriceGroup);
+//    }
+//
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, String> inventoryKafkaListenerContainerFactory() {
+//        return buildNewFactory(kafkaInventoryGroup);
+//    }
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> productDeleteKafkaListenerContainerFactory() {

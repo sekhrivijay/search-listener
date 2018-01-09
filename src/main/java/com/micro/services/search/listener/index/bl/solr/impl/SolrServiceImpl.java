@@ -20,16 +20,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
-import java.util.concurrent.Future;
 
 @Named("solrService")
 public class SolrServiceImpl implements SolrService {
     public static final String SPLIT = "split";
     public static final String CHILD_DOCUMENTS = "_childDocuments_";
     public static final String UPDATE_JSON_DOCS = "/update/json/docs";
-    private static final String SOLR_REQUEST = "search.solr.request";
+//    private static final String SOLR_REQUEST = "search.solr.request";
     public static final QueryResponse FALLBACK_QUERY_RESPONSE = SolrUtil.getFallback();
 
     @Value("${service.solrMaxRetryAttempts}")
@@ -45,14 +45,14 @@ public class SolrServiceImpl implements SolrService {
 
     private SolrClient solrClient;
 
-//    private SolrUtil solrUtil;
+    private SolrUtil solrUtil;
 
     private SolrPing ping = new SolrPing();
 
-//    @Inject
-//    public void setSolrUtil(SolrUtil solrUtil) {
-//        this.solrUtil = solrUtil;
-//    }
+    @Inject
+    public void setSolrUtil(SolrUtil solrUtil) {
+        this.solrUtil = solrUtil;
+    }
 
     public SolrServiceImpl() {
         ping.getParams().add("distrib", "true");
@@ -70,10 +70,11 @@ public class SolrServiceImpl implements SolrService {
     }
 
     public void updateDocs(List<SolrInputDocument> solrInputDocumentList) {
+
         if (solrInputDocumentList == null || solrInputDocumentList.size() == 0) {
             return;
         }
-
+        LOGGER.info("solrDocument to send to SOLR " + solrInputDocumentList.toString());
         updateDocs(() -> solrClient.add(solrInputDocumentList));
     }
 
@@ -138,19 +139,11 @@ public class SolrServiceImpl implements SolrService {
         }
     }
 
-    @Timed(absolute = true, name = SOLR_REQUEST)
-    public Future<QueryResponse> run(SolrQuery solrQuery) throws Exception {
-//        return
-//                new AsyncResult<QueryResponse>(SolrQuery solrQuery) {
-//                    public QueryResponse invoke() {
-//                        LOGGER.info("Solr Query is " + solrQuery.toQueryString());
-//                        return solrUtil.runSolrCommand(solrClient, solrQuery);
-//                    }
-//                };
-        return null;
-
-
+    public QueryResponse run(SolrQuery solrQuery) throws Exception {
+        LOGGER.info("Solr Query is " + solrQuery.toQueryString());
+        return solrUtil.runSolrCommand(solrClient, solrQuery);
     }
+
 
     public QueryResponse getFallback(SolrQuery solrQuery) {
         return FALLBACK_QUERY_RESPONSE;

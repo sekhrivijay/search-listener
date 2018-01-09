@@ -15,6 +15,7 @@ public class DelegateInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DelegateInitializer.class);
     private Delegate productDelegate;
     private Delegate bsoDelegate;
+    private Delegate autofillDelegate;
 
     private List<Delegate> delegateList;
 
@@ -34,11 +35,18 @@ public class DelegateInitializer {
         this.bsoDelegate = bsoDelegate;
     }
 
+    @Inject
+    @Named("autofillDelegate")
+    public void setAutofillDelegate(Delegate autofillDelegate) {
+        this.autofillDelegate = autofillDelegate;
+    }
+
     @PostConstruct
     public void init() {
         LOGGER.info("Initializing delegate list ");
         delegateList.add(productDelegate);
         delegateList.add(bsoDelegate);
+        delegateList.add(autofillDelegate);
     }
 
 

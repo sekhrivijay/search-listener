@@ -1,0 +1,3 @@
+service:
+  kafkaBootstrapServers: kafkadapp01v1.ftdi.com:9092
+#  ,kafkadapp01v2.ftdi.com:9092

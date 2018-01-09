@@ -1,6 +1,5 @@
 package com.micro.services.search.listener.index.bl.autofill;
 
-import com.micro.services.search.listener.index.bl.bso.BsoEntity;
 import com.micro.services.search.listener.index.bl.dm.Context;
 import com.micro.services.search.listener.index.bl.processor.Delegate;
 import com.micro.services.search.listener.index.bl.solr.SolrDocumentUtil;
@@ -18,6 +17,12 @@ public class AutofillDelegate implements Delegate {
     private AutofillFileLoader autofillFileLoader;
     private AppConfig appConfig;
     private SolrDocumentUtil solrDocumentUtil;
+//    private LevenshteinDistance levenshteinDistance;
+
+//    @PostConstruct
+//    public void setLevenshteinDistance() {
+//        this.levenshteinDistance = LevenshteinDistance.getDefaultInstance();
+//    }
 
     @Autowired
     public void setAutofillFileLoader(AutofillFileLoader autofillFileLoader) {
@@ -47,26 +52,18 @@ public class AutofillDelegate implements Delegate {
             return;
         }
 
-        List<String> keywordList = autofillFileLoader.getAutofillGlobalMap().get(siteId);
+        Map<String, List<String>> pidToKeywordListMap = autofillFileLoader.getAutofillGlobalMap().get(siteId);
+        if (pidToKeywordListMap == null) {
+            return;
+        }
+        List<String> keywordList = pidToKeywordListMap.get(context.getPid());
         if (keywordList == null) {
             return;
         }
-
-
-
-        String productName = solrDocumentUtil.getFieldValue(solrInputDocument,"name");
-        String description = solrDocumentUtil.getFieldValue(solrInputDocument,"description");
-
-        keywordList.forEach(e -> checkAndAddKeyword(solrInputDocument, e, productName, description));
+        solrDocumentUtil.addField(solrInputDocument, "keyword", keywordList);
 
 
     }
-    private void checkAndAddKeyword(SolrInputDocument solrInputDocument, String keyword, String productName, String description) {
-        if(isSimilar("", "")) {
-            solrDocumentUtil.addField(solrInputDocument, "keyword", keyword);
-        }
-    }
-    private boolean isSimilar(String term1, String term2) {
-        return false;
-    }
+
+
 }

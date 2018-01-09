@@ -133,7 +133,7 @@ public class ProductDelegate implements Delegate {
         if (sourceCodes != null
                 && sourceCodes.getSourceCode() != null) {
 //            solrDocumentUtil.addField(solrInputDocument, "source_codes", gson.toJson(sourceCodes));
-            List<Integer> sourceCodeIntList = sourceCodes.getSourceCode()
+            List<String> sourceCodeIntList = sourceCodes.getSourceCode()
                     .stream()
                     .map(SourceCode::getCode)
                     .collect(Collectors.toList());

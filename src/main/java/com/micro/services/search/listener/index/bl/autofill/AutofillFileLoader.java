@@ -1,14 +1,25 @@
 package com.micro.services.search.listener.index.bl.autofill;
 
+import com.micro.services.search.api.request.RequestType;
+import com.micro.services.search.config.GlobalConstants;
+import com.micro.services.search.listener.index.bl.solr.SolrDocumentUtil;
+import com.micro.services.search.listener.index.bl.solr.SolrService;
 import com.micro.services.search.listener.index.config.AppConfig;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,10 +34,31 @@ import java.util.stream.Stream;
 public class AutofillFileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutofillFileLoader.class);
 
+    @Value("${service.autofillQuerySize}")
+    private int autofillQuerySize;
     private AppConfig appConfig;
-    private Map<String, List<String>> autofillGlobalMap;
+    private Map<String, List<String>> autofillSiteToKeywordsMap;
+    private Map<String, Map<String, List<String>>> autofillGlobalMap;
+    private SolrService solrService;
+    private SolrDocumentUtil solrDocumentUtil;
+
+
+    @Autowired
+    public void setSolrDocumentUtil(SolrDocumentUtil solrDocumentUtil) {
+        this.solrDocumentUtil = solrDocumentUtil;
+    }
+
+    @Inject
+    public void setSolrService(SolrService solrService) {
+        this.solrService = solrService;
+    }
+
+    public Map<String, Map<String, List<String>>> getAutofillGlobalMap() {
+        return autofillGlobalMap;
+    }
 
     public AutofillFileLoader() {
+        autofillSiteToKeywordsMap = new HashMap<>();
         autofillGlobalMap = new HashMap<>();
     }
 
@@ -35,13 +67,13 @@ public class AutofillFileLoader {
         this.appConfig = appConfig;
     }
 
-    public Map<String, List<String>> getAutofillGlobalMap() {
-        return autofillGlobalMap;
+    public Map<String, List<String>> getAutofillSiteToKeywordsMap() {
+        return autofillSiteToKeywordsMap;
     }
 
     @PostConstruct
     @Scheduled(fixedRateString = "${service.autofillKeywordReloadRate}")
-    public void loadAllBsoFiles() {
+    public void loadAllAutofillFiles() {
         Map<String, String> autofillKeywordMap = appConfig.getSitesAutofillKeywordMap();
         autofillKeywordMap.keySet()
                 .forEach(siteId -> loadSingleAutofillFile(siteId, autofillKeywordMap.get(siteId)));
@@ -60,7 +92,39 @@ public class AutofillFileLoader {
             LOGGER.error("Could not load file", e);
         }
 
-        autofillGlobalMap.put(siteId, keywordList);
+        autofillSiteToKeywordsMap.put(siteId, keywordList);
+        autofillGlobalMap.computeIfAbsent(siteId, k -> new HashMap<>());
+        keywordList.forEach(e -> searchAndBuildKeyword(siteId, e));
+    }
+
+    public void searchAndBuildKeyword(String siteId, String keyword) {
+        SolrQuery solrQuery = new SolrQuery();
+        solrQuery.setQuery(keyword)
+                .setRows(autofillQuerySize)
+                .setFields(GlobalConstants.ID)
+//                .setFilterQueries("siteId:" + siteId)
+                .setRequestHandler(GlobalConstants.FORWARD_SLASH + RequestType.SEARCH.getName());
+        QueryResponse queryResponse = null;
+        try {
+            queryResponse = solrService.run(solrQuery);
+        } catch (Exception e) {
+            LOGGER.error("cannot execute solr query ", e);
+        }
+        if (queryResponse == null
+                || queryResponse.getResults() == null
+                || queryResponse.getResults().getNumFound() == 0) {
+            return;
+        }
+        Map<String, List<String>> pidMap = autofillGlobalMap.get(siteId);
+        SolrDocumentList solrDocuments = queryResponse.getResults();
+        for (SolrDocument solrDocument : solrDocuments) {
+            String pid = solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID);
+            if (StringUtils.isEmpty(pid)) {
+                continue;
+            }
+            pidMap.computeIfAbsent(pid, k -> new ArrayList<>()).add(keyword);
+        }
+
     }
 
 }

@@ -1,6 +1,5 @@
 package com.micro.services.search.listener.index.bl.solr;
 
-import com.services.micro.commons.logging.annotation.LogExecutionTime;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
@@ -22,7 +21,7 @@ public class SolrUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SolrUtil.class);
 
-    @LogExecutionTime
+    //    @LogExecutionTime
     public QueryResponse runSolrCommand(SolrClient solrClient, SolrQuery solrQuery) throws RuntimeException {
         QueryResponse queryResponse = null;
         try {

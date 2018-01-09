@@ -66,11 +66,12 @@ service:
   # BSO Configuration
   bsoFileReloadRate: 86400000
   sitesBsoMap:
-    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.pr
-    ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.pr
+    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
+    ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
 
   # Autofill Configuration
   autofillKeywordReloadRate: 86400000
+  autofillQuerySize: 4000
   sitesAutofillKeywordMap:
     proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
     ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
@@ -82,8 +83,6 @@ service:
     prometheus:
       enabled: true
   git:
-    enabled: true
-  vip:
     enabled: true
   swagger:
     enabled: true

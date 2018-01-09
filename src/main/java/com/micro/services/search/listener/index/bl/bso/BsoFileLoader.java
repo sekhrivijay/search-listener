@@ -1,7 +1,7 @@
 package com.micro.services.search.listener.index.bl.bso;
 
 import com.micro.services.search.listener.index.config.AppConfig;
-import com.micro.services.search.listener.index.config.GlobalConstants;
+import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
