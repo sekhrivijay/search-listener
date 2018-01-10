@@ -5,6 +5,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -24,38 +25,39 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
+@ConditionalOnProperty(name = "service.kafka.enabled")
 public class KafkaConsumerConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerConfig.class);
 
 //    private KafkaProducer kafkaProducer;
 
-    @Value("${service.kafkaBootstrapServers}")
+    @Value("${service.kafka.bootstrapServers}")
     private String kafkaBootStrapServers;
 
-    @Value("${service.kafkaProductGroup}")
+    @Value("${service.kafka.productGroup}")
     private String kafkaProductGroup;
 
-    @Value("${service.kafkaProductDeleteGroup}")
+    @Value("${service.kafka.productDeleteGroup}")
     private String kafkaProductDeleteGroup;
 
-//    @Value("${service.kafkaInventoryGroup}")
+//    @Value("${service.kafka.inventoryGroup}")
 //    private String kafkaInventoryGroup;
 //
-//    @Value("${service.kafkaPriceGroup}")
+//    @Value("${service.kafka.priceGroup}")
 //    private String kafkaPriceGroup;
 
-//    @Value("${service.kafkaFailureTopic}")
+//    @Value("${service.kafka.failureTopic}")
 //    private String kafkaFailureTopic;
 
 
-    @Value("${service.kafkaConcurrency}")
+    @Value("${service.kafka.concurrency}")
     private int kafkaConcurrency;
 
-    @Value("${service.kafkaMaxRetryAttempts}")
+    @Value("${service.kafka.maxRetryAttempts}")
     private int maxRetryAttempts;
 
-    @Value("${service.kafkaRetryInterval}")
+    @Value("${service.kafka.retryInterval}")
     private int retryInterval;
 
 

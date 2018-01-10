@@ -29,7 +29,7 @@ public class SolrServiceImpl implements SolrService {
     public static final String SPLIT = "split";
     public static final String CHILD_DOCUMENTS = "_childDocuments_";
     public static final String UPDATE_JSON_DOCS = "/update/json/docs";
-//    private static final String SOLR_REQUEST = "search.solr.request";
+    //    private static final String SOLR_REQUEST = "search.solr.request";
     public static final QueryResponse FALLBACK_QUERY_RESPONSE = SolrUtil.getFallback();
 
     @Value("${service.solrMaxRetryAttempts}")
@@ -64,9 +64,14 @@ public class SolrServiceImpl implements SolrService {
         this.solrClient = solrClient;
     }
 
-    public UpdateResponse deleteById(String id) throws Exception {
+    public UpdateResponse deleteById(String id) {
         LOGGER.info("Deleting ID " + id);
-        return solrClient.deleteById(id);
+        try {
+            return solrClient.deleteById(id);
+        } catch (Exception e) {
+            LOGGER.error("Cannot delete the ID");
+            throw new RuntimeException("Cannot delete the ID");
+        }
     }
 
     public void updateDocs(List<SolrInputDocument> solrInputDocumentList) {
@@ -136,6 +141,8 @@ public class SolrServiceImpl implements SolrService {
         } else {
             LOGGER.error("GIVING UP . Cannot add this list of documents after trying " +
                     solrMaxRetryAttempts + " times");
+            throw new RuntimeException("GIVING UP . Cannot add this list of documents after trying \" +\n" +
+                    "                    solrMaxRetryAttempts + \" times");
         }
     }
 

@@ -41,21 +41,34 @@ service:
   solrRetryInterval : 500
 
   # kafka configuration
-  kafkaBootstrapServers: freshdapp01v1.ftdi.com:9092
-  kafkaGroupId: indexers
-  kafkaProductTopics: product
-  kafkaProductDeleteTopics: productDelete
-  kafkaInventoryTopics: inventory
-  kafkaPriceTopics: price
-  kafkaFailureTopic: failure
-  kafkaProductGroup: productGroup
-  kafkaProductDeleteGroup: productDeleteGroup
-  kafkaInventoryGroup: inventoryGroup
-  kafkaPriceGroup: priceGroup
+  kafka:
+    enabled: false
+    bootstrapServers: freshdapp01v1.ftdi.com:9092
+    groupId: indexers
+    productTopics: product
+    productDeleteTopics: productDelete
+    inventoryTopics: inventory
+    priceTopics: price
+    failureTopic: failure
+    productGroup: productGroup
+    productDeleteGroup: productDeleteGroup
+    inventoryGroup: inventoryGroup
+    priceGroup: priceGroup
 
-  kafkaConcurrency : 3
-  kafkaMaxRetryAttempts : 3
-  kafkaRetryInterval : 1000
+    concurrency : 3
+    maxRetryAttempts : 3
+    retryInterval : 1000
+
+
+  # pub-sub configuration
+  pubsub:
+    enabled: true
+    productSubscription: search.update.dev.dev1
+    productDeleteSubscription: search.delete.dev.dev1
+    failureTopic: search.failure.dev
+    productChannelName: pubsubInputProductChannel
+    productDeleteChannelName: pubsubInputProductDeleteChannel
+    failureChannelName: pubsubOutputFailureChannel
 
   # PIM service configuration
   pimService:
@@ -86,6 +99,7 @@ service:
     enabled: true
   swagger:
     enabled: true
+    base-package: productGroup
   logging:
     enabled: true
 

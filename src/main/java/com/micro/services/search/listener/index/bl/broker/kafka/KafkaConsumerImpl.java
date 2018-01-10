@@ -1,122 +1,113 @@
 package com.micro.services.search.listener.index.bl.broker.kafka;
 
-import com.micro.services.search.listener.index.bl.orchestraction.Orchestrator;
-import com.micro.services.search.listener.index.bl.solr.SolrService;
 import com.micro.services.search.listener.index.config.GlobalConstants;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.listener.KafkaListenerErrorHandler;
 import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.function.Consumer;
 
 
 @Named
+@ConditionalOnProperty(name = "service.kafka.enabled")
 public class KafkaConsumerImpl implements KafkaConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerImpl.class);
-    private Orchestrator productOrchestrator;
-    private Orchestrator priceOrchestrator;
-    private Orchestrator inventoryOrchestrator;
-    private KafkaProducer kafkaProducer;
-    private SolrService solrService;
+    private Consumer<String> productOrchestrator;
+    private Consumer<String> productDeleteOrchestrator;
+    private Consumer<String> priceOrchestrator;
+    private Consumer<String> inventoryOrchestrator;
+//    private KafkaProducer kafkaProducer;
 
-    @Inject
-    @Named("solrService")
-    public void setSolrService(SolrService solrService) {
-        this.solrService = solrService;
-    }
-
-    @Value("${service.kafkaFailureTopic}")
-    private String kafkaFailureTopic;
+//    @Value("${service.kafka.failureTopic}")
+//    private String kafkaFailureTopic;
 
     @Inject
     @Named("productOrchestrator")
-    public void setProductOrchestrator(Orchestrator productOrchestrator) {
+    public void setProductOrchestrator(Consumer<String> productOrchestrator) {
         this.productOrchestrator = productOrchestrator;
     }
 
     @Inject
     @Named("priceOrchestrator")
-    public void setPriceOrchestrator(Orchestrator priceOrchestrator) {
+    public void setPriceOrchestrator(Consumer<String> priceOrchestrator) {
         this.priceOrchestrator = priceOrchestrator;
     }
 
     @Inject
     @Named("inventoryOrchestrator")
-    public void setInventoryOrchestrator(Orchestrator inventoryOrchestrator) {
+    public void setInventoryOrchestrator(Consumer<String> inventoryOrchestrator) {
         this.inventoryOrchestrator = inventoryOrchestrator;
     }
 
     @Inject
-    @Named("kafkaProducer")
-    public void setKafkaProducer(KafkaProducer kafkaProducer) {
-        this.kafkaProducer = kafkaProducer;
+    @Named("productDeleteOrchestrator")
+    public void setProductDeleteOrchestrator(Consumer<String> productDeleteOrchestrator) {
+        this.productDeleteOrchestrator = productDeleteOrchestrator;
     }
 
-    @Bean
-    public KafkaListenerErrorHandler errorHandler() {
-        return (message, e) -> {
-            LOGGER.error("Sending data to failure queue", e);
-            kafkaProducer.sendMessage(kafkaFailureTopic, GlobalConstants.PID,
-                    message.getPayload().toString() + ":" + e.getMessage());
-            return null;
-        };
-    }
+    //    @Inject
+//    @Named("kafkaProducer")
+//    public void setKafkaProducer(KafkaProducer kafkaProducer) {
+//        this.kafkaProducer = kafkaProducer;
+//    }
+
+//    @Bean
+//    public KafkaListenerErrorHandler errorHandler() {
+//        return (message, e) -> {
+//            LOGGER.error("Sending data to failure queue", e);
+//            kafkaProducer.sendMessage(kafkaFailureTopic, GlobalConstants.PID,
+//                    message.getPayload().toString() + ":" + e.getMessage());
+//            return null;
+//        };
+//    }
 
     @Override
-    @KafkaListener(topics = "${service.kafkaProductTopics}",
-            groupId = "${service.kafkaProductGroup}",
-            containerFactory = "productKafkaListenerContainerFactory",
-            errorHandler = "errorHandler")
+    @KafkaListener(topics = "${service.kafka.productTopics}",
+            group = "${service.kafka.productGroup}",
+            containerFactory = "productKafkaListenerContainerFactory")
     public void listenProduct(ConsumerRecord<String, String> record) throws Exception {
-        if (!valid(record)) {
-            return;
-        }
-        productOrchestrator.process(record.value());
+        processMessage(record, productOrchestrator);
     }
 
     @Override
-    @KafkaListener(topics = "${service.kafkaProductDeleteTopics}",
-            groupId = "${service.kafkaProductDeleteGroup}",
-            containerFactory = "productDeleteKafkaListenerContainerFactory",
-            errorHandler = "errorHandler")
+    @KafkaListener(topics = "${service.kafka.productDeleteTopics}",
+            group = "${service.kafka.productDeleteGroup}",
+            containerFactory = "productDeleteKafkaListenerContainerFactory")
     public void listenProductDelete(ConsumerRecord<String, String> record) throws Exception {
-        if (!valid(record)) {
-            return;
-        }
-        solrService.deleteById(record.value());
+        processMessage(record, productDeleteOrchestrator);
     }
 
 
     //    @Override
-//    @KafkaListener(topics = "${service.kafkaPriceTopics}",
-//            groupId = "${service.kafkaPriceGroup}",
+//    @KafkaListener(topics = "${service.kafka.priceTopics}",
+//            groupId = "${service.kafka.priceGroup}",
 //            containerFactory = "priceKafkaListenerContainerFactory",
 //            errorHandler = "errorHandler")
     public void listenPrice(ConsumerRecord<String, String> record) throws Exception {
-        if (!valid(record)) {
-            return;
-        }
-        priceOrchestrator.process(record.value());
+        processMessage(record, priceOrchestrator);
     }
 
     //
 //    @Override
-//    @KafkaListener(topics = "${service.kafkaInventoryTopics}",
-//            groupId = "${service.kafkaInventoryGroup}",
+//    @KafkaListener(topics = "${service.kafka.inventoryTopics}",
+//            groupId = "${service.kafka.inventoryGroup}",
 //            containerFactory = "inventoryKafkaListenerContainerFactory",
 //            errorHandler = "errorHandler")
     public void listenInventory(ConsumerRecord<String, String> record) throws Exception {
+        processMessage(record, inventoryOrchestrator);
+    }
+
+    private void processMessage(ConsumerRecord<String, String> record, Consumer<String> orchestrator) {
         if (!valid(record)) {
-            return;
+            throw new RuntimeException("Invalid input message ");
         }
-        inventoryOrchestrator.process(record.value());
+        orchestrator.accept(record.value());
     }
 
     private boolean valid(ConsumerRecord<String, String> record) {

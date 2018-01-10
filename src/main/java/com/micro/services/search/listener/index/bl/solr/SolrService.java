@@ -16,7 +16,7 @@ public interface SolrService {
 
     QueryResponse run(SolrQuery solrQuery) throws Exception;
 
-    UpdateResponse deleteById(String id) throws Exception;
+    UpdateResponse deleteById(String id);
 
     int ping() throws Exception;
 }

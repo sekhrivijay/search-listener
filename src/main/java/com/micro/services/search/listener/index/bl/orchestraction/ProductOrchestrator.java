@@ -11,9 +11,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Named("productOrchestrator")
-public class ProductOrchestrator implements Orchestrator {
+public class ProductOrchestrator implements Consumer<String> {
     private PimService pimService;
     private SolrService solrService;
     private DelegateInitializer delegateInitializer;
@@ -33,8 +34,9 @@ public class ProductOrchestrator implements Orchestrator {
         this.pimService = pimService;
     }
 
+
     @Override
-    public void process(String pid) {
+    public void accept(String pid) {
 //        ProductWrapper productWrapper = pimService.getProduct(pid);
         ProductDocument productDetail = pimService.getProductDetail(pid);
         SolrInputDocument solrInputDocument = new SolrInputDocument();
