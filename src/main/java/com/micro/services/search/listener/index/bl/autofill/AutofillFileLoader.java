@@ -105,7 +105,8 @@ public class AutofillFileLoader {
     }
 
     private String normalize(String input) {
-        return StringUtils.normalizeSpace(input.replaceAll("\\W", " "));
+        return StringUtils.lowerCase(
+                StringUtils.normalizeSpace(input.replaceAll("\\W", " ")));
     }
 
     public void searchAndBuildKeyword(String siteId, String keyword) {
