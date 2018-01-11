@@ -1,5 +1,6 @@
 package com.micro.services.search.listener.index.bl.autofill;
 
+import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.listener.index.bl.dm.Context;
 import com.micro.services.search.listener.index.bl.processor.Delegate;
 import com.micro.services.search.listener.index.bl.solr.SolrDocumentUtil;
@@ -9,8 +10,8 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Named("autofillDelegate")
 public class AutofillDelegate implements Delegate {
@@ -52,15 +53,15 @@ public class AutofillDelegate implements Delegate {
             return;
         }
 
-        Map<String, List<String>> pidToKeywordListMap = autofillFileLoader.getAutofillGlobalMap().get(siteId);
+        Map<String, Set<String>> pidToKeywordListMap = autofillFileLoader.getAutofillGlobalMap().get(siteId);
         if (pidToKeywordListMap == null) {
             return;
         }
-        List<String> keywordList = pidToKeywordListMap.get(context.getPid());
+        Set<String> keywordList = pidToKeywordListMap.get(context.getPid());
         if (keywordList == null) {
             return;
         }
-        solrDocumentUtil.addField(solrInputDocument, "keyword", keywordList);
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.KEYWORD, keywordList);
 
 
     }

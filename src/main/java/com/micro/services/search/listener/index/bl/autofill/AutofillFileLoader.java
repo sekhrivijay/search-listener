@@ -10,6 +10,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +25,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Configuration
 @RefreshScope
 public class AutofillFileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutofillFileLoader.class);
+    public static final String SMALLIMAGE = "smallimage";
 
     @Value("${service.autofillQuerySize}")
     private int autofillQuerySize;
     private AppConfig appConfig;
     private Map<String, List<String>> autofillSiteToKeywordsMap;
-    private Map<String, Map<String, List<String>>> autofillGlobalMap;
+    private Map<String, Map<String, Set<String>>> autofillGlobalMap;
     private SolrService solrService;
     private SolrDocumentUtil solrDocumentUtil;
 
@@ -53,7 +58,7 @@ public class AutofillFileLoader {
         this.solrService = solrService;
     }
 
-    public Map<String, Map<String, List<String>>> getAutofillGlobalMap() {
+    public Map<String, Map<String, Set<String>>> getAutofillGlobalMap() {
         return autofillGlobalMap;
     }
 
@@ -87,7 +92,9 @@ public class AutofillFileLoader {
                                        String fileName) {
         List<String> keywordList = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-            stream.forEach(keywordList::add);
+            stream
+                    .map(this::normalize)
+                    .forEach(keywordList::add);
         } catch (IOException e) {
             LOGGER.error("Could not load file", e);
         }
@@ -97,11 +104,15 @@ public class AutofillFileLoader {
         keywordList.forEach(e -> searchAndBuildKeyword(siteId, e));
     }
 
+    private String normalize(String input) {
+        return StringUtils.normalizeSpace(input.replaceAll("\\W", " "));
+    }
+
     public void searchAndBuildKeyword(String siteId, String keyword) {
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQuery(keyword)
                 .setRows(autofillQuerySize)
-                .setFields(GlobalConstants.ID)
+                .setFields(GlobalConstants.ID, SMALLIMAGE)
 //                .setFilterQueries("siteId:" + siteId)
                 .setRequestHandler(GlobalConstants.FORWARD_SLASH + RequestType.SEARCH.getName());
         QueryResponse queryResponse = null;
@@ -115,15 +126,27 @@ public class AutofillFileLoader {
                 || queryResponse.getResults().getNumFound() == 0) {
             return;
         }
-        Map<String, List<String>> pidMap = autofillGlobalMap.get(siteId);
+        Map<String, Set<String>> pidMap = autofillGlobalMap.get(siteId);
+
+        SolrInputDocument solrInputDocument = new SolrInputDocument();
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, "af" + keyword.hashCode());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, siteId);
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, "autofill");
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.KEYWORD, keyword);
         SolrDocumentList solrDocuments = queryResponse.getResults();
+        short rows = 0;
         for (SolrDocument solrDocument : solrDocuments) {
             String pid = solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID);
             if (StringUtils.isEmpty(pid)) {
                 continue;
             }
-            pidMap.computeIfAbsent(pid, k -> new ArrayList<>()).add(keyword);
+            pidMap.computeIfAbsent(pid, k -> new HashSet<>()).add(keyword);
+            solrDocumentUtil.addField(
+                    solrInputDocument,
+                    "image_" + (++rows) + "_s",
+                    solrDocumentUtil.getFieldValue(solrDocument, SMALLIMAGE));
         }
+        solrService.updateDocs(Arrays.asList(solrInputDocument));
 
     }
 

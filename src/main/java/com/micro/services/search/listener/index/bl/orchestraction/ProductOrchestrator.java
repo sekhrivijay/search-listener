@@ -10,7 +10,6 @@ import org.apache.solr.common.SolrInputDocument;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 @Named("productOrchestrator")
@@ -46,8 +45,6 @@ public class ProductOrchestrator implements Consumer<String> {
                 .build();
         delegateInitializer.getDelegateList()
                 .forEach(e -> e.process(context, solrInputDocument));
-//        SolrInputDocument solrInputDocument = transformer.transform(productDetail);
-        List<SolrInputDocument> solrInputDocumentList = Arrays.asList(solrInputDocument);
-        solrService.updateDocs(solrInputDocumentList);
+        solrService.updateDocs(Arrays.asList(solrInputDocument));
     }
 }

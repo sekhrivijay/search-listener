@@ -4,7 +4,8 @@ import com.micro.services.product.generated.ProductDocument;
 
 public class Context {
     private String pid;
-    private String siteId;
+    private String siteId = "ftd";
+    private String type = "default";
     private ProductDocument productDocument;
 
     public String getPid() {
@@ -31,10 +32,19 @@ public class Context {
         this.productDocument = productDocument;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
     public static final class ContextBuilder {
         private String pid;
-        private String siteId;
+        private String siteId = "ftd";
+        private String type = "default";
         private ProductDocument productDocument;
 
         private ContextBuilder() {
@@ -54,6 +64,11 @@ public class Context {
             return this;
         }
 
+        public ContextBuilder withType(String type) {
+            this.type = type;
+            return this;
+        }
+
         public ContextBuilder withProductDocument(ProductDocument productDocument) {
             this.productDocument = productDocument;
             return this;
@@ -63,6 +78,7 @@ public class Context {
             Context context = new Context();
             context.setPid(pid);
             context.setSiteId(siteId);
+            context.setType(type);
             context.setProductDocument(productDocument);
             return context;
         }

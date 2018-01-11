@@ -9,6 +9,7 @@ import com.micro.services.product.generated.Record_;
 import com.micro.services.product.generated.Result;
 import com.micro.services.product.generated.SourceCode;
 import com.micro.services.product.generated.SourceCodes;
+import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.listener.index.bl.dm.Context;
 import com.micro.services.search.listener.index.bl.processor.Delegate;
 import com.micro.services.search.listener.index.bl.solr.SolrDocumentUtil;
@@ -51,6 +52,8 @@ public class ProductDelegate implements Delegate {
 
         ProductDetails productDetails = result.getProductDetails();
         Record_ productDetailsRecord = productDetails.getRecord();
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, context.getSiteId());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, context.getType());
         solrDocumentUtil.addField(solrInputDocument, "add_on_free_id", productDetailsRecord.getAddOnFreeId());
         solrDocumentUtil.addField(solrInputDocument, "deluxe_price", productDetailsRecord.getDeluxePrice());
         solrDocumentUtil.addField(solrInputDocument, "short_description", productDetailsRecord.getShortDescription());
