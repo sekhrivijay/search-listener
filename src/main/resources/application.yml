@@ -76,15 +76,24 @@ service:
     accessToken: abcd
     apolloBaseUrl: "http://amsdapp01v1.ftdi.com:8700/prodinfo/products"
 
+  productService:
+    baseUrl: http://35.227.193.133/api/products/
+
   # BSO Configuration
-  bsoFileReloadRate: 86400000
+  bso:
+    enabled: true
+    fileReloadRate: 86400000
+
   sitesBsoMap:
     proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
     ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
 
   # Autofill Configuration
-  autofillKeywordReloadRate: 86400000
-  autofillQuerySize: 3
+  autofill:
+    enabled: false
+    keywordReloadRate: 86400000
+    querySize: 3
+
   sitesAutofillKeywordMap:
     proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
     ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt

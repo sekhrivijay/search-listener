@@ -107,6 +107,10 @@
             <id>myMavenRepo</id>
             <url>${myMavenRepoReadUrl}</url>
         </repository>
+        <repository>
+            <id>dintuMavenRepo</id>
+            <url>https://rkande.jfrog.io/rkande/libs-snapshot-local/</url>
+        </repository>
     </repositories>
 
 
@@ -122,6 +126,7 @@
             <id>myMavenRepo</id>
             <url>${myMavenRepoWriteUrl}</url>
         </snapshotRepository>
+
     </distributionManagement>
 
     <properties>
@@ -250,6 +255,20 @@
 
 
         <dependency>
+            <groupId>com.ftd.services</groupId>
+            <artifactId>product-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>client</classifier>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -279,7 +298,7 @@
                     <generateBuilders>true</generateBuilders>
                     <sourceType>json</sourceType>
                     <sourceDirectory>${basedir}/src/main/resources/json-schema</sourceDirectory>
-                    <targetPackage>com.micro.services.product.generated</targetPackage>
+                    <targetPackage>com.ftd.services.listener.search.product.generated</targetPackage>
                     <outputDirectory>${basedir}/target/generated-sources/xjc</outputDirectory>
                 </configuration>
                 <executions>
