@@ -2,6 +2,7 @@ package com.ftd.services.listener.search.bl.solr;
 
 import com.ftd.services.listener.search.product.generated.Product;
 import com.ftd.services.listener.search.product.generated.ProductWrapper;
+import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

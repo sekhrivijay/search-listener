@@ -1,8 +1,8 @@
 package com.ftd.services.listener.search.bl.product.impl;
 
+import com.ftd.services.listener.search.bl.product.ProductService;
 import com.ftd.services.listener.search.product.generated.ProductDocument;
 import com.ftd.services.listener.search.product.generated.ProductWrapper;
-import com.ftd.services.listener.search.bl.product.ProductService;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,84 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.services.micro</groupId>
+    <groupId>com.ftd.services</groupId>
     <artifactId>search-listener</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <name>search-listener</name>
     <description>Generic search listener for SOLR with Spring  Boot</description>
-
-
-    <!--<parent>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-        <!--<version>2.0.0.M7</version>-->
-        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-    <!--</parent>-->
-
-    <!--<properties>-->
-        <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-        <!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
-        <!--<java.version>1.8</java.version>-->
-        <!--<spring-cloud.version>Finchley.M5</spring-cloud.version>-->
-        <!--<myMavenRepoReadUrl>https://mymavenrepo.com/repo/Ko7hlTF72DbglwWKg7h2/</myMavenRepoReadUrl>-->
-    <!--</properties>-->
-
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>spring-snapshots</id>-->
-            <!--<name>Spring Snapshots</name>-->
-            <!--<url>https://repo.spring.io/snapshot</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>spring-milestones</id>-->
-            <!--<name>Spring Milestones</name>-->
-            <!--<url>https://repo.spring.io/milestone</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>myMavenRepo</id>-->
-            <!--<url>${myMavenRepoReadUrl}</url>-->
-        <!--</repository>-->
-    <!--</repositories>-->
-
-    <!--<pluginRepositories>-->
-        <!--<pluginRepository>-->
-            <!--<id>spring-snapshots</id>-->
-            <!--<name>Spring Snapshots</name>-->
-            <!--<url>https://repo.spring.io/snapshot</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</pluginRepository>-->
-        <!--<pluginRepository>-->
-            <!--<id>spring-milestones</id>-->
-            <!--<name>Spring Milestones</name>-->
-            <!--<url>https://repo.spring.io/milestone</url>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</pluginRepository>-->
-    <!--</pluginRepositories>-->
-
-    <!--<dependencyManagement>-->
-        <!--<dependencies>-->
-            <!--<dependency>-->
-                <!--<groupId>org.springframework.cloud</groupId>-->
-                <!--<artifactId>spring-cloud-dependencies</artifactId>-->
-                <!--<version>${spring-cloud.version}</version>-->
-                <!--<type>pom</type>-->
-                <!--<scope>import</scope>-->
-            <!--</dependency>-->
-        <!--</dependencies>-->
-    <!--</dependencyManagement>-->
-
 
 
     <parent>
@@ -91,12 +20,6 @@
     </parent>
 
     <repositories>
-        <!--<repository>-->
-            <!--<id>spring-snapshots</id>-->
-            <!--<name>Spring Snapshots</name>-->
-            <!--<url>https://repo.spring.io/snapshot</url>-->
-        <!--</repository>-->
-
         <repository>
             <id>repository.spring.snapshot</id>
             <name>Spring Snapshot Repository</name>
@@ -112,9 +35,6 @@
             <url>https://rkande.jfrog.io/rkande/libs-snapshot-local/</url>
         </repository>
     </repositories>
-
-
-
 
 
     <distributionManagement>
@@ -241,8 +161,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.services.micro</groupId>
-            <artifactId>generic-search</artifactId>
+            <groupId>com.ftd.services</groupId>
+            <artifactId>search</artifactId>
             <version>0.0.1</version>
             <classifier>client</classifier>
             <exclusions>

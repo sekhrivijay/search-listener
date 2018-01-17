@@ -2,8 +2,8 @@ package com.ftd.services.listener.search.bl.autofill;
 
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.listener.search.bl.processor.Delegate;
-import com.ftd.services.listener.search.bl.solr.SolrDocumentUtil;
 import com.ftd.services.listener.search.config.AppConfig;
+import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrInputDocument;

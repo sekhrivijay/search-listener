@@ -52,7 +52,7 @@ public class DelegateInitializer {
     @PostConstruct
     public void init() {
         LOGGER.info("Initializing delegate list ");
-        delegateList.add(apolloProductDelegate);
+//        delegateList.add(apolloProductDelegate);
         delegateList.add(productDelegate);
         delegateList.add(bsoDelegate);
 //        delegateList.add(autofillDelegate);

@@ -1,9 +1,9 @@
 package com.ftd.services.listener.search.bl.autofill;
 
-import com.ftd.services.listener.search.bl.solr.SolrDocumentUtil;
-import com.ftd.services.listener.search.bl.solr.SolrService;
 import com.ftd.services.listener.search.config.AppConfig;
 import com.ftd.services.search.api.request.RequestType;
+import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
+import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -39,15 +39,14 @@ import java.util.stream.Stream;
 @ConditionalOnProperty(name = "service.autofill.enabled")
 public class AutofillFileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutofillFileLoader.class);
-    public static final String SMALLIMAGE = "smallimage";
 
     @Value("${service.autofill.querySize}")
     private int autofillQuerySize;
     private AppConfig appConfig;
     private Map<String, List<String>> autofillSiteToKeywordsMap;
     private Map<String, Map<String, Set<String>>> autofillGlobalMap;
-    private SolrService solrService;
     private SolrDocumentUtil solrDocumentUtil;
+    private EnhancedSolrClient enhancedSolrClient;
 
 
     @Autowired
@@ -55,9 +54,9 @@ public class AutofillFileLoader {
         this.solrDocumentUtil = solrDocumentUtil;
     }
 
-    @Inject
-    public void setSolrService(SolrService solrService) {
-        this.solrService = solrService;
+    @Autowired
+    public void setEnhancedSolrClient(EnhancedSolrClient enhancedSolrClient) {
+        this.enhancedSolrClient = enhancedSolrClient;
     }
 
     public Map<String, Map<String, Set<String>>> getAutofillGlobalMap() {
@@ -115,12 +114,12 @@ public class AutofillFileLoader {
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQuery(keyword)
                 .setRows(autofillQuerySize)
-                .setFields(GlobalConstants.ID, SMALLIMAGE)
+                .setFields(GlobalConstants.ID, GlobalConstants.PRIMARY_IMAGE)
 //                .setFilterQueries("siteId:" + siteId)
                 .setRequestHandler(GlobalConstants.FORWARD_SLASH + RequestType.SEARCH.getName());
         QueryResponse queryResponse = null;
         try {
-            queryResponse = solrService.run(solrQuery);
+            queryResponse = enhancedSolrClient.run(solrQuery);
         } catch (Exception e) {
             LOGGER.error("cannot execute solr query ", e);
         }
@@ -132,10 +131,10 @@ public class AutofillFileLoader {
         Map<String, Set<String>> pidMap = autofillGlobalMap.get(siteId);
 
         SolrInputDocument solrInputDocument = new SolrInputDocument();
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, "af" + keyword.hashCode());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, GlobalConstants.AUTOFILL + keyword.hashCode());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, siteId);
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, "autofill");
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.KEYWORD, keyword);
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, GlobalConstants.AUTOFILL);
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.AUTOFILL_KEYWORDS, keyword);
         SolrDocumentList solrDocuments = queryResponse.getResults();
         short rows = 0;
         for (SolrDocument solrDocument : solrDocuments) {
@@ -146,10 +145,10 @@ public class AutofillFileLoader {
             pidMap.computeIfAbsent(pid, k -> new HashSet<>()).add(keyword);
             solrDocumentUtil.addField(
                     solrInputDocument,
-                    "image_" + (++rows) + "_s",
-                    solrDocumentUtil.getFieldValue(solrDocument, SMALLIMAGE));
+                    GlobalConstants.IMAGE + GlobalConstants.UNDERSCORE + (++rows) + "_s",
+                    solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.PRIMARY_IMAGE));
         }
-        solrService.updateDocs(Arrays.asList(solrInputDocument));
+        enhancedSolrClient.updateDocs(Arrays.asList(solrInputDocument));
 
     }
 

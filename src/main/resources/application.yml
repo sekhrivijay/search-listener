@@ -32,13 +32,13 @@ spring:
 
 service:
   # Solr configuration
-  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
-  collectionDestination : products
-  zkTimeoutDestination : 20000
-  solrQueryTimeout : 10000
-  queryTimeAllowed : 10000
-  solrMaxRetryAttempts : 5
-  solrRetryInterval : 500
+#  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
+#  collectionDestination : products
+#  zkTimeoutDestination : 20000
+#  solrQueryTimeout : 10000
+#  queryTimeAllowed : 10000
+#  solrMaxRetryAttempts : 5
+#  solrRetryInterval : 500
 
   # kafka configuration
   kafka:
@@ -76,8 +76,22 @@ service:
     accessToken: abcd
     apolloBaseUrl: "http://amsdapp01v1.ftdi.com:8700/prodinfo/products"
 
+  solrService:
+    enabled: true
+    zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
+    collectionDestination : products
+    zkTimeoutDestination : 20000
+    queryTimeout : 10000
+    maxRetryAttempts: 3
+    retryInterval: 500
+
   productService:
-    baseUrl: http://35.227.193.133/api/products/
+    enabled: true
+    baseUrl: http://35.227.193.133/api/products
+    version: 0
+
+#  productService:
+#    baseUrl: http://35.227.193.133/api/products
 
   # BSO Configuration
   bso:
