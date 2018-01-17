@@ -47,6 +47,8 @@ public class ProductDelegate implements Delegate {
         }
 
         Product product = productServiceResponse.getProducts().stream().findFirst().get();
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, context.getSiteId() + product.getId());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID, product.getId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, context.getSiteId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, context.getType());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.NAME, product.getName());
@@ -130,10 +132,10 @@ public class ProductDelegate implements Delegate {
 
     private Categories getCategories(Taxonomy taxonomy, String siteId) {
         if (taxonomy == null
-                || taxonomy.getSites() != null) {
+                || taxonomy.getSites() == null) {
             return null;
         }
-        if (siteId.equals(GlobalConstants.PROFLOWERS)) {
+        if (siteId.equals(GlobalConstants.FTD)) {
             return taxonomy.getSites().getPfc();
         }
         return taxonomy.getSites().getFtd();

@@ -3,7 +3,6 @@ package com.ftd.services.listener.search.bl.orchestraction;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.function.Consumer;
 

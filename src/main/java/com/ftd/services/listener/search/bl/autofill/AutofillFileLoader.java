@@ -1,6 +1,6 @@
 package com.ftd.services.listener.search.bl.autofill;
 
-import com.ftd.services.listener.search.config.AppConfig;
+import com.ftd.services.listener.search.config.AppConfigProperties;
 import com.ftd.services.search.api.request.RequestType;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -42,7 +41,7 @@ public class AutofillFileLoader {
 
     @Value("${service.autofill.querySize}")
     private int autofillQuerySize;
-    private AppConfig appConfig;
+    private AppConfigProperties appConfigProperties;
     private Map<String, List<String>> autofillSiteToKeywordsMap;
     private Map<String, Map<String, Set<String>>> autofillGlobalMap;
     private SolrDocumentUtil solrDocumentUtil;
@@ -69,9 +68,13 @@ public class AutofillFileLoader {
     }
 
     @Autowired
-    public void setAppConfig(AppConfig appConfig) {
-        this.appConfig = appConfig;
+    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+        this.appConfigProperties = appConfigProperties;
     }
+
+
+
+
 
     public Map<String, List<String>> getAutofillSiteToKeywordsMap() {
         return autofillSiteToKeywordsMap;
@@ -80,7 +83,7 @@ public class AutofillFileLoader {
     @PostConstruct
     @Scheduled(fixedRateString = "${service.autofill.keywordReloadRate}")
     public void loadAllAutofillFiles() {
-        Map<String, String> autofillKeywordMap = appConfig.getSitesAutofillKeywordMap();
+        Map<String, String> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
         autofillKeywordMap.keySet()
                 .forEach(siteId -> loadSingleAutofillFile(siteId, autofillKeywordMap.get(siteId)));
 
@@ -132,9 +135,10 @@ public class AutofillFileLoader {
 
         SolrInputDocument solrInputDocument = new SolrInputDocument();
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, GlobalConstants.AUTOFILL + keyword.hashCode());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID, GlobalConstants.AUTOFILL + keyword.hashCode());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, siteId);
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, GlobalConstants.AUTOFILL);
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.AUTOFILL_KEYWORDS, keyword);
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.AUTOFILL_KEYWORD, keyword);
         SolrDocumentList solrDocuments = queryResponse.getResults();
         short rows = 0;
         for (SolrDocument solrDocument : solrDocuments) {

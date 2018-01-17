@@ -2,7 +2,7 @@ package com.ftd.services.listener.search.bl.autofill;
 
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.listener.search.bl.processor.Delegate;
-import com.ftd.services.listener.search.config.AppConfig;
+import com.ftd.services.listener.search.config.AppConfigProperties;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +16,7 @@ import java.util.Set;
 @Named("autofillDelegate")
 public class AutofillDelegate implements Delegate {
     private AutofillFileLoader autofillFileLoader;
-    private AppConfig appConfig;
+    private AppConfigProperties appConfigProperties;
     private SolrDocumentUtil solrDocumentUtil;
 //    private LevenshteinDistance levenshteinDistance;
 
@@ -25,15 +25,15 @@ public class AutofillDelegate implements Delegate {
 //        this.levenshteinDistance = LevenshteinDistance.getDefaultInstance();
 //    }
 
-//    @Autowired
+    //    @Autowired
 //    public void setAutofillFileLoader(AutofillFileLoader autofillFileLoader) {
 //        this.autofillFileLoader = autofillFileLoader;
 //    }
-
     @Autowired
-    public void setAppConfig(AppConfig appConfig) {
-        this.appConfig = appConfig;
+    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+        this.appConfigProperties = appConfigProperties;
     }
+
 
     @Autowired
     public void setSolrDocumentUtil(SolrDocumentUtil solrDocumentUtil) {
@@ -42,7 +42,7 @@ public class AutofillDelegate implements Delegate {
 
     @Override
     public SolrInputDocument process(Context context, SolrInputDocument solrInputDocument) {
-        Map<String, String> autofillKeywordMap = appConfig.getSitesAutofillKeywordMap();
+        Map<String, String> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
         autofillKeywordMap.keySet()
                 .forEach(siteId -> addKeywordForASite(context, siteId, solrInputDocument));
         return solrInputDocument;

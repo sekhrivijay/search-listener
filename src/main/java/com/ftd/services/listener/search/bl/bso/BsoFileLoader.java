@@ -1,6 +1,6 @@
 package com.ftd.services.listener.search.bl.bso;
 
-import com.ftd.services.listener.search.config.AppConfig;
+import com.ftd.services.listener.search.config.AppConfigProperties;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class BsoFileLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BsoFileLoader.class);
-    private AppConfig appConfig;
+    private AppConfigProperties appConfigProperties;
     private Map<String, Map<String, BsoEntity>> bsoGlobalMap;
     private static final int MIN_TOKEN_LENGTH = 5;
     private static final int ORDER_CNT_INDEX = 2;
@@ -39,8 +39,8 @@ public class BsoFileLoader {
 
 
     @Autowired
-    public void setAppConfig(AppConfig appConfig) {
-        this.appConfig = appConfig;
+    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+        this.appConfigProperties = appConfigProperties;
     }
 
     public Map<String, Map<String, BsoEntity>> getBsoGlobalMap() {
@@ -50,7 +50,7 @@ public class BsoFileLoader {
     @PostConstruct
     @Scheduled(fixedRateString = "${service.bso.fileReloadRate}")
     public void loadAllBsoFiles() {
-        Map<String, String> bsoFileMap = appConfig.getSitesBsoMap();
+        Map<String, String> bsoFileMap = appConfigProperties.getSitesBsoMap();
         bsoFileMap.keySet()
                 .forEach(siteId -> loadSingleBsoFile(siteId, bsoFileMap.get(siteId)));
         LOGGER.info("Bso files loaded ...");

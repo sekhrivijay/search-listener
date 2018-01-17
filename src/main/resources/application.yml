@@ -104,7 +104,7 @@ service:
 
   # Autofill Configuration
   autofill:
-    enabled: false
+    enabled: true
     keywordReloadRate: 86400000
     querySize: 3
 

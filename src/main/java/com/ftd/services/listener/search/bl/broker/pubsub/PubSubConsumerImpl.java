@@ -72,7 +72,7 @@ public class PubSubConsumerImpl {
             }
             orchestrator.accept(inputMessage);
         } catch (Exception e) {
-            LOGGER.error("Error processing product update ");
+            LOGGER.error("Error processing product update ", e);
             messagingGateway.sendToPubSub(message.getPayload() + GlobalConstants.COLON + e.getMessage());
         }
         if (consumer != null) {

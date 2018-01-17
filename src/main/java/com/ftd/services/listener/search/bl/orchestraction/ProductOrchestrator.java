@@ -46,12 +46,12 @@ public class ProductOrchestrator implements Consumer<String> {
 //        ProductDocument productDetail = productService.getProductDetail(pid);
         Document document = new Document();
         Map<String, Object> map = new HashMap<>();
-        map.put(GlobalConstants.ID, pid);
+        map.put(GlobalConstants.PID, pid);
         document.setRecord(map);
         SearchServiceRequest searchServiceRequest = SearchServiceRequest
                 .SearchServiceRequestBuilder
                 .aSearchServiceRequest()
-                .withSiteId(GlobalConstants.PROFLOWERS)
+                .withSiteId(GlobalConstants.FTD)
                 .build();
         SearchServiceResponse searchServiceResponse = SearchServiceResponse
                 .SearchServiceResponseBuilder
@@ -64,6 +64,7 @@ public class ProductOrchestrator implements Consumer<String> {
         SolrInputDocument solrInputDocument = new SolrInputDocument();
         Context context = Context.ContextBuilder.aContext()
                 .withPid(pid)
+                .withSiteId(GlobalConstants.FTD)
                 .withProductServiceResponse(productServiceResponse)
 //                .withProductDocument(productDetail)
                 .build();
