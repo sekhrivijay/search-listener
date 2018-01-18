@@ -84,7 +84,7 @@ service:
 
   # BSO Configuration
   bso:
-    enabled: true
+    enabled: false
     fileReloadRate: 86400000
 
   sitesBsoMap:

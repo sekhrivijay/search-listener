@@ -35,12 +35,14 @@ public class BsoDelegate implements Delegate {
 
     public SolrInputDocument process(Context context, SolrInputDocument solrInputDocument) {
         Map<String, String> bsoFileMap = appConfigProperties.getSitesBsoMap();
-        bsoFileMap.keySet()
-                .forEach(siteId -> addBsoForASite(context, siteId, solrInputDocument));
+        addBsoForASite(context, solrInputDocument);
+//        bsoFileMap.keySet()
+//                .forEach(siteId -> addBsoForASite(context, siteId, solrInputDocument));
         return solrInputDocument;
     }
 
-    private void addBsoForASite(Context context, String siteId, SolrInputDocument solrInputDocument) {
+    private void addBsoForASite(Context context, SolrInputDocument solrInputDocument) {
+        String siteId = context.getSiteId();
         if (StringUtils.isEmpty(siteId) || StringUtils.isEmpty(context.getPid())) {
             return;
         }
@@ -53,9 +55,9 @@ public class BsoDelegate implements Delegate {
             return;
         }
 
-        solrDocumentUtil.addField(solrInputDocument, siteId + "_bso_order_cnt_l", bsoEntity.getOrderCount());
-        solrDocumentUtil.addField(solrInputDocument, siteId + "_bso_order_amt_d", bsoEntity.getOrderAmount());
-        solrDocumentUtil.addField(solrInputDocument, siteId + "_bso_order_margin_d", bsoEntity.getMargin());
+        solrDocumentUtil.addField(solrInputDocument, "bsoOrderCnt_l", bsoEntity.getOrderCount());
+        solrDocumentUtil.addField(solrInputDocument, "_bsoOrderAmt_d", bsoEntity.getOrderAmount());
+        solrDocumentUtil.addField(solrInputDocument, "_bsoOrderMargin_d", bsoEntity.getMargin());
 
     }
 }

@@ -151,7 +151,7 @@ public class AutofillFileLoader {
             pidMap.computeIfAbsent(pid, k -> new HashSet<>()).add(keyword);
             solrDocumentUtil.addField(
                     solrInputDocument,
-                    GlobalConstants.IMAGE + GlobalConstants.UNDERSCORE + (++rows) + "_s",
+                    GlobalConstants.IMAGE + (++rows) + "_s",
                     solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.PRIMARY_IMAGE));
         }
         enhancedSolrClient.updateDocs(Arrays.asList(solrInputDocument));
