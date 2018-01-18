@@ -1,10 +1,9 @@
 server:
-#  context-path: /${spring.application.name}
-  port: 8081
+  port: 8080
 
 spring:
   application:
-    name: generic-search-listener
+    name: search-listener
   profiles:
     active: local
   output:
@@ -31,14 +30,6 @@ spring:
 
 
 service:
-  # Solr configuration
-#  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
-#  collectionDestination : products
-#  zkTimeoutDestination : 20000
-#  solrQueryTimeout : 10000
-#  queryTimeAllowed : 10000
-#  solrMaxRetryAttempts : 5
-#  solrRetryInterval : 500
 
   # kafka configuration
   kafka:
@@ -90,8 +81,6 @@ service:
     baseUrl: http://35.227.193.133/api/products
     version: 0
 
-#  productService:
-#    baseUrl: http://35.227.193.133/api/products
 
   # BSO Configuration
   bso:
@@ -104,7 +93,7 @@ service:
 
   # Autofill Configuration
   autofill:
-    enabled: true
+    enabled: false
     keywordReloadRate: 86400000
     querySize: 3
 
@@ -119,16 +108,10 @@ service:
     prometheus:
       enabled: true
   git:
-    enabled: true
+    enabled: false
   swagger:
     enabled: true
     base-package: productGroup
   logging:
     enabled: true
 
-
-
-
-#management:
-#  security:
-#    enabled: false

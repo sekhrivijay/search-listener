@@ -2,6 +2,7 @@ package com.ftd.services.listener.search.bl.processor;
 
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.product.api.domain.response.Categories;
+import com.ftd.services.product.api.domain.response.Desc;
 import com.ftd.services.product.api.domain.response.Image;
 import com.ftd.services.product.api.domain.response.Operational;
 import com.ftd.services.product.api.domain.response.Product;
@@ -38,7 +39,6 @@ public class ProductDelegate implements Delegate {
     public SolrInputDocument process(Context context, SolrInputDocument solrInputDocument) {
 
         ProductServiceResponse productServiceResponse = context.getProductServiceResponse();
-        String siteId = context.getSiteId();
         if (productServiceResponse == null
                 || productServiceResponse.getProducts() == null
                 || productServiceResponse.getProducts().size() == 0) {
@@ -46,16 +46,35 @@ public class ProductDelegate implements Delegate {
             throw new RuntimeException("Empty result . Cannot index this product");
         }
 
-        Product product = productServiceResponse.getProducts().stream().findFirst().get();
+        productServiceResponse.getProducts()
+                .stream()
+                .findFirst()
+                .ifPresent(product -> buildSolrDocument(context, solrInputDocument, product));
+
+        return solrInputDocument;
+    }
+
+    private void buildSolrDocument(Context context, SolrInputDocument solrInputDocument, Product product) {
+        String siteId = context.getSiteId();
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, context.getSiteId() + product.getId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID, product.getId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, context.getSiteId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, context.getType());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.NAME, product.getName());
 
+        List<Desc> description = product.getDescription();
+        if (description != null) {
+            description
+                    .stream()
+                    .filter(e -> GlobalConstants.LONG.equals(e.getType()))
+                    .map(Desc::getValue)
+                    .findFirst()
+                    .ifPresent(desc -> solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, desc));
+        }
+
         Seo seo = product.getSeo();
         if (seo != null) {
-            solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, seo.getDescription());
+//            solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, seo.getDescription());
             solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TITLE, seo.getTitle());
             String keywordsStr = seo.getKeywords();
             if (StringUtils.isNotEmpty(keywordsStr)) {
@@ -93,25 +112,25 @@ public class ProductDelegate implements Delegate {
         if (product.getAssets() != null
                 && product.getAssets().getImages() != null) {
             List<Image> imageList = product.getAssets().getImages();
-            solrDocumentUtil.addField(
-                    solrInputDocument,
-                    GlobalConstants.PRIMARY_IMAGE,
-                    imageList.stream()
-                            .filter(image -> GlobalConstants.PRIMARY.equals(image.getType()))
-                            .map(Image::getUrl)
-                            .findFirst()
-                            .get());
-            solrDocumentUtil.addField(
-                    solrInputDocument,
-                    GlobalConstants.SMALL_IMAGE,
-                    imageList.stream()
-                            .filter(image -> GlobalConstants.SMALL.equals(image.getType()))
-                            .map(Image::getUrl)
-                            .findFirst()
-                            .get());
-        }
 
-        return solrInputDocument;
+            imageList.stream()
+                    .filter(image -> GlobalConstants.PRIMARY.equals(image.getType()))
+                    .map(Image::getUrl)
+                    .findFirst()
+                    .ifPresent(imageUrl -> solrDocumentUtil.addField(
+                            solrInputDocument,
+                            GlobalConstants.PRIMARY_IMAGE,
+                            imageUrl));
+            imageList.stream()
+                    .filter(image -> GlobalConstants.SMALL.equals(image.getType()))
+                    .map(Image::getUrl)
+                    .findFirst()
+                    .ifPresent(imageUrl -> solrDocumentUtil.addField(
+                            solrInputDocument,
+                            GlobalConstants.SMALL_IMAGE,
+                            imageUrl));
+
+        }
     }
 
     private boolean getIsActive(Operational operational, String siteId) {
@@ -135,7 +154,7 @@ public class ProductDelegate implements Delegate {
                 || taxonomy.getSites() == null) {
             return null;
         }
-        if (siteId.equals(GlobalConstants.FTD)) {
+        if (siteId.equals(GlobalConstants.PROFLOWERS)) {
             return taxonomy.getSites().getPfc();
         }
         return taxonomy.getSites().getFtd();

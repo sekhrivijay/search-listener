@@ -1,6 +1,6 @@
 package com.ftd.services.listener.search.bl.broker.kafka;
 
-import com.ftd.services.listener.search.config.GlobalConstants;
+import com.ftd.services.search.config.GlobalConstants;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

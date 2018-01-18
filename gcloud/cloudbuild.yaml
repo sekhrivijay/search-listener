@@ -2,9 +2,16 @@
 
 steps:
 - name: 'gcr.io/cloud-builders/mvn'
-  args: ['clean', 'install']
+  args: ['-U', '-DskipTests', '-B', 'clean', 'install']
+#  args: ['-U', '-B', 'clean', 'install']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/deep-thought-185318/search-listener', '.']
+  args: ['build',  '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID', '.']
 
-images: ['gcr.io/deep-thought-185318/search-listener']
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['-n', '$_NAMESPACE', 'set', 'image', 'deployment/$REPO_NAME-$_GROUP', '$REPO_NAME=gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=development'
+
+images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID']

@@ -134,8 +134,10 @@ public class AutofillFileLoader {
         Map<String, Set<String>> pidMap = autofillGlobalMap.get(siteId);
 
         SolrInputDocument solrInputDocument = new SolrInputDocument();
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, GlobalConstants.AUTOFILL + keyword.hashCode());
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID, GlobalConstants.AUTOFILL + keyword.hashCode());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID,
+                GlobalConstants.AUTOFILL + keyword.hashCode());
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID,
+                GlobalConstants.AUTOFILL + keyword.hashCode());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, siteId);
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, GlobalConstants.AUTOFILL);
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.AUTOFILL_KEYWORD, keyword);
