@@ -86,6 +86,7 @@ service:
   bso:
     enabled: false
     fileReloadRate: 86400000
+    file: /Users/vsekhri/Desktop/product_margin_feed.csv
 
   sitesBsoMap:
     proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
