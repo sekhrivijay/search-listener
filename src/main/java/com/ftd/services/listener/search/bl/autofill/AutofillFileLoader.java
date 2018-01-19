@@ -152,7 +152,7 @@ public class AutofillFileLoader {
 
         SolrInputDocument solrInputDocument = new SolrInputDocument();
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID,
-                GlobalConstants.AUTOFILL + keyword.hashCode());
+                GlobalConstants.AUTOFILL + siteId + keyword.hashCode());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID,
                 GlobalConstants.AUTOFILL + keyword.hashCode());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, siteId);
