@@ -1,2 +1,16 @@
 server:
   port: 8081
+service:
+  metrics:
+    prometheus:
+      enabled: false
+    dropwizard:
+      enabled: false
+    jmx:
+      enabled: false
+  swagger:
+    enabled: false
+  git:
+    enabled: false
+
+

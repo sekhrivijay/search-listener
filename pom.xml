@@ -25,6 +25,11 @@
             <name>Spring Snapshot Repository</name>
             <url>http://repo.spring.io/snapshot</url>
         </repository>
+        <!--<repository>-->
+            <!--<id>spring-milestones</id>-->
+            <!--<name>Spring Milestones</name>-->
+            <!--<url>https://repo.spring.io/milestone</url>-->
+        <!--</repository>-->
 
         <repository>
             <id>myMavenRepo</id>
@@ -56,6 +61,7 @@
         <!--<spring-cloud.version>Finchley.M5</spring-cloud.version>-->
         <spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
         <spring-cloud-gcp.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-gcp.version>
+        <!--<spring-cloud-gcp.version>1.0.0.M1</spring-cloud-gcp.version>-->
         <myMavenRepoReadUrl>https://mymavenrepo.com/repo/Ko7hlTF72DbglwWKg7h2/</myMavenRepoReadUrl>
         <myMavenRepoWriteUrl>https://mymavenrepo.com/repo/Eyq6Bd6COULiONw5AvFa/</myMavenRepoWriteUrl>
     </properties>
@@ -66,6 +72,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-gcp-dependencies</artifactId>
+                <version>${spring-cloud-gcp.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -140,12 +153,16 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
-            <version>${spring-cloud-gcp.version}</version>
+            <!--<version>${spring-cloud-gcp.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-integration-gcp</artifactId>
-            <version>${spring-cloud-gcp.version}</version>
+            <!--<version>${spring-cloud-gcp.version}</version>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-storage</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

@@ -84,23 +84,29 @@ service:
 
   # BSO Configuration
   bso:
-    enabled: false
+    enabled: true
     fileReloadRate: 86400000
-    file: /Users/vsekhri/Desktop/product_margin_feed.csv
+#    file: /Users/vsekhri/Desktop/product_margin_feed.csv
+    file: gs://us.artifacts.deep-thought-185318.appspot.com/product_margin_feed.csv
 
-  sitesBsoMap:
-    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
-    ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
+#  sitesBsoMap:
+#    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
+#    ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
 
   # Autofill Configuration
   autofill:
-    enabled: false
+    enabled: true
     keywordReloadRate: 86400000
     querySize: 3
+    keywordsFile:
+      proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+      ftd: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
 
   sitesAutofillKeywordMap:
-    proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
-    ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+#    proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+#    ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+    proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+    ftd: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
 
 
   metrics:
@@ -115,4 +121,3 @@ service:
     base-package: productGroup
   logging:
     enabled: true
-

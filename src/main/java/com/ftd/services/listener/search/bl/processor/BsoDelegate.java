@@ -3,7 +3,6 @@ package com.ftd.services.listener.search.bl.processor;
 import com.ftd.services.listener.search.bl.bso.BsoEntity;
 import com.ftd.services.listener.search.bl.bso.BsoFileLoader;
 import com.ftd.services.listener.search.bl.dm.Context;
-import com.ftd.services.listener.search.config.AppConfigProperties;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrInputDocument;
@@ -15,13 +14,13 @@ import java.util.Map;
 @Named("bsoDelegate")
 public class BsoDelegate implements Delegate {
     private BsoFileLoader bsoFileLoader;
-    private AppConfigProperties appConfigProperties;
+//    private AppConfigProperties appConfigProperties;
     private SolrDocumentUtil solrDocumentUtil;
 
-    @Autowired
-    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
-        this.appConfigProperties = appConfigProperties;
-    }
+//    @Autowired
+//    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+//        this.appConfigProperties = appConfigProperties;
+//    }
 
     @Autowired
     public void setSolrDocumentUtil(SolrDocumentUtil solrDocumentUtil) {
@@ -34,7 +33,7 @@ public class BsoDelegate implements Delegate {
     }
 
     public SolrInputDocument process(Context context, SolrInputDocument solrInputDocument) {
-        Map<String, String> bsoFileMap = appConfigProperties.getSitesBsoMap();
+//        Map<String, String> bsoFileMap = appConfigProperties.getSitesBsoMap();
         addBsoForASite(context, solrInputDocument);
 //        bsoFileMap.keySet()
 //                .forEach(siteId -> addBsoForASite(context, siteId, solrInputDocument));

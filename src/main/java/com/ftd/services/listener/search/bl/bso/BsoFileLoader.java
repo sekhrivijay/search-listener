@@ -1,27 +1,24 @@
 package com.ftd.services.listener.search.bl.bso;
 
-import com.ftd.services.listener.search.config.AppConfigProperties;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.StreamUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Configuration
 @RefreshScope
@@ -30,7 +27,6 @@ public class BsoFileLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BsoFileLoader.class);
     public static final String PFC = "PFC";
-    private AppConfigProperties appConfigProperties;
     private Map<String, Map<String, BsoEntity>> bsoGlobalMap;
     private static final int MIN_TOKEN_LENGTH = 6;
     private static final int SITE_INDEX = 1;
@@ -40,18 +36,14 @@ public class BsoFileLoader {
     private static final int MARGIN_INDEX = 5;
 
     @Value("${service.bso.file}")
-    private String productFeedFile;
+    private Resource gcsResource;
+
 
 
     public BsoFileLoader() {
         bsoGlobalMap = new HashMap<>();
     }
 
-
-    @Autowired
-    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
-        this.appConfigProperties = appConfigProperties;
-    }
 
     public Map<String, Map<String, BsoEntity>> getBsoGlobalMap() {
         return bsoGlobalMap;
@@ -60,11 +52,23 @@ public class BsoFileLoader {
     @PostConstruct
     @Scheduled(fixedRateString = "${service.bso.fileReloadRate}")
     public void loadFeedFile() {
-        try (Stream<String> stream = Files.lines(Paths.get(productFeedFile))) {
-            stream.forEach(this::loadIntoMap);
-        } catch (IOException e) {
+        try {
+            String fileContents = StreamUtils.copyToString(
+                    gcsResource.getInputStream(),
+                    Charset.defaultCharset()) + StringUtils.LF;
+            Arrays.asList(StringUtils.splitPreserveAllTokens(fileContents, StringUtils.LF))
+                    .forEach(this::loadIntoMap);
+
+        } catch (Exception e) {
             LOGGER.error("Could not load file", e);
         }
+
+
+//        try (Stream<String> stream = Files.lines(Paths.get(productFeedFile))) {
+//            stream.forEach(this::loadIntoMap);
+//        } catch (IOException e) {
+//            LOGGER.error("Could not load file", e);
+//        }
         LOGGER.info("Bso files loaded ...");
     }
 

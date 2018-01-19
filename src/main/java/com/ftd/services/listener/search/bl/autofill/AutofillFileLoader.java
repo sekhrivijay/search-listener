@@ -1,6 +1,5 @@
 package com.ftd.services.listener.search.bl.autofill;
 
-import com.ftd.services.listener.search.config.AppConfigProperties;
 import com.ftd.services.search.api.request.RequestType;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
@@ -18,12 +17,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.StreamUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
 
 @Configuration
 @RefreshScope
@@ -41,11 +40,18 @@ public class AutofillFileLoader {
 
     @Value("${service.autofill.querySize}")
     private int autofillQuerySize;
-    private AppConfigProperties appConfigProperties;
+    //    private AppConfigProperties appConfigProperties;
     private Map<String, List<String>> autofillSiteToKeywordsMap;
     private Map<String, Map<String, Set<String>>> autofillGlobalMap;
     private SolrDocumentUtil solrDocumentUtil;
     private EnhancedSolrClient enhancedSolrClient;
+
+
+    @Value("${service.autofill.keywordsFile.proflowers}")
+    private Resource gcsResourceProflowers;
+
+    @Value("${service.autofill.keywordsFile.ftd}")
+    private Resource gcsResourceFtd;
 
 
     @Autowired
@@ -67,13 +73,10 @@ public class AutofillFileLoader {
         autofillGlobalMap = new HashMap<>();
     }
 
-    @Autowired
-    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
-        this.appConfigProperties = appConfigProperties;
-    }
-
-
-
+//    @Autowired
+//    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+//        this.appConfigProperties = appConfigProperties;
+//    }
 
 
     public Map<String, List<String>> getAutofillSiteToKeywordsMap() {
@@ -83,25 +86,39 @@ public class AutofillFileLoader {
     @PostConstruct
     @Scheduled(fixedRateString = "${service.autofill.keywordReloadRate}")
     public void loadAllAutofillFiles() {
-        Map<String, String> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
-        autofillKeywordMap.keySet()
-                .forEach(siteId -> loadSingleAutofillFile(siteId, autofillKeywordMap.get(siteId)));
-
+//        Map<String, Resource> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
+//        Map<String, String> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
+        loadSingleAutofillFile(GlobalConstants.PROFLOWERS, gcsResourceProflowers);
+        loadSingleAutofillFile(GlobalConstants.FTD, gcsResourceFtd);
+//        autofillKeywordMap.keySet()
+//                .forEach(siteId -> loadSingleAutofillFile(siteId, autofillKeywordMap.get(siteId)));
+//
         LOGGER.info("Autofill keyword files loaded ...");
 
     }
 
 
-    public void loadSingleAutofillFile(String siteId,
-                                       String fileName) {
+    //    public void loadSingleAutofillFile(String siteId, String fileName) {
+    public void loadSingleAutofillFile(String siteId, Resource gcsResource) {
         List<String> keywordList = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-            stream
+        try {
+            String fileContents = StreamUtils.copyToString(
+                    gcsResource.getInputStream(),
+                    Charset.defaultCharset()) + StringUtils.LF;
+            Arrays.stream(StringUtils.splitPreserveAllTokens(fileContents, StringUtils.LF))
                     .map(this::normalize)
                     .forEach(keywordList::add);
         } catch (IOException e) {
             LOGGER.error("Could not load file", e);
         }
+
+//        try (Stream<String> stream = Files.lines(Paths.get(gcsResource))) {
+//            stream
+//                    .map(this::normalize)
+//                    .forEach(keywordList::add);
+//        } catch (IOException e) {
+//            LOGGER.error("Could not load file", e);
+//        }
 
         autofillSiteToKeywordsMap.put(siteId, keywordList);
         autofillGlobalMap.computeIfAbsent(siteId, k -> new HashMap<>());
