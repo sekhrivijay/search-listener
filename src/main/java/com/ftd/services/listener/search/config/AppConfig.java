@@ -8,6 +8,7 @@ import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClientImpl;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.bl.clients.solr.util.SolrUtil;
+import com.ftd.services.search.config.GlobalConstants;
 import com.google.gson.Gson;
 import org.apache.solr.client.solrj.SolrClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,17 @@ public class AppConfig {
     @Bean
     public SolrDocumentUtil solrDocumentUtil() {
         return new SolrDocumentUtil();
+    }
+
+
+    @Value("${spring.application.name}")
+    public void setApplicationName(String applicationName) {
+        GlobalConstants.setApplicationName(applicationName);
+    }
+
+    @Value("${spring.profiles.active}")
+    public void setEnvironment(String environment) {
+        GlobalConstants.setEnvironment(environment);
     }
 
 }
