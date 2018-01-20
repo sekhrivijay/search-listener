@@ -25,9 +25,17 @@ public class PubSubConsumerConfig {
     @Value("${service.pubsub.productDeleteSubscription}")
     private String pubsubProductDeleteSubscription;
 
+    @Value("${service.pubsub.pricingSubscription}")
+    private String pubsubPricingSubscription;
+
 
     @Bean("${service.pubsub.productChannelName}")
     public MessageChannel pubsubProductInputChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean("${service.pubsub.pricingChannelName}")
+    public MessageChannel pubsubPricingInputChannel() {
         return new DirectChannel();
     }
 
@@ -49,6 +57,13 @@ public class PubSubConsumerConfig {
             @Qualifier("${service.pubsub.productDeleteChannelName}") MessageChannel inputChannel,
             PubSubOperations pubSubTemplate) {
         return getPubSubInboundChannelAdapter(inputChannel, pubSubTemplate, pubsubProductDeleteSubscription);
+    }
+
+    @Bean
+    public PubSubInboundChannelAdapter messageChannelAdapterPricing(
+            @Qualifier("${service.pubsub.pricingChannelName}") MessageChannel inputChannel,
+            PubSubOperations pubSubTemplate) {
+        return getPubSubInboundChannelAdapter(inputChannel, pubSubTemplate, pubsubPricingSubscription);
     }
 
 

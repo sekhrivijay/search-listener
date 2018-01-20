@@ -55,9 +55,11 @@ service:
   pubsub:
     enabled: true
     productSubscription: search.update.dev.dev1
+    pricingSubscription: search.update.dev.dev1
     productDeleteSubscription: search.delete.dev.dev1
     failureTopic: search.failure.dev
     productChannelName: pubsubInputProductChannel
+    pricingChannelName: pubsubInputPriceChannel
     productDeleteChannelName: pubsubInputProductDeleteChannel
     failureChannelName: pubsubOutputFailureChannel
 
@@ -81,6 +83,11 @@ service:
     baseUrl: http://35.227.193.133/api/products
     version: 0
 
+  pricingService:
+    enabled: true
+    baseUrl: http://35.227.252.218/api/pricing
+    version: 0
+
 
   # BSO Configuration
   bso:
@@ -95,7 +102,7 @@ service:
 
   # Autofill Configuration
   autofill:
-    enabled: true
+    enabled: false
     keywordReloadRate: 86400000
     querySize: 3
     keywordsFile:

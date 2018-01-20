@@ -14,6 +14,7 @@ import java.util.List;
 public class DelegateInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DelegateInitializer.class);
     private Delegate productDelegate;
+    private Delegate pricingDelegate;
 //    private Delegate apolloProductDelegate;
     private Delegate bsoDelegate;
 //    private Delegate autofillDelegate;
@@ -49,11 +50,18 @@ public class DelegateInitializer {
 //        this.autofillDelegate = autofillDelegate;
 //    }
 
+    @Inject
+    @Named("pricingDelegate")
+    public void setPricingDelegate(Delegate pricingDelegate) {
+        this.pricingDelegate = pricingDelegate;
+    }
+
     @PostConstruct
     public void init() {
         LOGGER.info("Initializing delegate list ");
 //        delegateList.add(apolloProductDelegate);
         delegateList.add(productDelegate);
+        delegateList.add(pricingDelegate);
         delegateList.add(bsoDelegate);
 //        delegateList.add(autofillDelegate);
     }

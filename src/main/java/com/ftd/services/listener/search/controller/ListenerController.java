@@ -1,5 +1,6 @@
 package com.ftd.services.listener.search.controller;
 
+import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.listener.search.product.generated.ProductDocument;
 import com.ftd.services.listener.search.bl.product.ProductService;
@@ -13,12 +14,12 @@ import java.util.function.Consumer;
 @RestController
 public class ListenerController {
 
-    private Consumer<String> productOrchestrator;
+    private Consumer<Context> productOrchestrator;
     private ProductService productService;
 
     @Inject
     @Named("productOrchestrator")
-    public void setProductOrchestrator(Consumer<String> productOrchestrator) {
+    public void setProductOrchestrator(Consumer<Context> productOrchestrator) {
         this.productOrchestrator = productOrchestrator;
     }
 
@@ -36,7 +37,7 @@ public class ListenerController {
 
     @RequestMapping("/query")
     public ProductDocument search(String pid) {
-        productOrchestrator.accept(pid);
+        productOrchestrator.accept(Context.ContextBuilder.aContext().withPid(pid).build());
         return productService.getProductDetail(pid);
     }
 

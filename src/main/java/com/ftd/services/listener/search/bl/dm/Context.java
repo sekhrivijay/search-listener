@@ -1,16 +1,18 @@
 package com.ftd.services.listener.search.bl.dm;
 
 import com.ftd.services.listener.search.product.generated.ProductDocument;
+import com.ftd.services.pricing.api.domain.response.PricingResponse;
 import com.ftd.services.product.api.domain.response.Product;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.search.config.GlobalConstants;
 
 public class Context {
     private String pid;
-    private String siteId = GlobalConstants.FTD;;
+    private String siteId = GlobalConstants.FTD;
     private String type = GlobalConstants.DEFAULT;
     private Product product;
     private ProductDocument productDocument;
+    private PricingResponse pricingResponse;
     private ProductServiceResponse productServiceResponse;
 
     public String getPid() {
@@ -61,6 +63,14 @@ public class Context {
         this.productServiceResponse = productServiceResponse;
     }
 
+    public PricingResponse getPricingResponse() {
+        return pricingResponse;
+    }
+
+    public void setPricingResponse(PricingResponse pricingResponse) {
+        this.pricingResponse = pricingResponse;
+    }
+
 
     public static final class ContextBuilder {
         private String pid;
@@ -68,6 +78,7 @@ public class Context {
         private String type = GlobalConstants.DEFAULT;
         private Product product;
         private ProductDocument productDocument;
+        private PricingResponse pricingResponse;
         private ProductServiceResponse productServiceResponse;
 
         private ContextBuilder() {
@@ -102,6 +113,11 @@ public class Context {
             return this;
         }
 
+        public ContextBuilder withPricingResponse(PricingResponse pricingResponse) {
+            this.pricingResponse = pricingResponse;
+            return this;
+        }
+
         public ContextBuilder withProductServiceResponse(ProductServiceResponse productServiceResponse) {
             this.productServiceResponse = productServiceResponse;
             return this;
@@ -114,6 +130,7 @@ public class Context {
             context.setType(type);
             context.setProduct(product);
             context.setProductDocument(productDocument);
+            context.setPricingResponse(pricingResponse);
             context.setProductServiceResponse(productServiceResponse);
             return context;
         }

@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.inject.Named;
 import java.util.function.Consumer;
 
-@Named("productOrchestrator")
-public class ProductOrchestrator extends BaseProductOrchestrator implements Consumer<Context> {
+@Named("pricingOrchestrator")
+public class PricingOrchestrator extends BaseProductOrchestrator implements Consumer<Context> {
 
-    public ProductOrchestrator(@Autowired EnhancedSolrClient enhancedSolrClient,
+    public PricingOrchestrator(@Autowired EnhancedSolrClient enhancedSolrClient,
                                @Autowired DelegateInitializer delegateInitializer) {
         super(enhancedSolrClient, delegateInitializer);
     }
@@ -20,5 +20,4 @@ public class ProductOrchestrator extends BaseProductOrchestrator implements Cons
 //    public void accept(Context context) {
 //        super.accept(context);
 //    }
-
 }

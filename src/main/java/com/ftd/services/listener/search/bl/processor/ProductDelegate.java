@@ -1,6 +1,8 @@
 package com.ftd.services.listener.search.bl.processor;
 
 import com.ftd.services.listener.search.bl.dm.Context;
+import com.ftd.services.listener.search.bl.util.BuilderUtil;
+import com.ftd.services.listener.search.bl.util.MiscUtil;
 import com.ftd.services.product.api.domain.response.Categories;
 import com.ftd.services.product.api.domain.response.Desc;
 import com.ftd.services.product.api.domain.response.Image;
@@ -10,6 +12,7 @@ import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.product.api.domain.response.Seo;
 import com.ftd.services.product.api.domain.response.SpecificCategory;
 import com.ftd.services.product.api.domain.response.Taxonomy;
+import com.ftd.services.search.bl.clients.product.ProductClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -27,25 +30,32 @@ import java.util.stream.Collectors;
 public class ProductDelegate implements Delegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductDelegate.class);
 
+    private ProductClient productClient;
     private SolrDocumentUtil solrDocumentUtil;
+    private BuilderUtil builderUtil;
 
-    @Autowired
-    public void setSolrDocumentUtil(SolrDocumentUtil solrDocumentUtil) {
+    public ProductDelegate(@Autowired ProductClient productClient,
+                           @Autowired SolrDocumentUtil solrDocumentUtil,
+                           @Autowired BuilderUtil builderUtil) {
+        this.productClient = productClient;
         this.solrDocumentUtil = solrDocumentUtil;
+        this.builderUtil = builderUtil;
     }
 
 
     @Override
     public SolrInputDocument process(Context context, SolrInputDocument solrInputDocument) {
+        ProductServiceResponse productServiceResponse =
+                productClient.callProductService(
+                        builderUtil.buildSearchServiceRequest(context),
+                        builderUtil.builcSearchServiceResponse(context));
 
-        ProductServiceResponse productServiceResponse = context.getProductServiceResponse();
+        context.setProductServiceResponse(productServiceResponse);
         if (productServiceResponse == null
                 || productServiceResponse.getProducts() == null
                 || productServiceResponse.getProducts().size() == 0) {
-            LOGGER.info("Empty result ");
-            throw new RuntimeException("Empty result . Cannot index this product");
+            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty result from product service");
         }
-
         productServiceResponse.getProducts()
                 .stream()
                 .findFirst()
@@ -63,40 +73,43 @@ public class ProductDelegate implements Delegate {
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.NAME, product.getName());
 
         List<Desc> description = product.getDescription();
-        if (description != null) {
-            description
-                    .stream()
-                    .filter(e -> GlobalConstants.LONG.equals(e.getType()))
-                    .map(Desc::getValue)
-                    .findFirst()
-                    .ifPresent(desc -> solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, desc));
+        if (description == null) {
+            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty description from product service ");
         }
+        description
+                .stream()
+                .filter(e -> GlobalConstants.LONG.equals(e.getType()))
+                .map(Desc::getValue)
+                .findFirst()
+                .ifPresent(desc -> solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, desc));
 
         Seo seo = product.getSeo();
-        if (seo != null) {
-//            solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, seo.getDescription());
-            solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TITLE, seo.getTitle());
-            String keywordsStr = seo.getKeywords();
-            if (StringUtils.isNotEmpty(keywordsStr)) {
-                List<String> keywordTokens = Arrays.asList(
-                        StringUtils.splitPreserveAllTokens(keywordsStr, GlobalConstants.COMMA));
-                solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SEARCH_KEYWORDS, keywordTokens);
-            }
+        if (seo == null) {
+            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty seo from product service ");
+        }
+        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TITLE, seo.getTitle());
+        String keywordsStr = seo.getKeywords();
+        if (StringUtils.isNotEmpty(keywordsStr)) {
+            List<String> keywordTokens = Arrays.asList(
+                    StringUtils.splitPreserveAllTokens(keywordsStr, GlobalConstants.COMMA));
+            solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SEARCH_KEYWORDS, keywordTokens);
         }
 
         Categories categories = getCategories(product.getTaxonomy(), siteId);
-        if (categories != null && categories.getCategories() != null) {
-            solrDocumentUtil.addField(
-                    solrInputDocument,
-                    GlobalConstants.CATEGORIES,
-                    categories.getCategories().stream()
-                            .flatMap(collection -> collection.getCategory().stream())
-                            .collect(Collectors.toList())
-                            .stream()
-                            .map(SpecificCategory::getName)
-                            .collect(Collectors.toList())
-            );
+        if (categories == null || categories.getCategories() == null) {
+            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty categories from product service ");
         }
+        solrDocumentUtil.addField(
+                solrInputDocument,
+                GlobalConstants.CATEGORIES,
+                categories.getCategories().stream()
+                        .flatMap(collection -> collection.getCategory().stream())
+                        .collect(Collectors.toList())
+                        .stream()
+                        .map(SpecificCategory::getName)
+                        .collect(Collectors.toList())
+        );
+
 
         solrDocumentUtil.addField(solrInputDocument,
                 GlobalConstants.IS_ACTIVE,
@@ -159,5 +172,6 @@ public class ProductDelegate implements Delegate {
         }
         return taxonomy.getSites().getFtd();
     }
+
 
 }

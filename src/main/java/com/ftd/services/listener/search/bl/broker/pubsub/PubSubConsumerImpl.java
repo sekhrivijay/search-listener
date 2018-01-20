@@ -1,5 +1,6 @@
 package com.ftd.services.listener.search.bl.broker.pubsub;
 
+import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.listener.search.config.PubSubProducerConfig;
 import com.ftd.services.search.config.GlobalConstants;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
@@ -24,8 +25,9 @@ import java.util.function.Consumer;
 public class PubSubConsumerImpl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PubSubConsumerImpl.class);
-    private Consumer<String> productOrchestrator;
-    private Consumer<String> productDeleteOrchestrator;
+    private Consumer<Context> productOrchestrator;
+    private Consumer<Context> pricingOrchestrator;
+    private Consumer<Context> productDeleteOrchestrator;
 
     private PubSubProducerConfig.PubSubOutboundGateway messagingGateway;
 
@@ -37,14 +39,20 @@ public class PubSubConsumerImpl {
 
     @Inject
     @Named("productOrchestrator")
-    public void setProductOrchestrator(Consumer<String> productOrchestrator) {
+    public void setProductOrchestrator(Consumer<Context> productOrchestrator) {
         this.productOrchestrator = productOrchestrator;
     }
 
     @Inject
     @Named("productDeleteOrchestrator")
-    public void setProductDeleteOrchestrator(Consumer<String> productDeleteOrchestrator) {
+    public void setProductDeleteOrchestrator(Consumer<Context> productDeleteOrchestrator) {
         this.productDeleteOrchestrator = productDeleteOrchestrator;
+    }
+
+    @Inject
+    @Named("pricingOrchestrator")
+    public void setPricingOrchestrator(Consumer<Context> pricingOrchestrator) {
+        this.pricingOrchestrator = pricingOrchestrator;
     }
 
     @Bean
@@ -60,8 +68,14 @@ public class PubSubConsumerImpl {
         return message -> processMessage(message, productDeleteOrchestrator);
     }
 
+    @Bean
+    @ServiceActivator(inputChannel = "${service.pubsub.pricingChannelName}")
+    public MessageHandler messageReceiverPricing() {
+        return message -> processMessage(message, pricingOrchestrator);
+    }
 
-    private void processMessage(Message<?> message, Consumer<String> orchestrator) {
+
+    private void processMessage(Message<?> message, Consumer<Context> orchestrator) {
         LOGGER.info("Message arrived! Payload: " + message.<String>getPayload());
         AckReplyConsumer consumer = null;
         try {
@@ -70,7 +84,11 @@ public class PubSubConsumerImpl {
             if (!valid(inputMessage)) {
                 throw new Exception("Not a valid message " + inputMessage);
             }
-            orchestrator.accept(inputMessage);
+            Context context = Context.ContextBuilder.aContext()
+                    .withPid(inputMessage)
+                    .withSiteId(GlobalConstants.FTD)
+                    .build();
+            orchestrator.accept(context);
         } catch (Exception e) {
             LOGGER.error("Error processing product update ", e);
             messagingGateway.sendToPubSub(message.getPayload() + GlobalConstants.COLON + e.getMessage());

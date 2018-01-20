@@ -1,5 +1,7 @@
 package com.ftd.services.listener.search.config;
 
+import com.ftd.services.search.bl.clients.price.PricingClient;
+import com.ftd.services.search.bl.clients.price.PricingClientImpl;
 import com.ftd.services.search.bl.clients.product.ProductClient;
 import com.ftd.services.search.bl.clients.product.ProductClientImpl;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
@@ -36,6 +38,13 @@ public class AppConfig {
             @Autowired RestTemplate restTemplate,
             @Value("${service.productService.baseUrl}") String baseUrl) {
         return new ProductClientImpl(restTemplate, baseUrl);
+    }
+
+    @Bean
+    public PricingClient pricingClient(
+            @Autowired RestTemplate restTemplate,
+            @Value("${service.pricingService.baseUrl}") String baseUrl) {
+        return new PricingClientImpl(restTemplate, baseUrl);
     }
 
     @Bean
