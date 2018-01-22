@@ -66,7 +66,11 @@ public class PricingDelegate implements Delegate {
             MiscUtil.throwCommonValidationException(LOGGER, context, "Empty finalPrice from pricing service");
         }
 
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.FINAL_PRICE, finalPrice.getValue().doubleValue());
-        solrDocumentUtil.addField(solrInputDocument, GlobalConstants.REGULAR_PRICE, prices.getRegularPrice().doubleValue());
+        solrDocumentUtil.addField(solrInputDocument,
+                GlobalConstants.FINAL_PRICE,
+                finalPrice.getValue().doubleValue());
+        solrDocumentUtil.addField(solrInputDocument,
+                GlobalConstants.REGULAR_PRICE,
+                prices.getRegularPrice().doubleValue());
     }
 }
