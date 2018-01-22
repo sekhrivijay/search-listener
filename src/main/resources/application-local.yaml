@@ -13,4 +13,8 @@ service:
   git:
     enabled: false
 
+  pubsub:
+    productSubscription: search.product.update.dev.dev1.local
+    pricingSubscription: search.pricing.update.dev.dev1.local
+    productDeleteSubscription: search.product.delete.dev.dev1.local
 

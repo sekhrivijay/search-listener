@@ -54,9 +54,9 @@ service:
   # pub-sub configuration
   pubsub:
     enabled: true
-    productSubscription: search.update.dev.dev1
-    pricingSubscription: search.update.dev.dev1
-    productDeleteSubscription: search.delete.dev.dev1
+    productSubscription: search.product.update.dev.dev1
+    pricingSubscription: search.pricing.update.dev.dev1
+    productDeleteSubscription: search.product.delete.dev.dev1
     failureTopic: search.failure.dev
     productChannelName: pubsubInputProductChannel
     pricingChannelName: pubsubInputPriceChannel
@@ -102,7 +102,7 @@ service:
 
   # Autofill Configuration
   autofill:
-    enabled: false
+    enabled: true
     keywordReloadRate: 86400000
     querySize: 3
     keywordsFile:
@@ -128,3 +128,9 @@ service:
     base-package: productGroup
   logging:
     enabled: true
+
+
+
+logging:
+  level:
+    ROOT: INFO
