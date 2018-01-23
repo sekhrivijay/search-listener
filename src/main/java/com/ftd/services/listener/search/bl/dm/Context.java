@@ -10,6 +10,7 @@ public class Context {
     private String pid;
     private String siteId = GlobalConstants.FTD;
     private String type = GlobalConstants.DEFAULT;
+    private EventEntity eventEntity;
     private Product product;
     private ProductDocument productDocument;
     private PricingResponse pricingResponse;
@@ -71,11 +72,20 @@ public class Context {
         this.pricingResponse = pricingResponse;
     }
 
+    public EventEntity getEventEntity() {
+        return eventEntity;
+    }
+
+    public void setEventEntity(EventEntity eventEntity) {
+        this.eventEntity = eventEntity;
+    }
+
 
     public static final class ContextBuilder {
         private String pid;
         private String siteId = GlobalConstants.FTD;
         private String type = GlobalConstants.DEFAULT;
+        private EventEntity eventEntity;
         private Product product;
         private ProductDocument productDocument;
         private PricingResponse pricingResponse;
@@ -100,6 +110,11 @@ public class Context {
 
         public ContextBuilder withType(String type) {
             this.type = type;
+            return this;
+        }
+
+        public ContextBuilder withEventEntity(EventEntity eventEntity) {
+            this.eventEntity = eventEntity;
             return this;
         }
 
@@ -128,6 +143,7 @@ public class Context {
             context.setPid(pid);
             context.setSiteId(siteId);
             context.setType(type);
+            context.setEventEntity(eventEntity);
             context.setProduct(product);
             context.setProductDocument(productDocument);
             context.setPricingResponse(pricingResponse);

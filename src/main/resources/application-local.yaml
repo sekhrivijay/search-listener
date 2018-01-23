@@ -18,3 +18,5 @@ service:
     pricingSubscription: search.pricing.update.dev.dev1.local
     productDeleteSubscription: search.product.delete.dev.dev1.local
 
+  autofill:
+    enabled: false

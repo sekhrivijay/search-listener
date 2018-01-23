@@ -1,9 +1,11 @@
 package com.ftd.services.listener.search.bl.broker.pubsub;
 
 import com.ftd.services.listener.search.bl.dm.Context;
+import com.ftd.services.listener.search.bl.dm.EventEntity;
 import com.ftd.services.listener.search.config.PubSubProducerConfig;
 import com.ftd.services.search.config.GlobalConstants;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,12 @@ public class PubSubConsumerImpl {
     private Consumer<Context> productDeleteOrchestrator;
 
     private PubSubProducerConfig.PubSubOutboundGateway messagingGateway;
+    private Gson gson;
+
+    @Autowired
+    public void setGson(Gson gson) {
+        this.gson = gson;
+    }
 
     @Autowired
     public void setMessagingGateway(PubSubProducerConfig.PubSubOutboundGateway messagingGateway) {
@@ -84,9 +92,14 @@ public class PubSubConsumerImpl {
             if (!valid(inputMessage)) {
                 throw new Exception("Not a valid message " + inputMessage);
             }
+
+            EventEntity eventEntity = gson.fromJson(inputMessage, EventEntity.class);
             Context context = Context.ContextBuilder.aContext()
-                    .withPid(inputMessage)
-                    .withSiteId(GlobalConstants.FTD)
+//                    .withPid(inputMessage)
+                    .withPid(eventEntity.getPid())
+//                    .withSiteId(GlobalConstants.FTD)
+                    .withSiteId(eventEntity.getSiteId())
+                    .withEventEntity(eventEntity)
                     .build();
             orchestrator.accept(context);
         } catch (Exception e) {

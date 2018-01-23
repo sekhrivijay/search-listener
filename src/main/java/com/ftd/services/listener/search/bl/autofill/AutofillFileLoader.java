@@ -1,6 +1,12 @@
 package com.ftd.services.listener.search.bl.autofill;
 
+import com.ftd.services.listener.search.bl.dm.Context;
+import com.ftd.services.listener.search.bl.util.BuilderUtil;
+import com.ftd.services.listener.search.bl.util.ProductUtil;
+import com.ftd.services.product.api.domain.response.Product;
+import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.search.api.request.RequestType;
+import com.ftd.services.search.bl.clients.product.ProductClient;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.config.GlobalConstants;
@@ -30,6 +36,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Configuration
@@ -45,7 +52,25 @@ public class AutofillFileLoader {
     private Map<String, Map<String, Set<String>>> autofillGlobalMap;
     private SolrDocumentUtil solrDocumentUtil;
     private EnhancedSolrClient enhancedSolrClient;
+    private BuilderUtil builderUtil;
+    private ProductClient productClient;
 
+    private ProductUtil productUtil;
+
+    @Autowired
+    public void setProductUtil(ProductUtil productUtil) {
+        this.productUtil = productUtil;
+    }
+
+    @Autowired
+    public void setBuilderUtil(BuilderUtil builderUtil) {
+        this.builderUtil = builderUtil;
+    }
+
+    @Autowired
+    public void setProductClient(ProductClient productClient) {
+        this.productClient = productClient;
+    }
 
     @Value("${service.autofill.keywordsFile.proflowers}")
     private Resource gcsResourceProflowers;
@@ -64,6 +89,7 @@ public class AutofillFileLoader {
         this.enhancedSolrClient = enhancedSolrClient;
     }
 
+
     public Map<String, Map<String, Set<String>>> getAutofillGlobalMap() {
         return autofillGlobalMap;
     }
@@ -73,11 +99,6 @@ public class AutofillFileLoader {
         autofillGlobalMap = new HashMap<>();
     }
 
-//    @Autowired
-//    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
-//        this.appConfigProperties = appConfigProperties;
-//    }
-
 
     public Map<String, List<String>> getAutofillSiteToKeywordsMap() {
         return autofillSiteToKeywordsMap;
@@ -86,13 +107,8 @@ public class AutofillFileLoader {
     @PostConstruct
     @Scheduled(fixedRateString = "${service.autofill.keywordReloadRate}")
     public void loadAllAutofillFiles() {
-//        Map<String, Resource> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
-//        Map<String, String> autofillKeywordMap = appConfigProperties.getSitesAutofillKeywordMap();
         loadSingleAutofillFile(GlobalConstants.PROFLOWERS, gcsResourceProflowers);
         loadSingleAutofillFile(GlobalConstants.FTD, gcsResourceFtd);
-//        autofillKeywordMap.keySet()
-//                .forEach(siteId -> loadSingleAutofillFile(siteId, autofillKeywordMap.get(siteId)));
-//
         LOGGER.info("Autofill keyword files loaded ...");
 
     }
@@ -112,13 +128,6 @@ public class AutofillFileLoader {
             LOGGER.error("Could not load file", e);
         }
 
-//        try (Stream<String> stream = Files.lines(Paths.get(gcsResource))) {
-//            stream
-//                    .map(this::normalize)
-//                    .forEach(keywordList::add);
-//        } catch (IOException e) {
-//            LOGGER.error("Could not load file", e);
-//        }
 
         autofillSiteToKeywordsMap.put(siteId, keywordList);
         autofillGlobalMap.computeIfAbsent(siteId, k -> new HashMap<>());
@@ -134,8 +143,10 @@ public class AutofillFileLoader {
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQuery(keyword)
                 .setRows(autofillQuerySize)
-                .setFields(GlobalConstants.ID, GlobalConstants.PRIMARY_IMAGE)
-//                .setFilterQueries("siteId:" + siteId)
+//                .setFields(GlobalConstants.PID, GlobalConstants.PRIMARY_IMAGE)
+                .setFields(GlobalConstants.PID)
+                .addFilterQuery(GlobalConstants.SITE_ID + GlobalConstants.COLON + siteId)
+                .addFilterQuery(GlobalConstants.TYPE + GlobalConstants.COLON + GlobalConstants.DEFAULT)
                 .setRequestHandler(GlobalConstants.FORWARD_SLASH + RequestType.SEARCH.getName());
         QueryResponse queryResponse = null;
         try {
@@ -158,20 +169,60 @@ public class AutofillFileLoader {
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, siteId);
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TYPE, GlobalConstants.AUTOFILL);
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.AUTOFILL_KEYWORD, keyword);
+
         SolrDocumentList solrDocuments = queryResponse.getResults();
         short rows = 0;
         for (SolrDocument solrDocument : solrDocuments) {
-            String pid = solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID);
-            if (StringUtils.isEmpty(pid)) {
-                continue;
+            try {
+                String pid = solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.PID);
+                if (StringUtils.isEmpty(pid)) {
+                    continue;
+                }
+
+                Context context = Context.ContextBuilder.aContext()
+                        .withPid(pid)
+                        .withSiteId(siteId)
+                        .build();
+                ProductServiceResponse productServiceResponse =
+                        productClient.callProductService(
+                                builderUtil.buildSearchServiceRequest(context),
+                                builderUtil.builcSearchServiceResponse(context));
+
+
+                productUtil.validateResponse(context, productServiceResponse);
+                Optional<Product> productOptional = productServiceResponse.getProducts()
+                        .stream()
+                        .findFirst();
+                if (productOptional.isPresent()) {
+                    Product product = productOptional.get();
+                    buildSolrDocument(context, solrInputDocument, product);
+
+                    String primaryImage = productUtil.getPrimaryImage(product);
+                    if (StringUtils.isNotEmpty(primaryImage)) {
+                        solrDocumentUtil.addField(
+                                solrInputDocument,
+                                GlobalConstants.IMAGE + (++rows) + "_s",
+                                primaryImage);
+                    }
+
+                    pidMap.computeIfAbsent(pid, k -> new HashSet<>()).add(keyword);
+
+//                    solrDocumentUtil.addField(
+//                            solrInputDocument,
+//                            GlobalConstants.IMAGE + (++rows) + "_s",
+//                            solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.PRIMARY_IMAGE));
+                }
+
+            } catch (Exception e) {
+                LOGGER.error("Exception processing the keyword " + keyword, e);
             }
-            pidMap.computeIfAbsent(pid, k -> new HashSet<>()).add(keyword);
-            solrDocumentUtil.addField(
-                    solrInputDocument,
-                    GlobalConstants.IMAGE + (++rows) + "_s",
-                    solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.PRIMARY_IMAGE));
         }
         enhancedSolrClient.updateDocs(Arrays.asList(solrInputDocument));
+
+    }
+
+    private void buildSolrDocument(Context context, SolrInputDocument solrInputDocument, Product product) {
+        productUtil.addCategories(context, solrInputDocument, product);
 
     }
 
