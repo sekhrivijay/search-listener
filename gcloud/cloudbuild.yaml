@@ -12,6 +12,6 @@ steps:
   args: ['-n', '$_NAMESPACE', 'set', 'image', 'deployment/$REPO_NAME-$_GROUP', '$REPO_NAME=gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=development'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER'
 
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID']

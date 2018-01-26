@@ -125,7 +125,7 @@ service:
     enabled: false
   swagger:
     enabled: true
-    base-package: productGroup
+#    base-package: productGroup
   logging:
     enabled: true
 
