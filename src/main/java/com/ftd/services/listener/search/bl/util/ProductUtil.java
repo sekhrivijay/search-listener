@@ -2,6 +2,7 @@ package com.ftd.services.listener.search.bl.util;
 
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.product.api.domain.response.Categories;
+import com.ftd.services.product.api.domain.response.Category;
 import com.ftd.services.product.api.domain.response.Desc;
 import com.ftd.services.product.api.domain.response.Image;
 import com.ftd.services.product.api.domain.response.Operational;
@@ -34,20 +35,20 @@ public class ProductUtil {
         this.solrDocumentUtil = solrDocumentUtil;
     }
 
-    public boolean getIsActive(Operational operational, String siteId) {
-        if (operational == null
-                || operational.getSites() == null) {
+    public boolean getIsActive(Operational operational) {
+        if (operational == null) {
             return false;
         }
-        if (siteId.equals(GlobalConstants.PROFLOWERS)
-                && operational.getSites().getPfc() != null) {
-            return operational.getSites().getPfc().getIsActive();
-        }
-        if (siteId.equals(GlobalConstants.FTD)
-                && operational.getSites().getFtd() != null) {
-            return operational.getSites().getFtd().getIsActive();
-        }
-        return false;
+        return operational.getIsActive();
+//        if (siteId.equals(GlobalConstants.PROFLOWERS)
+//                && operational.getSites().getPfc() != null) {
+//            return operational.getSites().getPfc().getIsActive();
+//        }
+//        if (siteId.equals(GlobalConstants.FTD)
+//                && operational.getSites().getFtd() != null) {
+//            return operational.getSites().getFtd().getIsActive();
+//        }
+//        return false;
     }
 
     public Categories getCategories(Taxonomy taxonomy, String siteId) {
@@ -56,7 +57,7 @@ public class ProductUtil {
             return null;
         }
         if (siteId.equals(GlobalConstants.PROFLOWERS)) {
-            return taxonomy.getSites().getPfc();
+            return taxonomy.getSites().getProflowers();
         }
         return taxonomy.getSites().getFtd();
     }
@@ -72,15 +73,20 @@ public class ProductUtil {
 
 
     public void addCategories(Context context, SolrInputDocument solrInputDocument, Product product) {
-        String siteId = context.getSiteId();
-        Categories categories = getCategories(product.getTaxonomy(), siteId);
-        if (categories == null || categories.getCategories() == null) {
+//        String siteId = context.getSiteId();
+        List<Category> categoryList =  product.getCategories();
+//        Categories categories = getCategories(product.getTaxonomy(), siteId);
+//        if (categories == null || categories.getCategories() == null) {
+//            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty categories from product service ");
+//        }
+        if (categoryList == null) {
             MiscUtil.throwCommonValidationException(LOGGER, context, "Empty categories from product service ");
         }
         solrDocumentUtil.addField(
                 solrInputDocument,
                 GlobalConstants.CATEGORIES,
-                categories.getCategories().stream()
+//                categories.getCategories().stream()
+                categoryList.stream()
                         .flatMap(collection -> collection.getCategory().stream())
                         .collect(Collectors.toList())
                         .stream()
@@ -107,7 +113,7 @@ public class ProductUtil {
         if (product.getAssets() != null
                 && product.getAssets().getImages() != null) {
             List<Image> imageList = product.getAssets().getImages();
-            Optional<String> imageOptional =  imageList.stream()
+            Optional<String> imageOptional = imageList.stream()
                     .filter(image -> GlobalConstants.PRIMARY.equals(image.getType()))
                     .map(Image::getUrl)
                     .findFirst();

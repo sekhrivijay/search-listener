@@ -53,7 +53,7 @@ public class ProductDelegate implements Delegate {
 
 
     private void buildSolrDocument(Context context, SolrInputDocument solrInputDocument, Product product) {
-        String siteId = context.getSiteId();
+//        String siteId = context.getSiteId();
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.ID, context.getSiteId() + product.getId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.PID, product.getId());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.SITE_ID, context.getSiteId());
@@ -70,7 +70,7 @@ public class ProductDelegate implements Delegate {
 
         solrDocumentUtil.addField(solrInputDocument,
                 GlobalConstants.IS_ACTIVE,
-                productUtil.getIsActive(product.getOperational(), siteId));
+                productUtil.getIsActive(product.getOperational()));
 
         if (product.getIdentity() != null) {
             solrDocumentUtil.addField(solrInputDocument,
