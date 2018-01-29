@@ -55,8 +55,8 @@ public class BsoDelegate implements Delegate {
         }
 
         solrDocumentUtil.addField(solrInputDocument, "bsoOrderCnt_l", bsoEntity.getOrderCount());
-        solrDocumentUtil.addField(solrInputDocument, "_bsoOrderAmt_d", bsoEntity.getOrderAmount());
-        solrDocumentUtil.addField(solrInputDocument, "_bsoOrderMargin_d", bsoEntity.getMargin());
+        solrDocumentUtil.addField(solrInputDocument, "bsoOrderAmt_d", bsoEntity.getOrderAmount());
+        solrDocumentUtil.addField(solrInputDocument, "bsoOrderMargin_d", bsoEntity.getMargin());
 
     }
 }

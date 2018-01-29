@@ -80,12 +80,12 @@ service:
 
   productService:
     enabled: true
-    baseUrl: http://35.227.193.133/api/products
+    baseUrl: http://35.227.193.133/siteId/api/products
     version: 0
 
   pricingService:
     enabled: true
-    baseUrl: http://35.227.252.218/api/pricing
+    baseUrl: http://35.227.252.218/siteId/api/pricing
     version: 0
 
 

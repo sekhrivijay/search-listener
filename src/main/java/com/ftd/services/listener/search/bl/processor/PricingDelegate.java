@@ -3,7 +3,7 @@ package com.ftd.services.listener.search.bl.processor;
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.listener.search.bl.util.BuilderUtil;
 import com.ftd.services.listener.search.bl.util.MiscUtil;
-import com.ftd.services.pricing.api.domain.response.FinalPrice;
+import com.ftd.services.pricing.api.domain.response.PriceTypes;
 import com.ftd.services.pricing.api.domain.response.Prices;
 import com.ftd.services.pricing.api.domain.response.Pricing;
 import com.ftd.services.pricing.api.domain.response.PricingResponse;
@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
+import java.util.List;
 
 @Named("pricingDelegate")
 public class PricingDelegate implements Delegate {
@@ -49,6 +50,8 @@ public class PricingDelegate implements Delegate {
         }
         pricingResponse.getPricing()
                 .stream()
+                .filter(e -> e.getId() != null)
+                .filter(e -> e.getId().equals(context.getPid()))
                 .findFirst()
                 .ifPresent(pricing -> buildSolrDocument(context, solrInputDocument, pricing));
 
@@ -57,20 +60,32 @@ public class PricingDelegate implements Delegate {
     }
 
     private void buildSolrDocument(Context context, SolrInputDocument solrInputDocument, Pricing pricing) {
-        Prices prices = pricing.getPrices();
-        if (prices == null) {
+        List<Prices> pricesList = pricing.getPrices();
+        if (pricesList == null) {
             MiscUtil.throwCommonValidationException(LOGGER, context, "Empty prices from pricing service");
         }
-        FinalPrice finalPrice = prices.getFinalPrice();
-        if (finalPrice == null) {
-            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty finalPrice from pricing service");
-        }
 
-        solrDocumentUtil.addField(solrInputDocument,
-                GlobalConstants.FINAL_PRICE,
-                finalPrice.getValue().doubleValue());
-        solrDocumentUtil.addField(solrInputDocument,
-                GlobalConstants.REGULAR_PRICE,
-                prices.getRegularPrice().doubleValue());
+        pricesList
+                .stream()
+                .filter(e -> e.getType() == PriceTypes.regular)
+                .filter(e -> e.getValue() != null)
+                .findFirst()
+                .ifPresent(e -> solrDocumentUtil.addField(solrInputDocument,
+                        GlobalConstants.REGULAR_PRICE,
+                        e.getValue().doubleValue()));
+
+
+//        FinalPrice finalPrice = pricesList.getFinalPrice();
+//        if (finalPrice == null) {
+//            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty finalPrice from pricing service");
+//        }
+//
+//        solrDocumentUtil.addField(solrInputDocument,
+//                GlobalConstants.FINAL_PRICE,
+//                finalPrice.getValue().doubleValue());
+//        solrDocumentUtil.addField(solrInputDocument,
+//                GlobalConstants.REGULAR_PRICE,
+//                pricesList.getRegularPrice().doubleValue());
+//    }
     }
 }
