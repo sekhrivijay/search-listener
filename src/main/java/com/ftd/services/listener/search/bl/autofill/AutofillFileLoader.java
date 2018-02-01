@@ -225,7 +225,7 @@ public class AutofillFileLoader {
         productUtil.addCategories(context, solrInputDocument, product);
         productUtil.addAttributes(context,
                 solrInputDocument,
-                product ,
+                product,
                 Arrays.asList(GlobalConstants.COLOR, GlobalConstants.OCCASION));
     }
 
