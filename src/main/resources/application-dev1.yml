@@ -1,0 +1,17 @@
+
+service:
+
+  solrService:
+    enabled: true
+    zkEnsembleDestination : zk-dev1-0.zk-hs-dev1.dev.svc.cluster.local:2181,zk-dev1-1.zk-hs-dev1.dev.svc.cluster.local:2181,zk-dev1-2.zk-hs-dev1.dev.svc.cluster.local:2181
+
+  productService:
+    enabled: true
+    baseUrl: http://product-service-dev1/siteId/api/products
+    version: 0
+
+  pricingService:
+    enabled: true
+    baseUrl: http://pricing-service-dev1/siteId/api/pricing
+    version: 0
+

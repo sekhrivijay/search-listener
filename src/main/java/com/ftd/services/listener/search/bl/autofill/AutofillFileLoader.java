@@ -223,7 +223,10 @@ public class AutofillFileLoader {
 
     private void buildSolrDocument(Context context, SolrInputDocument solrInputDocument, Product product) {
         productUtil.addCategories(context, solrInputDocument, product);
-
+        productUtil.addAttributes(context,
+                solrInputDocument,
+                product ,
+                Arrays.asList(GlobalConstants.COLOR, GlobalConstants.OCCASION));
     }
 
 }

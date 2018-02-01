@@ -126,6 +126,11 @@
         </dependency>
         <dependency>
             <groupId>com.services.micro.commons</groupId>
+            <artifactId>commons-https</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.services.micro.commons</groupId>
             <artifactId>commons-swagger</artifactId>
             <version>1.0.0</version>
         </dependency>

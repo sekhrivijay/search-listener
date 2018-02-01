@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -168,6 +169,13 @@ public class ProductUtil {
 
 
     public void addAttributes(Context context, SolrInputDocument solrInputDocument, Product product) {
+        addAttributes(context, solrInputDocument, product, null);
+    }
+
+    public void addAttributes(Context context,
+                              SolrInputDocument solrInputDocument,
+                              Product product,
+                              List<String> attributeNames) {
         List<Attributes> attributesList = product.getProductAttributes();
         if (attributesList == null) {
             return;
@@ -178,6 +186,7 @@ public class ProductUtil {
                         attributes.getName(),
                         attributes.getValues()
                                 .stream()
+                                .filter(e -> attributeNames == null || attributeNames.size() == 0 || attributeNames.contains(e.getValue()))
                                 .map(AttributeValue::getValue)
                                 .collect(Collectors.toList())));
 
