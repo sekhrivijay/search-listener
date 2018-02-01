@@ -1,6 +1,8 @@
 package com.ftd.services.listener.search.bl.util;
 
 import com.ftd.services.listener.search.bl.dm.Context;
+import com.ftd.services.product.api.domain.response.AttributeValue;
+import com.ftd.services.product.api.domain.response.Attributes;
 import com.ftd.services.product.api.domain.response.Categories;
 import com.ftd.services.product.api.domain.response.Category;
 import com.ftd.services.product.api.domain.response.Desc;
@@ -74,7 +76,7 @@ public class ProductUtil {
 
     public void addCategories(Context context, SolrInputDocument solrInputDocument, Product product) {
 //        String siteId = context.getSiteId();
-        List<Category> categoryList =  product.getCategories();
+        List<Category> categoryList = product.getCategories();
 //        Categories categories = getCategories(product.getTaxonomy(), siteId);
 //        if (categories == null || categories.getCategories() == null) {
 //            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty categories from product service ");
@@ -164,4 +166,22 @@ public class ProductUtil {
                 .ifPresent(desc -> solrDocumentUtil.addField(solrInputDocument, GlobalConstants.DESCRIPTION, desc));
     }
 
+
+    public void addAttributes(Context context, SolrInputDocument solrInputDocument, Product product) {
+        List<Attributes> attributesList = product.getProductAttributes();
+        if (attributesList == null) {
+            return;
+        }
+        LOGGER.info("Adding attributes .... " + context);
+        attributesList.forEach(attributes ->
+                solrDocumentUtil.addField(solrInputDocument,
+                        attributes.getName(),
+                        attributes.getValues()
+                                .stream()
+                                .map(AttributeValue::getValue)
+                                .collect(Collectors.toList())));
+
+    }
+
 }
+

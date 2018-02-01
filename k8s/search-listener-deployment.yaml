@@ -21,7 +21,7 @@ spec:
       containers:
       - name: search-listener-service
         imagePullPolicy: Always
-        image: "gcr.io/deep-thought-185318/search-listener-service:e6b8b6fdce964f0b2c0aaecf9256d16fdfc6bfc8"
+        image: "gcr.io/deep-thought-185318/search-listener-service:7d871904642f6243890561f9c2a6fde596239860"
         resources:
           requests:
             memory: "0.5Gi"
@@ -31,11 +31,13 @@ spec:
           name: server
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: "group"
+          value: group
         - name: SERVICE_SOLRSERVICE_ZKENSEMBLEDESTINATION
           value: "zk-group-0.zk-hs-group.default.svc.cluster.local:2181,zk-group-1.zk-hs-group.default.svc.cluster.local:2181,zk-group-2.zk-hs-group.default.svc.cluster.local:2181"
         - name: SERVICE_PRODUCTSERVICE_BASEURL
-          value: "http://product-service-group/api/products"
+          value: http://product-service-group/siteId/api/products
+        - name: SERVICE_PRICINGSERVICE_BASEURL
+          value: http://pricing-service-group/siteId/api/pricing
         livenessProbe:
           httpGet:
             path: /health

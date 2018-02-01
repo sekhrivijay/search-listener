@@ -62,10 +62,9 @@ public class ProductDelegate implements Delegate {
 
 
         productUtil.addDescription(context, solrInputDocument, product);
-
         productUtil.addSeo(context, solrInputDocument, product);
-
         productUtil.addCategories(context, solrInputDocument, product);
+        productUtil.addAttributes(context, solrInputDocument, product);
 
 
         solrDocumentUtil.addField(solrInputDocument,
