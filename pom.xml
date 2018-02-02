@@ -39,6 +39,10 @@
             <id>dintuMavenRepo</id>
             <url>https://rkande.jfrog.io/rkande/libs-snapshot-local/</url>
         </repository>
+        <repository>
+            <id>gcpMavenRepo</id>
+            <url>http://35.226.202.189/artifactory/libs-snapshot-local/</url>
+        </repository>
     </repositories>
 
 
