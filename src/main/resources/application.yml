@@ -12,7 +12,7 @@ spring:
   application:
     name: search-listener
   profiles:
-    active: local
+    active: dev1
   output:
     ansi:
       enabled: ALWAYS
@@ -134,6 +134,8 @@ service:
     enabled: true
 #    base-package: productGroup
   logging:
+    enabled: true
+  https:
     enabled: true
 
 
