@@ -202,7 +202,11 @@ public class AutofillFileLoader {
                     if (StringUtils.isNotEmpty(primaryImage)) {
                         solrDocumentUtil.addField(
                                 solrInputDocument,
-                                GlobalConstants.IMAGE + (++rows) + "_s",
+                                GlobalConstants.PID + (++rows) + "_s",
+                                pid);
+                        solrDocumentUtil.addField(
+                                solrInputDocument,
+                                GlobalConstants.IMAGE + (rows) + "_s",
                                 primaryImage);
                     }
 

@@ -12,7 +12,7 @@ spring:
   application:
     name: search-listener
   profiles:
-    active: dev1
+    active: local
   output:
     ansi:
       enabled: ALWAYS
