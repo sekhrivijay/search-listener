@@ -3,7 +3,6 @@ package com.ftd.services.listener.search.bl.util;
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.product.api.domain.response.AttributeValue;
 import com.ftd.services.product.api.domain.response.Attributes;
-import com.ftd.services.product.api.domain.response.Categories;
 import com.ftd.services.product.api.domain.response.Category;
 import com.ftd.services.product.api.domain.response.Desc;
 import com.ftd.services.product.api.domain.response.Image;
@@ -12,7 +11,6 @@ import com.ftd.services.product.api.domain.response.Product;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.product.api.domain.response.Seo;
 import com.ftd.services.product.api.domain.response.SpecificCategory;
-import com.ftd.services.product.api.domain.response.Taxonomy;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -53,16 +51,16 @@ public class ProductUtil {
 //        return false;
     }
 
-    public Categories getCategories(Taxonomy taxonomy, String siteId) {
-        if (taxonomy == null
-                || taxonomy.getSites() == null) {
-            return null;
-        }
-        if (siteId.equals(GlobalConstants.PROFLOWERS)) {
-            return taxonomy.getSites().getProflowers();
-        }
-        return taxonomy.getSites().getFtd();
-    }
+//    public Categories getCategories(Taxonomy taxonomy, String siteId) {
+//        if (taxonomy == null
+//                || taxonomy.getSites() == null) {
+//            return null;
+//        }
+//        if (siteId.equals(GlobalConstants.PROFLOWERS)) {
+//            return taxonomy.getSites().getProflowers();
+//        }
+//        return taxonomy.getSites().getFtd();
+//    }
 
 
     public void validateResponse(Context context, ProductServiceResponse productServiceResponse) {
