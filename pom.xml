@@ -43,6 +43,10 @@
             <id>gcpMavenRepo</id>
             <url>http://35.226.202.189/artifactory/libs-snapshot-local/</url>
         </repository>
+        <repository>
+            <id>gcpLocalMavenRepo</id>
+            <url>http://35.226.202.189/artifactory/libs-release-local/</url>
+        </repository>
     </repositories>
 
 
