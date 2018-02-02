@@ -44,6 +44,7 @@ import java.util.Set;
 @ConditionalOnProperty(name = "service.autofill.enabled")
 public class AutofillFileLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutofillFileLoader.class);
+    public static final List<String> ATTRIBUTE_NAMES = Arrays.asList(GlobalConstants.COLOR, GlobalConstants.OCCASION);
 
     @Value("${service.autofill.querySize}")
     private int autofillQuerySize;
@@ -226,7 +227,7 @@ public class AutofillFileLoader {
         productUtil.addAttributes(context,
                 solrInputDocument,
                 product,
-                Arrays.asList(GlobalConstants.COLOR, GlobalConstants.OCCASION));
+                ATTRIBUTE_NAMES);
     }
 
 }

@@ -180,17 +180,23 @@ public class ProductUtil {
             return;
         }
         LOGGER.info("Adding attributes .... " + context);
-        attributesList.forEach(attributes ->
+        attributesList
+                .stream()
+                .filter(e -> filterAttribute(attributeNames, e))
+                .forEach(attributes ->
                 solrDocumentUtil.addField(solrInputDocument,
                         attributes.getName(),
                         attributes.getValues()
                                 .stream()
-                                .filter(e -> attributeNames == null
-                                        || attributeNames.size() == 0
-                                        || attributeNames.contains(e.getValue()))
                                 .map(AttributeValue::getValue)
                                 .collect(Collectors.toList())));
 
+    }
+
+    private boolean filterAttribute(List<String> attributeNames, Attributes e) {
+        return attributeNames == null
+                || attributeNames.size() == 0
+                || attributeNames.contains(e.getName());
     }
 
 }

@@ -22,4 +22,4 @@ service:
     productDeleteSubscription: search.product.delete.dev.dev1.local
 
   autofill:
-    enabled: false
+    enabled: true
