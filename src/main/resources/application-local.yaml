@@ -4,6 +4,16 @@ server:
     enabled: false
 
 service:
+
+  solrService:
+    zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
+
+  productService:
+    baseUrl: http://35.227.193.133/siteId/api/products
+
+  pricingService:
+    baseUrl: http://35.227.252.218/siteId/api/pricing
+
   metrics:
     prometheus:
       enabled: false

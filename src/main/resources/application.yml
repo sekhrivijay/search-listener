@@ -78,21 +78,23 @@ service:
 
   solrService:
     enabled: true
-    zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
+    zkEnsembleDestination : zk-${spring.profiles.active}-0.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${spring.profiles.active}-1.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${spring.profiles.active}-2.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181
+
     collectionDestination : products
     zkTimeoutDestination : 20000
     queryTimeout : 10000
     maxRetryAttempts: 3
     retryInterval: 500
 
+
   productService:
     enabled: true
-    baseUrl: http://35.227.193.133/siteId/api/products
+    baseUrl: http://product-service/siteId/api/products
     version: 0
 
   pricingService:
     enabled: true
-    baseUrl: http://35.227.252.218/siteId/api/pricing
+    baseUrl: http://pricing-service/siteId/api/pricing
     version: 0
 
 
