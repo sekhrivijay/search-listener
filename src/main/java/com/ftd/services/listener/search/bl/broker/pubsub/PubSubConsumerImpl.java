@@ -96,7 +96,7 @@ public class PubSubConsumerImpl {
             EventEntity eventEntity = gson.fromJson(inputMessage, EventEntity.class);
             Context context = Context.ContextBuilder.aContext()
 //                    .withPid(inputMessage)
-                    .withPid(eventEntity.getPid())
+                    .withPid(eventEntity.getId())
 //                    .withSiteId(GlobalConstants.FTD)
                     .withSiteId(eventEntity.getSiteId())
                     .withEventEntity(eventEntity)
