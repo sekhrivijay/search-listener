@@ -26,7 +26,6 @@ spring:
       override-system-properties: false
       enabled: false
     gcp:
-#      project-id: quality-assurance-191019
       pubsub:
         project-id: quality-assurance-191019
 
@@ -108,8 +107,8 @@ service:
   bso:
     enabled: true
     fileReloadRate: 86400000
-#    file: /Users/vsekhri/Desktop/product_margin_feed.csv
-    file: gs://us.artifacts.deep-thought-185318.appspot.com/product_margin_feed.csv
+#    file: gs://us.artifacts.deep-thought-185318.appspot.com/product_margin_feed.csv
+    file: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/product_margin_feed.csv
 
 #  sitesBsoMap:
 #    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
@@ -121,14 +120,17 @@ service:
     keywordReloadRate: 86400000
     querySize: 3
     keywordsFile:
-      proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
-      ftd: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+#      proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+      proflowers: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
+#      ftd: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+      ftd: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
 
   sitesAutofillKeywordMap:
 #    proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
 #    ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
-    proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
-    ftd: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+#    proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+    proflowers: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
+    ftd: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
 
 
   metrics:
