@@ -63,13 +63,14 @@ service:
     retryInterval : 1000
 
 
+
   # pub-sub configuration
   pubsub:
     enabled: true
-    productSubscription: search.product.update.${spring.profiles.active}.${spring.profiles.active}
-    pricingSubscription: search.pricing.update.${spring.profiles.active}.${spring.profiles.active}
-    productDeleteSubscription: search.product.delete.${spring.profiles.active}.${spring.profiles.active}
-    failureTopic: search.failure.${spring.profiles.active}
+    productSubscription: nonprod1.${spring.profiles.active}.search.product.update
+    pricingSubscription: nonprod1.${spring.profiles.active}.search.pricing.update
+    productDeleteSubscription: nonprod1.${spring.profiles.active}.search.product.delete
+    failureTopic: nonprod1.${spring.profiles.active}.search.failure
     productChannelName: pubsubInputProductChannel
     pricingChannelName: pubsubInputPriceChannel
     productDeleteChannelName: pubsubInputProductDeleteChannel
