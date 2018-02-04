@@ -65,10 +65,10 @@ service:
   # pub-sub configuration
   pubsub:
     enabled: true
-    productSubscription: search.product.update.dev.dev1
-    pricingSubscription: search.pricing.update.dev.dev1
-    productDeleteSubscription: search.product.delete.dev.dev1
-    failureTopic: search.failure.dev
+    productSubscription: search.product.update.${spring.profiles.active}.${spring.profiles.active}
+    pricingSubscription: search.pricing.update.${spring.profiles.active}.${spring.profiles.active}
+    productDeleteSubscription: search.product.delete.${spring.profiles.active}.${spring.profiles.active}
+    failureTopic: search.failure.${spring.profiles.active}
     productChannelName: pubsubInputProductChannel
     pricingChannelName: pubsubInputPriceChannel
     productDeleteChannelName: pubsubInputProductDeleteChannel
