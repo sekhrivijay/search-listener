@@ -35,9 +35,13 @@ spring:
     flush-interval: 15
     enabled: false
 
+  cloud:
+    gcp:
+      credentials:
+        project-id: quality-assurance-191019
+
 
 service:
-
   # kafka configuration
   kafka:
     enabled: false
@@ -139,8 +143,6 @@ service:
     enabled: true
   https:
     enabled: true
-
-
 
 logging:
   level:
