@@ -25,6 +25,11 @@ spring:
       fail-fast: true
       override-system-properties: false
       enabled: false
+    gcp:
+#      project-id: quality-assurance-191019
+      pubsub:
+        project-id: quality-assurance-191019
+
   sleuth:
     web:
       enabled: true
@@ -35,10 +40,7 @@ spring:
     flush-interval: 15
     enabled: false
 
-  cloud:
-    gcp:
-      credentials:
-        project-id: quality-assurance-191019
+
 
 
 service:
