@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProductUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductUtil.class);
+    public static final String UNDERSCORE_A = "_a";
     private SolrDocumentUtil solrDocumentUtil;
 
     @Autowired
@@ -162,7 +163,7 @@ public class ProductUtil {
                 .filter(e -> filterAttribute(attributeNames, e))
                 .forEach(attributes ->
                 solrDocumentUtil.addField(solrInputDocument,
-                        attributes.getName(),
+                        attributes.getName() + UNDERSCORE_A,
                         attributes.getValues()
                                 .stream()
                                 .map(AttributeValue::getValue)

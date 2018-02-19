@@ -7,7 +7,7 @@
     <groupId>com.ftd.services</groupId>
     <artifactId>search-listener</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <name>search-listener</name>
     <description>Generic search listener for SOLR with Spring Boot</description>
@@ -210,7 +210,7 @@
         <dependency>
             <groupId>com.ftd.services</groupId>
             <artifactId>search</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
             <classifier>orchestration</classifier>
             <exclusions>
                 <exclusion>
