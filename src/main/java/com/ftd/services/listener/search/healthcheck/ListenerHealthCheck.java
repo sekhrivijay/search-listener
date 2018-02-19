@@ -1,7 +1,5 @@
 package com.ftd.services.listener.search.healthcheck;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
@@ -9,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListenerHealthCheck implements HealthIndicator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ListenerHealthCheck.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(ListenerHealthCheck.class);
 //    private EnhancedSolrClient enhancedSolrClient;
 
     public ListenerHealthCheck() {
