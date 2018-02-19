@@ -11,7 +11,7 @@ import com.ftd.services.listener.search.product.generated.Record_;
 import com.ftd.services.listener.search.product.generated.Result;
 import com.ftd.services.listener.search.product.generated.SourceCode;
 import com.ftd.services.listener.search.product.generated.SourceCodes;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

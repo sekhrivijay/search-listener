@@ -4,7 +4,7 @@ import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.Document;
 import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

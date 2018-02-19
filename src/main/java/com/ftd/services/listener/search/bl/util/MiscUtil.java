@@ -2,7 +2,7 @@ package com.ftd.services.listener.search.bl.util;
 
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.listener.search.bl.exception.ValidationException;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.slf4j.Logger;
 
 public class MiscUtil {

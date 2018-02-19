@@ -1,10 +1,10 @@
 package com.ftd.services.listener.search.bl.dm;
 
 import com.ftd.services.listener.search.product.generated.ProductDocument;
-import com.ftd.services.pricing.api.domain.response.PricingResponse;
+import com.ftd.services.pricing.api.domain.response.PricingServiceResponse;
 import com.ftd.services.product.api.domain.response.Product;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 
 public class Context {
     private String pid;
@@ -13,7 +13,7 @@ public class Context {
     private EventEntity eventEntity;
     private Product product;
     private ProductDocument productDocument;
-    private PricingResponse pricingResponse;
+    private PricingServiceResponse pricingResponse;
     private ProductServiceResponse productServiceResponse;
 
     public String getPid() {
@@ -64,11 +64,11 @@ public class Context {
         this.productServiceResponse = productServiceResponse;
     }
 
-    public PricingResponse getPricingResponse() {
+    public PricingServiceResponse getPricingResponse() {
         return pricingResponse;
     }
 
-    public void setPricingResponse(PricingResponse pricingResponse) {
+    public void setPricingResponse(PricingServiceResponse pricingResponse) {
         this.pricingResponse = pricingResponse;
     }
 
@@ -88,7 +88,7 @@ public class Context {
         private EventEntity eventEntity;
         private Product product;
         private ProductDocument productDocument;
-        private PricingResponse pricingResponse;
+        private PricingServiceResponse pricingResponse;
         private ProductServiceResponse productServiceResponse;
 
         private ContextBuilder() {
@@ -128,7 +128,7 @@ public class Context {
             return this;
         }
 
-        public ContextBuilder withPricingResponse(PricingResponse pricingResponse) {
+        public ContextBuilder withPricingResponse(PricingServiceResponse pricingResponse) {
             this.pricingResponse = pricingResponse;
             return this;
         }

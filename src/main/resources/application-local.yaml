@@ -3,16 +3,26 @@ server:
   ssl:
     enabled: false
 
+
+spring:
+  cloud:
+    gcp:
+      pubsub:
+#        project-id: sandbox-191019
+        credentials:
+          location: file:/users/vsekhri/apps/gcp/Quality Assurance-88570982a040.json
+
+
 service:
 
   solrService:
     zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
 
   productService:
-    baseUrl: http://35.227.193.133/siteId/api/products
+    baseUrl: http://gcp-nonprod1-dev1-proxy.ftdi.com/product-service/siteId/api/products
 
   pricingService:
-    baseUrl: http://35.227.252.218/siteId/api/pricing
+    baseUrl: http://gcp-nonprod1-dev1-proxy.ftdi.com/pricing-service/siteId/api/pricing
 
   metrics:
     prometheus:
@@ -27,9 +37,9 @@ service:
     enabled: false
 
   pubsub:
-    productSubscription: search.product.update.dev.dev1.local
-    pricingSubscription: search.pricing.update.dev.dev1.local
-    productDeleteSubscription: search.product.delete.dev.dev1.local
+    productSubscription: nonprod1.dev1.search.product.update.local
+    pricingSubscription: nonprod1.dev1.search.product.update.local
+    productDeleteSubscription: nonprod1.dev1.search.product.delete.local
 
   autofill:
     enabled: false

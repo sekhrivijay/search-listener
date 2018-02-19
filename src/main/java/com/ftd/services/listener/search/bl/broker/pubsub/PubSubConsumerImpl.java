@@ -3,7 +3,7 @@ package com.ftd.services.listener.search.bl.broker.pubsub;
 import com.ftd.services.listener.search.bl.dm.Context;
 import com.ftd.services.listener.search.bl.dm.EventEntity;
 import com.ftd.services.listener.search.config.PubSubProducerConfig;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;

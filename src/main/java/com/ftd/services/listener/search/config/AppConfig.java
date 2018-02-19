@@ -8,7 +8,7 @@ import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClientImpl;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 import com.ftd.services.search.bl.clients.solr.util.SolrUtil;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import com.google.gson.Gson;
 import org.apache.solr.client.solrj.SolrClient;
 import org.springframework.beans.factory.annotation.Autowired;

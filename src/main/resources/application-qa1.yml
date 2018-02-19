@@ -1,3 +1,134 @@
+server:
+  port: 443
+  ssl:
+    key-store: "classpath:keystore.jks"
+    key-store-password: changeit
+    enabled: true
+  http:
+    port: 80
+
+
+spring:
+  profiles:
+    active: local
+    gcp:
+      pubsub:
+        project-id: quality-assurance-191019
+        credentials:
+          location: classpath:key.json
+      project-id: quality-assurance-191019
+
+
+
+
+
 service:
-  kafkaBootstrapServers: kafkadapp01v1.ftdi.com:9092
-#  ,kafkadapp01v2.ftdi.com:9092
+  # kafka configuration
+  kafka:
+    enabled: false
+    bootstrapServers: freshdapp01v1.ftdi.com:9092
+    groupId: indexers
+    productTopics: product
+    productDeleteTopics: productDelete
+    inventoryTopics: inventory
+    priceTopics: price
+    failureTopic: failure
+    productGroup: productGroup
+    productDeleteGroup: productDeleteGroup
+    inventoryGroup: inventoryGroup
+    priceGroup: priceGroup
+
+    concurrency : 3
+    maxRetryAttempts : 3
+    retryInterval : 1000
+
+
+
+  # pub-sub configuration
+  pubsub:
+    enabled: true
+    productSubscription: nonprod1.${spring.profiles.active}.search.product.update
+    pricingSubscription: nonprod1.${spring.profiles.active}.search.pricing.update
+    productDeleteSubscription: nonprod1.${spring.profiles.active}.search.product.delete
+    failureTopic: nonprod1.${spring.profiles.active}.search.failure
+    productChannelName: pubsubInputProductChannel
+    pricingChannelName: pubsubInputPriceChannel
+    productDeleteChannelName: pubsubInputProductDeleteChannel
+    failureChannelName: pubsubOutputFailureChannel
+
+  # PIM service configuration
+  pimService:
+    baseUrl: "https://apiservice.providecommerce.com/API/Product/v1/JSON/GetProductDetail"
+    accessToken: abcd
+    apolloBaseUrl: "http://amsdapp01v1.ftdi.com:8700/prodinfo/products"
+
+  solrService:
+    enabled: true
+    zkEnsembleDestination : zk-${spring.profiles.active}-0.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${spring.profiles.active}-1.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${spring.profiles.active}-2.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181
+
+    collectionDestination : products
+    zkTimeoutDestination : 20000
+    queryTimeout : 10000
+    maxRetryAttempts: 3
+    retryInterval: 500
+
+
+  productService:
+    enabled: true
+    baseUrl: http://product-service/siteId/api/products
+    version: 0
+
+  pricingService:
+    enabled: true
+    baseUrl: http://pricing-service/siteId/api/pricing
+    version: 0
+
+
+  # BSO Configuration
+  bso:
+    enabled: true
+    fileReloadRate: 86400000
+#    file: gs://us.artifacts.deep-thought-185318.appspot.com/product_margin_feed.csv
+    file: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/product_margin_feed.csv
+
+#  sitesBsoMap:
+#    proflowers: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
+#    ftd: /Users/vsekhri/Documents/FTD-Local/probsofile.prn
+
+  # Autofill Configuration
+  autofill:
+    enabled: true
+    keywordReloadRate: 86400000
+    querySize: 3
+    keywordsFile:
+#      proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+      proflowers: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
+#      ftd: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+      ftd: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
+
+  sitesAutofillKeywordMap:
+#    proflowers: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+#    ftd: /Users/vsekhri/src/search-listener/src/main/resources/ftd_top_keywords.txt
+#    proflowers: gs://us.artifacts.deep-thought-185318.appspot.com/ftd_top_keywords.txt
+    proflowers: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
+    ftd: gs://artifacts.${spring.cloud.gcp.pubsub.project-id}.appspot.com/ftd_top_keywords.txt
+
+
+  metrics:
+    dropwizard:
+      enabled: true
+    prometheus:
+      enabled: true
+  git:
+    enabled: false
+  swagger:
+    enabled: true
+#    base-package: productGroup
+  logging:
+    enabled: true
+  https:
+    enabled: true
+
+logging:
+  level:
+    ROOT: INFO

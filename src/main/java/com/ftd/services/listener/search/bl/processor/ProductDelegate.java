@@ -7,7 +7,7 @@ import com.ftd.services.product.api.domain.response.Product;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.search.bl.clients.product.ProductClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 

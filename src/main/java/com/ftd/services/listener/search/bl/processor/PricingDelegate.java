@@ -6,10 +6,10 @@ import com.ftd.services.listener.search.bl.util.MiscUtil;
 import com.ftd.services.pricing.api.domain.response.PriceTypes;
 import com.ftd.services.pricing.api.domain.response.Prices;
 import com.ftd.services.pricing.api.domain.response.Pricing;
-import com.ftd.services.pricing.api.domain.response.PricingResponse;
+import com.ftd.services.pricing.api.domain.response.PricingServiceResponse;
 import com.ftd.services.search.bl.clients.price.PricingClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class PricingDelegate implements Delegate {
     @Override
     public SolrInputDocument process(Context context, SolrInputDocument solrInputDocument) {
 
-        PricingResponse pricingResponse =
+        PricingServiceResponse pricingResponse =
                 pricingClient.callPriceService(
                         builderUtil.buildSearchServiceRequest(context),
                         builderUtil.builcSearchServiceResponse(context));

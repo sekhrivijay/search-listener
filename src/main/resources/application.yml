@@ -28,7 +28,7 @@ spring:
     gcp:
       pubsub:
         project-id: quality-assurance-191019
-
+      
   sleuth:
     web:
       enabled: true
@@ -43,6 +43,8 @@ spring:
 
 
 service:
+
+  name: search
   # kafka configuration
   kafka:
     enabled: false
@@ -84,7 +86,7 @@ service:
 
   solrService:
     enabled: true
-    zkEnsembleDestination : zk-${spring.profiles.active}-0.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${spring.profiles.active}-1.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${spring.profiles.active}-2.zk-hs-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181
+    zkEnsembleDestination : zk-${service.name}-${spring.profiles.active}-0.zk-hs-${service.name}-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${service.name}-${spring.profiles.active}-1.zk-hs-${service.name}-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181,zk-${service.name}-${spring.profiles.active}-2.zk-hs-${service.name}-${spring.profiles.active}.${spring.profiles.active}.svc.cluster.local:2181
 
     collectionDestination : products
     zkTimeoutDestination : 20000

@@ -9,7 +9,7 @@ import com.ftd.services.search.api.request.RequestType;
 import com.ftd.services.search.bl.clients.product.ProductClient;
 import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;

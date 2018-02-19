@@ -12,7 +12,7 @@ import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.product.api.domain.response.Seo;
 import com.ftd.services.product.api.domain.response.SpecificCategory;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
-import com.ftd.services.search.config.GlobalConstants;
+import com.ftd.services.search.api.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -40,27 +40,9 @@ public class ProductUtil {
             return false;
         }
         return operational.getIsActive();
-//        if (siteId.equals(GlobalConstants.PROFLOWERS)
-//                && operational.getSites().getPfc() != null) {
-//            return operational.getSites().getPfc().getIsActive();
-//        }
-//        if (siteId.equals(GlobalConstants.FTD)
-//                && operational.getSites().getFtd() != null) {
-//            return operational.getSites().getFtd().getIsActive();
-//        }
-//        return false;
     }
 
-//    public Categories getCategories(Taxonomy taxonomy, String siteId) {
-//        if (taxonomy == null
-//                || taxonomy.getSites() == null) {
-//            return null;
-//        }
-//        if (siteId.equals(GlobalConstants.PROFLOWERS)) {
-//            return taxonomy.getSites().getProflowers();
-//        }
-//        return taxonomy.getSites().getFtd();
-//    }
+
 
 
     public void validateResponse(Context context, ProductServiceResponse productServiceResponse) {
@@ -75,17 +57,12 @@ public class ProductUtil {
     public void addCategories(Context context, SolrInputDocument solrInputDocument, Product product) {
 //        String siteId = context.getSiteId();
         List<Category> categoryList = product.getCategories();
-//        Categories categories = getCategories(product.getTaxonomy(), siteId);
-//        if (categories == null || categories.getCategories() == null) {
-//            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty categories from product service ");
-//        }
         if (categoryList == null) {
             MiscUtil.throwCommonValidationException(LOGGER, context, "Empty categories from product service ");
         }
         solrDocumentUtil.addField(
                 solrInputDocument,
                 GlobalConstants.CATEGORIES,
-//                categories.getCategories().stream()
                 categoryList.stream()
                         .flatMap(collection -> collection.getCategory().stream())
                         .collect(Collectors.toList())
@@ -98,8 +75,10 @@ public class ProductUtil {
     public void addSeo(Context context, SolrInputDocument solrInputDocument, Product product) {
         Seo seo = product.getSeo();
         if (seo == null) {
-            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty seo from product service ");
+            return;
+//            MiscUtil.throwCommonValidationException(LOGGER, context, "Empty seo from product service ");
         }
+//        LOGGER.info(context.toString());
         solrDocumentUtil.addField(solrInputDocument, GlobalConstants.TITLE, seo.getTitle());
         String keywordsStr = seo.getKeywords();
         if (StringUtils.isNotEmpty(keywordsStr)) {

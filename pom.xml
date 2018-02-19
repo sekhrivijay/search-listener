@@ -54,10 +54,7 @@
             <id>myMavenRepo</id>
             <url>${myMavenRepoReadUrl}</url>
         </repository>
-        <repository>
-            <id>dintuMavenRepo</id>
-            <url>https://rkande.jfrog.io/rkande/libs-snapshot-local/</url>
-        </repository>
+
         <repository>
             <id>gcpMavenRepo</id>
             <url>http://35.226.202.189/artifactory/libs-snapshot-local/</url>
@@ -214,7 +211,7 @@
             <groupId>com.ftd.services</groupId>
             <artifactId>search</artifactId>
             <version>0.0.1</version>
-            <classifier>client</classifier>
+            <classifier>orchestration</classifier>
             <exclusions>
                 <exclusion>
                     <artifactId>*</artifactId>
