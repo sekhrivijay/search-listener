@@ -40,7 +40,7 @@ public class PricingDelegate implements Delegate {
         PricingServiceResponse pricingResponse =
                 pricingClient.callPriceService(
                         builderUtil.buildSearchServiceRequest(context),
-                        builderUtil.builcSearchServiceResponse(context));
+                        builderUtil.buildSearchServiceResponse(context));
 
         context.setPricingResponse(pricingResponse);
         if (pricingResponse == null

@@ -21,7 +21,7 @@ public class BuilderUtil {
                 .build();
     }
 
-    public SearchServiceResponse builcSearchServiceResponse(Context context) {
+    public SearchServiceResponse buildSearchServiceResponse(Context context) {
         Document document = new Document();
         Map<String, Object> map = new HashMap<>();
         map.put(GlobalConstants.PID, context.getPid());

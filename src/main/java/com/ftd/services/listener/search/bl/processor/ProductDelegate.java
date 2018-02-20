@@ -39,7 +39,7 @@ public class ProductDelegate implements Delegate {
         ProductServiceResponse productServiceResponse =
                 productClient.callProductService(
                         builderUtil.buildSearchServiceRequest(context),
-                        builderUtil.builcSearchServiceResponse(context));
+                        builderUtil.buildSearchServiceResponse(context));
 
         context.setProductServiceResponse(productServiceResponse);
         productUtil.validateResponse(context, productServiceResponse);

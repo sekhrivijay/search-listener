@@ -189,7 +189,7 @@ public class AutofillFileLoader {
                 ProductServiceResponse productServiceResponse =
                         productClient.callProductService(
                                 builderUtil.buildSearchServiceRequest(context),
-                                builderUtil.builcSearchServiceResponse(context));
+                                builderUtil.buildSearchServiceResponse(context));
 
 
                 productUtil.validateResponse(context, productServiceResponse);
